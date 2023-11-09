@@ -7,6 +7,8 @@ const SignInView = () => import('../views/SignInView/SignInView')
 const RegisterView = () => import('@/views/SignInView/RegisterView')
 const MainView = () => import('@/views/MainView/MainView')
 
+const PostView = () => import('@/views/PostView/PostView')
+
 Vue.use(Router)
 
 const routes = [
@@ -25,6 +27,10 @@ const routes = [
   {
     path: PATH.MAIN_VIEW.path,
     component: MainView
+  },
+  {
+    path: PATH.POST_VIEW.path,
+    component: PostView
   },
   {
     path: '*',

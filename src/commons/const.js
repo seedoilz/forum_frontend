@@ -11,5 +11,8 @@ export const PATH = {
   },
   MAIN_VIEW: {
     path: '/main'
+  },
+  POST_VIEW: {
+    path: '/post'
   }
 }
