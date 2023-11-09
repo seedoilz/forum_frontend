@@ -1,7 +1,7 @@
 <template>
   <div class="post-page">
     <h1>发布新帖子</h1>
-    <form @submit.prevent="submitPost" class="post-form">
+    <form class="post-form">
       <div class="form-group">
         <label for="title">标题</label>
         <input type="text" id="title" v-model="postMessage.title" required>
@@ -14,7 +14,7 @@
         <label for="tags">标签</label>
         <input type="text" id="tags" v-model="postMessage.tags" placeholder="用逗号分隔">
       </div>
-      <el-button type="primary" round>发布</el-button>
+      <el-button type="primary" plain @click="submitPost">发布</el-button>
     </form>
   </div>
 </template>
