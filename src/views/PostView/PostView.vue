@@ -7,7 +7,7 @@
         <input type="text" id="title" v-model="postMessage.title" required>
       </div>
       <div class="form-group">
-        <label for="content">内容</label>
+        <label for="content">正文</label>
         <textarea id="content" v-model="postMessage.content" required></textarea>
       </div>
       <div class="form-group">
@@ -36,20 +36,50 @@ export default {
   },
   methods: {
     submitPost () {
-      messagePost(this.postMessage).then(res => {
-        if (res.code === 200) {
-          this.$message({
-            type: 'success',
-            message: res.message
-          })
-          this.$router.push(PATH.MAIN_VIEW)
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.message
-          })
-        }
-      })
+      console.log(this.postMessage.title)
+      if (this.postMessage.title === '') {
+        this.$notify({
+          title: '警告',
+          message: '缺少标题~~',
+          type: 'warning'
+        })
+      } else if (this.postMessage.content === '') {
+        this.$notify({
+          title: '警告',
+          message: '缺少正文~~',
+          type: 'warning'
+        })
+      } else if (this.postMessage.tags === '') {
+        this.$notify({
+          title: '警告',
+          message: '缺少标签~~',
+          type: 'warning'
+        })
+      } else {
+        messagePost(this.postMessage).then(res => {
+          if (res.code === 200) {
+            this.$message({
+              type: 'success',
+              message: res.message
+            })
+            this.$notify({
+              title: '成功',
+              message: '发布成功~~',
+              type: 'success'
+            })
+            this.$router.push(PATH.MAIN_VIEW)
+          } else {
+            this.$notify.error({
+              title: '错误',
+              message: '发布失败！'
+            })
+            this.$message({
+              type: 'error',
+              message: res.message
+            })
+          }
+        })
+      }
     }
   }
 }
