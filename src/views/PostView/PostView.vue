@@ -25,7 +25,7 @@ import { PATH } from '@/commons/const'
 
 export default {
   name: 'PostView',
-  data() {
+  data () {
     return {
       postMessage: {
         title: '',
@@ -35,7 +35,7 @@ export default {
     }
   },
   methods: {
-    submitPost() {
+    submitPost () {
       messagePost(this.postMessage).then(res => {
         if (res.code === 200) {
           this.$message({
