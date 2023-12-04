@@ -18,25 +18,21 @@
   <!--          </div>-->
   <!--        </template>-->
   <!--      </el-skeleton>-->
-  <el-card style="width:60%;height: auto;">
-    <div style="width:100%;height: 100%;display: flex; flex-direction: row;">
-      <el-image
-        :src="post.imgUrl"
-        style="width: 50%; height: 100%; "
-        fit="cover">
-      </el-image>
-      <div style="width: 50%; height:100%; padding: 0 0 0 2%;display: flex; flex-direction: column;">
-        <div style="display: flex; align-items: center;">
-          <span style="font-size: 20px;">{{ post.title }}</span>
-          <div style="margin-left: auto;">
-            <el-tag>标签一</el-tag>
-            <el-tag type="success">标签二</el-tag>
-          </div>
-        </div>
-        <div style="width:100%; height:100%; margin-top: 15px; overflow: hidden; text-overflow: ellipsis;">
-          {{ post.content }}
-        </div>
+  <el-card class="carousel-article" style="width: 60%; height: auto">
+    <el-carousel :interval="5000" arrow="always">
+      <!-- Carousel Items -->
+      <el-carousel-item style="height: 100%; width: 100%">
+        <el-image style="height: 100%; width: 100%" :src="post.imgUrl" fit="contain"></el-image>
+      </el-carousel-item>
+    </el-carousel>
+    <div>
+      <h2>{{ post.title }}</h2>
+      <div style="margin-left: auto;">
+        <el-tag>标签一</el-tag>
+        <el-tag type="success">标签二</el-tag>
       </div>
+      <p style="max-height: 300px;width: 100%;">
+        {{ post.content }}</p>
     </div>
   </el-card>
 </template>
@@ -57,3 +53,11 @@ export default {
 
 </script>
 
+<style>
+p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+</style>
