@@ -40,7 +40,7 @@
 <script>
 export default {
   name: 'PostCard',
-  data() {
+  data () {
     return {
       loading: true,
       currentDate: '2021-06-01'

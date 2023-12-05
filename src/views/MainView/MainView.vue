@@ -34,6 +34,8 @@
         <post-card
           v-for="post in postList" :key="post.title"
           :post="post"></post-card>
+        <review></review>
+        <review-editor></review-editor>
         <div class="main-container">
           <div class="list-wrapper">
             <ul
@@ -59,10 +61,12 @@
 <script>
 import NavMenu from '@/components/NavMenu'
 import PostCard from '@/components/PostCard'
+import Review from '@/components/Review.vue'
+import ReviewEditor from '@/components/ReviewEditor.vue'
 
 export default {
   name: 'MainView',
-  components: {NavMenu, PostCard},
+  components: {ReviewEditor, Review, NavMenu, PostCard},
   data () {
     return {
       count: 20,
