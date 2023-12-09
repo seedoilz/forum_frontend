@@ -6,7 +6,7 @@ const Home = () => import('../views/Home')
 const SignInView = () => import('../views/SignInView/SignInView')
 const RegisterView = () => import('@/views/SignInView/RegisterView')
 const MainView = () => import('@/views/MainView/MainView')
-
+const UserView = () => import('@/views/UserView/UserView')
 const PostView = () => import('@/views/PostView/PostView')
 
 Vue.use(Router)
@@ -27,6 +27,10 @@ const routes = [
   {
     path: PATH.MAIN_VIEW.path,
     component: MainView
+  },
+  {
+    path: PATH.USER_VIEW.path,
+    component: UserView
   },
   {
     path: PATH.POST_VIEW.path,

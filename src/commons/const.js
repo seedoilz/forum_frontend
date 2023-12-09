@@ -14,5 +14,8 @@ export const PATH = {
   },
   POST_VIEW: {
     path: '/post'
+  },
+  USER_VIEW: {
+    path: '/user'
   }
 }
