@@ -1,14 +1,13 @@
 <template>
-  <el-container class="user-profile-container">
-    <el-header>
+  <el-container class="user-profile-container" style="">
+    <el-header style="height:150px">
       <!-- Avatar section -->
-      <div class="avatar-container">
-        <el-avatar size="100" src="path_to_avatar_image.jpg"></el-avatar>
+      <div class="avatar-container" style="margin-top: 2%">
+        <el-avatar size="300" src="path_to_avatar_image.jpg" style="width: 100px;height: 100px"></el-avatar>
       </div>
     </el-header>
 
     <el-main>
-      <!-- Personal Information Display -->
       <el-card class="info-card">
         <el-row :gutter="20">
           <el-col :span="24">
@@ -29,7 +28,10 @@
 </template>
 
 <script>
+import UserView from './UserView.vue'
+
 export default {
+  components: {UserView},
   data () {
     return {
       personalInfo: {
@@ -45,9 +47,8 @@ export default {
 <style>
 .user-profile-container {
   width: 100%;
-  margin: 50px auto;
   border-radius: 10px;
-  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
 .avatar-container {

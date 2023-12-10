@@ -1,28 +1,37 @@
 <template>
-  <el-container style="height: 100%; border: 1px solid #eee;margin: 1%">
-    <el-aside width="20%"  style="margin:10px;height:100%;background-color: rgb(238, 241, 246)">
-      <el-menu>
-        <el-menu-item v-for="item in leftNavigation" :key="item.id" :index="item.id" @click="ChoseModel(item.id)">{{ item.name }}</el-menu-item>
+  <el-container style="margin:1%">
+    <el-aside width="20%" style="height: 300px">
+      <el-menu
+        :default-active="getActivePath"
+        class="el-menu-vertical-demo"
+        @select="handleSelect"
+        style="width: 90%;
+      justify-content: center;"
+      >
+        <el-menu-item :index="PATH.INFORMATION_VIEW.path">
+          <i class="el-icon-location"></i>
+          <span slot="title">个人信息</span>
+        </el-menu-item>
+        <el-menu-item :index="PATH.ACCOUNT_SET_VIEW.path">
+          <i class="el-icon-menu"></i>
+          <span slot="title">帐号设置</span>
+        </el-menu-item>
+        <el-menu-item :index="PATH.CONTENT_MANAGEMENT_VIEW.path">
+          <i class="el-icon-document"></i>
+          <span slot="title">内容管理</span>
+        </el-menu-item>
+        <el-menu-item :index="PATH.MY_COLLECT_VIEW.path">
+          <i class="el-icon-star-on"></i>
+          <span slot="title">我的收藏</span>
+        </el-menu-item>
+        <el-menu-item :index="PATH.MY_THUMBS_VIEW.path">
+          <i class="el-icon-setting"></i>
+          <span slot="title">我的点赞</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
 
-    <div class="contentright" style="width: 80%;margin:10px">
-      <div v-if="leftNavigation[0].chose">
-        <Information></Information>
-      </div>
-      <div v-if="leftNavigation[1].chose">
-        <AccountSet></AccountSet>
-      </div>
-      <div v-if="leftNavigation[2].chose">
-        <MyCollect></MyCollect>
-      </div>
-      <div v-if="leftNavigation[3].chose">
-        <ContentManagement></ContentManagement>
-      </div>
-      <div v-if="leftNavigation[4].chose">
-        <MyThumbs></MyThumbs>
-      </div>
-    </div>
+    <router-view :key="$route.fullPath" style="width:80%"></router-view>
   </el-container>
 </template>
 
@@ -31,38 +40,32 @@
 </style>
 
 <script>
-import Information from '@/components/RightContents/Information.vue'
-import AccountSet from '@/components/RightContents/AccountSet.vue'
-import MyCollect from '@/components/RightContents/MyCollect.vue'
-import MyThumbs from '@/components/RightContents/MyThumbs_up.vue'
-import ContentManagement from '@/components/RightContents/ContentManagement.vue'
+import {PATH} from '../../commons/const'
+
 export default {
   name: 'UserView',
-  components: {
-    Information,
-    AccountSet,
-    MyCollect,
-    MyThumbs,
-    ContentManagement
+  computed: {
+    getActivePath () {
+      console.log(this.activePath)
+      if (this.activePath == null) {
+        return this.$route.path
+      } else {
+        return this.activePath
+      }
+    }
   },
   data () {
     return {
-      leftNavigation: [{name: '个人资料', chose: true, id: 0}, {name: '账号设置', chose: false, id: 1},
-        {name: '我的收藏', chose: false, id: 2},
-        {name: '内容管理', chose: false, id: 3}, {name: '我的点赞', chose: false, id: 4}]
+      selectedNavigation: '1',
+      PATH: PATH
     }
   },
   methods: {
-    ChoseModel (index) {
-      // 选择模块
-      for (let i = 0; i < this.leftNavigation.length; i++) {
-        this.leftNavigation[i].chose = false
-      }
-      this.leftNavigation[index].chose = true
-
-      // if (index === 4) {
-      //   this.$router.push('/ContentManagement')
-      // }
+    handleSelect (key) {
+      this.$router.push('/user/' + key).catch(err => {
+        console.log(err)
+      })
+      // console.log(key, this.$route.path)
     }
   }
 }

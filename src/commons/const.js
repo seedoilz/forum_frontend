@@ -17,5 +17,20 @@ export const PATH = {
   },
   USER_VIEW: {
     path: '/user'
+  },
+  ACCOUNT_SET_VIEW: {
+    path: 'account_set'
+  },
+  CONTENT_MANAGEMENT_VIEW: {
+    path: 'content_management'
+  },
+  INFORMATION_VIEW: {
+    path: 'information'
+  },
+  MY_COLLECT_VIEW: {
+    path: 'my_collect'
+  },
+  MY_THUMBS_VIEW: {
+    path: 'my_thumbs'
   }
 }

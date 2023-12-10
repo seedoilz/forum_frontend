@@ -8,6 +8,11 @@ const RegisterView = () => import('@/views/SignInView/RegisterView')
 const MainView = () => import('@/views/MainView/MainView')
 const UserView = () => import('@/views/UserView/UserView')
 const PostView = () => import('@/views/PostView/PostView')
+const AccountSetView = () => import('@/views/UserView/AccountSet')
+const ContentManagementView = () => import('@/views/UserView/ContentManagement')
+const InformationView = () => import('@/views/UserView/Information')
+const MyCollectView = () => import('@/views/UserView/MyCollect')
+const MyThumbsView = () => import('@/views/UserView/MyThumbs')
 
 Vue.use(Router)
 
@@ -30,6 +35,28 @@ const routes = [
   },
   {
     path: PATH.USER_VIEW.path,
+    children: [
+      {
+        path: PATH.INFORMATION_VIEW.path,
+        component: InformationView
+      },
+      {
+        path: PATH.ACCOUNT_SET_VIEW.path,
+        component: AccountSetView
+      },
+      {
+        path: PATH.CONTENT_MANAGEMENT_VIEW.path,
+        component: ContentManagementView
+      },
+      {
+        path: PATH.MY_COLLECT_VIEW.path,
+        component: MyCollectView
+      },
+      {
+        path: PATH.MY_THUMBS_VIEW.path,
+        component: MyThumbsView
+      }
+    ],
     component: UserView
   },
   {
