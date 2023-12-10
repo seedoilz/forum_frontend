@@ -7,7 +7,7 @@
       你还没有收藏哦,快去找些优质文章吧！
     </div>
     <div v-else class="myCollectA" v-for="(item,index) in collectList" :key="index">
-      <div class="myCollectTitle" @click="TurnToDetail(item.id)">
+      <div class="myCollectTitle">
         <div class="title">{{ item.title }}</div>
         <div class="description">{{ item.description }}</div>
         <div class="releaseTime">{{ item.releaseTime }}</div>
@@ -34,6 +34,31 @@ export default {
         }
       },
       noneCollect: true
+    }
+  },
+  methods: {
+    ChangeStar (index) {
+      this.collectList[index].starStation = !this.collectList[index].starStation
+      // 开始收藏状态修正
+      if (this.collectList[index].starStation === true) {
+        // 开始收藏，将blogid转化成form-data格式
+        let formdata = new FormData()
+
+        formdata.append('blogid', this.collectList[index].id)
+
+        this.$axios.post('/blog/collect', formdata, this.config).then(res => {
+          this.$message({
+            message: '收藏成功',
+            type: 'success'
+          })
+        })
+      } else {
+        // 取消收藏部分
+        this.$message({
+          message: '取消收藏成功',
+          type: 'success'
+        })
+      }
     }
   }
 }
