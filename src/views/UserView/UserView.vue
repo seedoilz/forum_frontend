@@ -56,7 +56,6 @@ export default {
   },
   data () {
     return {
-      selectedNavigation: '1',
       PATH: PATH
     }
   },
