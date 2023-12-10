@@ -1,12 +1,13 @@
 <template>
-  <el-container style="margin:1%">
+  <el-container style="height:100%;margin:3% 20% 0 20%;">
     <el-aside width="20%" style="height: 300px">
       <el-menu
         :default-active="getActivePath"
         class="el-menu-vertical-demo"
         @select="handleSelect"
         style="width: 90%;
-      justify-content: center;"
+      justify-content: center;
+border: 0"
       >
         <el-menu-item :index="PATH.INFORMATION_VIEW.path">
           <i class="el-icon-location"></i>

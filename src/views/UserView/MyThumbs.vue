@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: 'MyThumbs_up',
+  name: 'MyThumbs',
   data () {
     return {
       likeList: [],

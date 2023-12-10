@@ -31,6 +31,7 @@
 import UserView from './UserView.vue'
 
 export default {
+  name: 'Information',
   components: {UserView},
   data () {
     return {

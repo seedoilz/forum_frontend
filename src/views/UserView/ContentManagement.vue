@@ -86,6 +86,7 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+
 export default {
   name: 'ContentManagement',
   components: {
