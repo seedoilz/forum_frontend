@@ -75,13 +75,13 @@ export default {
 }
 
 .nav:not(.el-menu--collapse){
-  margin-top: 10%;
+  margin-top: 15%;
   width: 150px;
   border: 0;
 }
 
 .nav.el-menu--collapse{
-  margin-top: 10%;
+  margin-top: 15%;
   border: 0;
 }
 .nav:not(.el-menu--collapse) .el-menu-item .el-icon-arrow-right{

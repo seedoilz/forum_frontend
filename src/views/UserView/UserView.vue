@@ -31,7 +31,7 @@
       </el-menu>
     </el-aside>
 
-    <router-view :key="$route.fullPath" style="width:80%"></router-view>
+    <router-view :key="this.$route.fullPath" style="width:80%"></router-view>
   </el-container>
 </template>
 
@@ -65,7 +65,7 @@ export default {
       this.$router.push('/user/' + key).catch(err => {
         console.log(err)
       })
-      // console.log(key, this.$route.path)
+      console.log(this.$router.currentRoute.fullPath)
     }
   }
 }

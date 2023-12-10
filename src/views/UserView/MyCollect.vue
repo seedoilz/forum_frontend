@@ -1,22 +1,22 @@
 <template>
   <el-card class="content" style="height: auto">
-    <div slot="header" class="clearfix">
-      <span style="font-size:1.5rem">我的收藏</span>
-    </div>
-    <div v-if="noneCollect" class="noneCollect">
-      你还没有收藏哦,快去找些优质文章吧！
-    </div>
-    <div v-else class="myCollectA" v-for="(item,index) in collectList" :key="index">
-      <div class="myCollectTitle" @click="TurnToDetail(item.id)">
-        <div class="title">{{ item.title }}</div>
-        <div class="description">{{ item.description }}</div>
-        <div class="releaseTime">{{ item.releaseTime }}</div>
-      </div>
-      <div class="myCollectStar">
-        <img ref="star" @click="ChangeStar(index)"
-             :src="item.starStation? collectStar1:collectStar2">
-      </div>
-    </div>
+<!--    <div slot="header" class="clearfix">-->
+<!--      <span style="font-size:1.5rem">我的收藏</span>-->
+<!--    </div>-->
+<!--    <div v-if="noneCollect" class="noneCollect">-->
+<!--      你还没有收藏哦,快去找些优质文章吧！-->
+<!--    </div>-->
+<!--    <div v-else class="myCollectA" v-for="(item,index) in collectList" :key="index">-->
+<!--      <div class="myCollectTitle" @click="TurnToDetail(item.id)">-->
+<!--        <div class="title">{{ item.title }}</div>-->
+<!--        <div class="description">{{ item.description }}</div>-->
+<!--        <div class="releaseTime">{{ item.releaseTime }}</div>-->
+<!--      </div>-->
+<!--      <div class="myCollectStar">-->
+<!--        <img ref="star" @click="ChangeStar(index)"-->
+<!--             :src="item.starStation? collectStar1:collectStar2">-->
+<!--      </div>-->
+<!--    </div>-->
   </el-card>
 </template>
 

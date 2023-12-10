@@ -18,11 +18,11 @@
   <!--          </div>-->
   <!--        </template>-->
   <!--      </el-skeleton>-->
-  <el-card class="carousel-article" style="width: 60%; height: auto">
+  <el-card class="carousel-article" style="width: 60%; height: auto;border:0;">
     <el-carousel :interval="5000" arrow="always">
       <!-- Carousel Items -->
       <el-carousel-item style="height: 100%; width: 100%">
-        <el-image style="height: 100%; width: 100%" :src="post.imgUrl" fit="contain"></el-image>
+        <el-image style="height: 100%; width: 100%; border-radius: 4px" :src="post.imgUrl" fit="contain"></el-image>
       </el-carousel-item>
     </el-carousel>
     <div>

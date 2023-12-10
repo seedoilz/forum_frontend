@@ -48,7 +48,7 @@ export default {
 }
 
 .comment-text {
-  color: #333;
+  color: #c9c9c9;
 }
 
 .comment-time {

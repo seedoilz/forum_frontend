@@ -1,27 +1,27 @@
 <template>
   <el-card class="content">
-    <div slot="header" class="clearfix">
-      <span style="font-size:1.5rem">我的点赞</span>
-    </div>
-    <div v-if="noneLike" class="noneLike">
-      你都舍不得点赞吗？
-    </div>
-    <div v-else class="myLikeA" v-for="(item,index) in likeList" :key="item.id">
-      <div class="myLikeTitle">
-        <div class="title" @click="TurnToDetail(item.id)">{{ item.title }}</div>
-        <div class="description">{{ item.description }}</div>
-      </div>
-      <div class="myLikeStar">
-        <svg
-          :class="{active:item.thumbs}"
-          @click="Like(item.id,item.authorId,index)"
-          aria-hidden="true">
-          <use xlink:href="#icon-dianzan_kuai"></use>
-          <!-- use是复制一个图标的意思 -->
-        </svg>
-        {{ item.thumbs }}{{ likeList[index].thumbs }}
-      </div>
-    </div>
+<!--    <div slot="header" class="clearfix">-->
+<!--      <span style="font-size:1.5rem">我的点赞</span>-->
+<!--    </div>-->
+<!--    <div v-if="noneLike" class="noneLike">-->
+<!--      你都舍不得点赞吗？-->
+<!--    </div>-->
+<!--    <div v-else class="myLikeA" v-for="(item,index) in likeList" :key="item.id">-->
+<!--      <div class="myLikeTitle">-->
+<!--        <div class="title" @click="TurnToDetail(item.id)">{{ item.title }}</div>-->
+<!--        <div class="description">{{ item.description }}</div>-->
+<!--      </div>-->
+<!--      <div class="myLikeStar">-->
+<!--        <svg-->
+<!--          :class="{active:item.thumbs}"-->
+<!--          @click="Like(item.id,item.authorId,index)"-->
+<!--          aria-hidden="true">-->
+<!--          <use xlink:href="#icon-dianzan_kuai"></use>-->
+<!--          &lt;!&ndash; use是复制一个图标的意思 &ndash;&gt;-->
+<!--        </svg>-->
+<!--        {{ item.thumbs }}{{ likeList[index].thumbs }}-->
+<!--      </div>-->
+<!--    </div>-->
 
   </el-card>
 </template>
