@@ -1,12 +1,12 @@
 <template>
-  <el-container style="height: 100%; border: 1px solid #eee">
-    <el-aside width="20%"  style="height:100%;background-color: rgb(238, 241, 246)">
+  <el-container style="height: 100%; border: 1px solid #eee;margin: 1%">
+    <el-aside width="20%"  style="margin:10px;height:100%;background-color: rgb(238, 241, 246)">
       <el-menu>
         <el-menu-item v-for="item in leftNavigation" :key="item.id" :index="item.id" @click="ChoseModel(item.id)">{{ item.name }}</el-menu-item>
       </el-menu>
     </el-aside>
 
-    <div class="contentright" style="width: 80%">
+    <div class="contentright" style="width: 80%;margin:10px">
       <div v-if="leftNavigation[0].chose">
         <Information></Information>
       </div>
@@ -15,6 +15,9 @@
       </div>
       <div v-if="leftNavigation[2].chose">
         <MyCollect></MyCollect>
+      </div>
+      <div v-if="leftNavigation[3].chose">
+        <ContentManagement></ContentManagement>
       </div>
       <div v-if="leftNavigation[4].chose">
         <MyThumbs></MyThumbs>
@@ -32,13 +35,15 @@ import Information from '@/components/RightContents/Information.vue'
 import AccountSet from '@/components/RightContents/AccountSet.vue'
 import MyCollect from '@/components/RightContents/MyCollect.vue'
 import MyThumbs from '@/components/RightContents/MyThumbs_up.vue'
+import ContentManagement from '@/components/RightContents/ContentManagement.vue'
 export default {
   name: 'UserView',
   components: {
     Information,
     AccountSet,
     MyCollect,
-    MyThumbs
+    MyThumbs,
+    ContentManagement
   },
   data () {
     return {
