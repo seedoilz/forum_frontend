@@ -1,14 +1,15 @@
 <template>
-  <el-container style="margin:1%">
-    <el-aside width="20%" style="height: 300px">
+  <el-container style="height:100%; margin:3% 20% 0 20%;">
+    <el-aside width="20%" style="height: 100%">
       <el-menu
         :default-active="getActivePath"
         class="el-menu-vertical-demo"
         @select="handleSelect"
         style="width: 90%;
-      justify-content: center;"
+        justify-content: center;
+        border: 0"
       >
-        <el-menu-item :index="PATH.INFORMATION_VIEW.path">
+        <el-menu-item class="el-menu-item" :index="PATH.INFORMATION_VIEW.path">
           <i class="el-icon-location"></i>
           <span slot="title">个人信息</span>
         </el-menu-item>
@@ -36,7 +37,13 @@
 </template>
 
 <style>
-
+.el-menu-item{
+  height:80px;
+  padding-left: 15px !important;
+  display: flex;
+  justify-content: center; /* 水平居中对齐 */
+  align-items: center; /* 垂直居中对齐 */
+}
 </style>
 
 <script>

@@ -5,6 +5,9 @@ body{
   min-height: 100vh;
   margin: 0;
 }
+.el-card{
+  border: 0;
+}
 
 .basic-container{
   background-color: rgba(32,32,32,0.7);
