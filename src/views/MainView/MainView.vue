@@ -20,14 +20,15 @@
               <image id="sky" class="sky" x="-100" xlink:href="@/assets/sky.jpg"  width="1500" height="660" />
               <image class="mountBg" xlink:href="@/assets/mountbg.png" width="1200" height="800"/>
               <image class="mountMg" xlink:href="@/assets/mountmg.png" width="1200" height="800"/>
-<!--              <image class="cloud2" xlink:href="@/assets/cloud2.png" width="1200" height="800"/>-->
+              <image class="cloud2" xlink:href="@/assets/cloud2.png" width="1200" height="800"/>
               <image class="mountFg" xlink:href="@/assets/mountfg.png" width="1200" height="800"/>
 <!--              <image class="cloud1" xlink:href="@/assets/cloud1.png"  width="1200" height="800"/>-->
-<!--              <image class="cloud3" xlink:href="@/assets/cloud3.png" width="1200" height="800"/>-->
-              <text fill="#fff" x="350" y="200" font-size="2rem">printf("Hello World!");</text>
+              <image class="cloud3" xlink:href="@/assets/cloud3.png" width="1200" height="800"/>
+              <text fill="#fff" x="150" y="150" font-size="2rem">printf("Hello World!");</text>
               <g mask="url(#m)">
                 <rect fill="#171717" width="100%" height="100%" />
-                <text x="400" y="200" fill="#162a43" font-size="2rem">Hello World!</text>
+                <text x="200" y="150" fill="#162a43" font-size="2rem">Hello World!</text>
+                <text x="200" y="200" fill="#162a43" font-size="2rem">:)</text>
               </g>
             </svg>
           </div>
@@ -112,11 +113,11 @@ export default {
         {width: '100vh', height: '200vh'})
       gsap.timeline(
         {scrollTrigger: {trigger: '.scrollDist', start: 'top top', end: 'bottom bottom', scrub: 1}})
-        .fromTo('.sky', {y: -5, rotation: -5}, {y: -50, rotation: 2}, 0)
+        .fromTo('.sky', {y: -20, rotation: -5}, {y: -70, rotation: 2}, 0)
         .fromTo('.cloud1', {y: 100}, {y: -800}, 0)
-        // .fromTo('.cloud2', {y: -150}, {y: -500}, 0)
-        // .fromTo('.cloud3', {y: -50}, {y: -650}, 0)
-        .fromTo('.mountBg', {y: -10}, {y: -100}, 0)
+        .fromTo('.cloud2', {y: -150}, {y: -500}, 0)
+        .fromTo('.cloud3', {y: -50}, {y: -650}, 0)
+        .fromTo('.mountBg', {y: -10}, {y: -75}, 0)
         .fromTo('.mountMg', {y: -30}, {y: -250}, 0)
         .fromTo('.mountFg', {y: -50}, {y: -600}, 0)
     }
