@@ -1,10 +1,15 @@
 <template>
   <el-container class="user-profile-container" style="">
-    <el-header style="height:150px">
+    <el-header class="el-header" style="height:150px">
       <!-- Avatar section -->
-      <div class="avatar-container" style="margin-top: 2%">
-        <el-avatar size="300" src="path_to_avatar_image.jpg" style="width: 100px;height: 100px"></el-avatar>
-      </div>
+      <el-upload
+        class="avatar-uploader"
+        action="/image/upload"
+        :show-file-list="false"
+        :before-upload="beforeAvatarUpload">
+        <img v-if="this.personalInfo.avatar_url" :src="this.personalInfo.avatar_url" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
     </el-header>
     <div style="display: flex;justify-content: flex-end">
       <el-button v-if="!isEditing" style="margin-right: 30px" @click="toggleEditMode">编辑</el-button>
@@ -69,16 +74,18 @@
 </template>
 
 <script>
+
 export default {
   name: 'Information',
   data () {
     return {
       isEditing: false,
       personalInfo: {
-        name: 'John Doe', // Replace with actual data
-        id: '123456', // Replace with actual data
+        name: 'John Doe',
+        id: '123456',
         email: '123456789@outlook.com',
         created_time: 'xxxx年x月x日',
+        avatar_url: 'https://study-course-seedoilz.oss-cn-shanghai.aliyuncs.com/avatar/20231211-192221-test.jpg',
         gender: 1
         // other fields...
       }
@@ -107,6 +114,24 @@ export default {
     },
     saveForm () {
       // TODO
+    },
+    uploadAvatar (res, file) {
+      const formData = new FormData()
+      formData.append('filename', file.name)
+      formData.append('file', file.raw)
+      // TODO
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
     }
   }
 }
@@ -119,7 +144,7 @@ export default {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
-.avatar-container {
+.el-header {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -151,5 +176,32 @@ export default {
   .user-profile-container {
     margin: 20px;
   }
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
