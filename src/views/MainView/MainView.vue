@@ -20,24 +20,49 @@
               <image id="sky" class="sky" x="-100" xlink:href="@/assets/sky.jpg"  width="1500" height="660" />
               <image class="mountBg" xlink:href="@/assets/mountbg.png" width="1200" height="800"/>
               <image class="mountMg" xlink:href="@/assets/mountmg.png" width="1200" height="800"/>
-<!--              <image class="cloud2" xlink:href="@/assets/cloud2.png" width="1200" height="800"/>-->
+              <image class="cloud2" xlink:href="@/assets/cloud2.png" width="1200" height="800"/>
               <image class="mountFg" xlink:href="@/assets/mountfg.png" width="1200" height="800"/>
 <!--              <image class="cloud1" xlink:href="@/assets/cloud1.png"  width="1200" height="800"/>-->
-<!--              <image class="cloud3" xlink:href="@/assets/cloud3.png" width="1200" height="800"/>-->
-              <text fill="#fff" x="350" y="200" font-size="2rem">printf("Hello World!");</text>
+              <image class="cloud3" xlink:href="@/assets/cloud3.png" width="1200" height="800"/>
+              <text fill="#fff" x="150" y="150" font-size="2rem">printf("Hello World!");</text>
               <g mask="url(#m)">
                 <rect fill="#171717" width="100%" height="100%" />
-                <text x="400" y="200" fill="#162a43" font-size="2rem">Hello World!</text>
+                <text x="200" y="150" fill="#162a43" font-size="2rem">Hello World!</text>
+                <text x="200" y="200" fill="#162a43" font-size="2rem">:)</text>
               </g>
             </svg>
           </div>
+          <el-menu
+            class="menu"
+            default-active="1"
+            mode="horizontal"
+            :ellipsis="false"
+            @select="handleSelect"
+            style="width: 100%;border: 0;margin: 0;padding: 0">
+            <el-menu-item index="1">处理中心</el-menu-item>
+            <el-submenu index="2">
+              <template slot="title">我的工作台</template>
+              <el-menu-item index="2-1">选项1</el-menu-item>
+              <el-menu-item index="2-2">选项2</el-menu-item>
+              <el-menu-item index="2-3">选项3</el-menu-item>
+              <el-submenu index="2-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="2-4-1">选项1</el-menu-item>
+                <el-menu-item index="2-4-2">选项2</el-menu-item>
+                <el-menu-item index="2-4-3">选项3</el-menu-item>
+              </el-submenu>
+            </el-submenu>
+            <el-menu-item index="3" disabled>消息中心</el-menu-item>
+            <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+          </el-menu>
         </div>
 <!--        <h1 style="font-size: 7rem;margin-top: 20%;margin-bottom: 20%;color: #ffffff">printf("Hello World!")</h1>-->
       </el-header>
       <!--      el-main-start-->
       <el-main style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
+
         <!--        main-->
-        <div style="display: flex;align-items: center;justify-content: center;flex-direction: column; z-index: 100">
+        <div style="display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
           <post-card
             v-for="post in postList" :key="post.title"
             :post="post"></post-card>
@@ -111,14 +136,25 @@ export default {
       gsap.set('.scrollDist',
         {width: '100vh', height: '200vh'})
       gsap.timeline(
-        {scrollTrigger: {trigger: '.scrollDist', start: 'top top', end: 'bottom bottom', scrub: 1}})
-        .fromTo('.sky', {y: -5, rotation: -5}, {y: -50, rotation: 2}, 0)
+        {scrollTrigger: {trigger: '.scrollDist',
+          start: 'top top',
+          end: 'bottom bottom',
+          // toggleClass: {
+          //   targets: '.menu',
+          //   className: 'short'
+          // },
+          scrub: 1}})
+        .fromTo('.sky', {y: -20, rotation: -5}, {y: -70, rotation: 2}, 0)
         .fromTo('.cloud1', {y: 100}, {y: -800}, 0)
-        // .fromTo('.cloud2', {y: -150}, {y: -500}, 0)
-        // .fromTo('.cloud3', {y: -50}, {y: -650}, 0)
-        .fromTo('.mountBg', {y: -10}, {y: -100}, 0)
+        .fromTo('.cloud2', {y: -150}, {y: -500}, 0)
+        .fromTo('.cloud3', {y: -50}, {y: -650}, 0)
+        .fromTo('.mountBg', {y: -10}, {y: -75}, 0)
         .fromTo('.mountMg', {y: -30}, {y: -250}, 0)
         .fromTo('.mountFg', {y: -50}, {y: -600}, 0)
+        .fromTo('.menu', {opacity: 0}, {opacity: 1}, 0)
+    },
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
     }
   }
 }
@@ -139,6 +175,17 @@ body, html {
   justify-content: center;
   height: 40%;
 }
+
+.menu{
+  top:0;
+  left: 0;
+  position: fixed;
+  z-index: 1000;
+}
+
+/*.menu.short{*/
+/*  bottom: 0;*/
+/*}*/
 
 .upper-container {
   width: 70%;
