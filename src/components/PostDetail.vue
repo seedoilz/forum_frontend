@@ -1,5 +1,5 @@
 <template>
-  <div class="carousel-article" style="width: 60%; height: auto">
+  <el-card class="carousel-article" style="width: 60%; height: auto">
     <el-carousel :interval="5000" arrow="always">
       <!-- Carousel Items -->
       <el-carousel-item style="height: 100%; width: 100%">
@@ -12,15 +12,23 @@
         <el-tag>标签一</el-tag>
         <el-tag type="success">标签二</el-tag>
       </div>
-      <p style="max-height: 300px;width: 100%;">
-        {{ post.content }}</p>
+      <vue-markdown :source="post.content"></vue-markdown>
+<!--      <p style="max-height: 300px;width: 100%;">-->
+<!--        {{ post.content }}</p>-->
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown'
 export default {
-  name: 'PostDetail'
+  name: 'PostDetail',
+  components: {
+    VueMarkdown
+  },
+  props: {
+    post: Object
+  }
 }
 </script>
 

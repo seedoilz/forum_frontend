@@ -18,6 +18,9 @@ export const PATH = {
   USER_VIEW: {
     path: '/user'
   },
+  POST_DETAIL_VIEW: {
+    path: '/post_detail'
+  },
   ACCOUNT_SET_VIEW: {
     path: 'account_set'
   },
