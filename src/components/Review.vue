@@ -1,20 +1,20 @@
 <template>
   <el-card class="comment">
     <el-row type="flex" align="middle" class="comment-row">
-      <el-col :span="3">
+      <el-col :span="2">
         <el-avatar src="path/to/avatar.jpg"></el-avatar>
       </el-col>
       <el-col :span="18" class="comment-content">
         <div>
-          <span class="username">用户名</span>
-          <span class="comment-text">这是评论内容。这是评论内容。这是评论内容。这是评论内容。这是评论内容。这是评论内容。这是评论内容。这是评论内容。这是评论内容。</span>
+          <span class="username">{{ review.userName }}</span>
+          <span class="comment-text">{{ review.content }}</span>
         </div>
-        <div class="comment-time">23-12-4 20:03</div>
+        <div class="comment-time">{{ review.time }}</div>
       </el-col>
       <el-col :span="3" class="comment-actions">
         <el-button type="text" icon="el-icon-chat-dot-square"></el-button>
         <el-button type="text" icon="el-icon-thumb">
-          <span>43</span>
+          <span>{{ review.thumbs }}</span>
         </el-button>
 <!--        <el-button type="text" icon="el-icon-thumb-down"></el-button>-->
       </el-col>
@@ -27,7 +27,10 @@ export default {
   name: 'Review',
   data () {
   },
-  methods: {}
+  methods: {},
+  props: {
+    review: Object
+  }
 }
 </script>
 

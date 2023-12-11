@@ -1,5 +1,5 @@
 <template>
-  <el-card class="carousel-article" style="width: 60%; height: auto">
+  <el-card class="carousel-article" style="width: 100%; height: auto">
     <el-carousel :interval="5000" arrow="always">
       <!-- Carousel Items -->
       <el-carousel-item style="height: 100%; width: 100%">

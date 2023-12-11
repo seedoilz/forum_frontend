@@ -1,17 +1,27 @@
 <template>
-  <div>
+  <el-card style="margin: 1% 20% 0 20%;display: flex;flex-direction: column;align-items: center">
+    <el-page-header style="height: 50px; width: 100%; display: flex; flex-direction: row; align-items: center;" @back="goBack" content="详情页面">
+    </el-page-header>
     <PostDetail v-for="post in postList" :key="post.title"
                 :post="post"></PostDetail>
-  </div>
+    <Review style="width: 100%" v-for="review in reviewList" :key="review.title"
+                :review="review"></Review>
+  </el-card>
 </template>
 
 <script>
 import PostDetail from '../../components/PostDetail.vue'
-
+import Review from '../../components/Review.vue'
 export default {
   name: 'PostDetailView',
   components: {
-    PostDetail
+    PostDetail,
+    Review
+  },
+  methods: {
+    goBack () {
+      console.log('go back')
+    }
   },
   data () {
     return {
@@ -37,7 +47,13 @@ export default {
           'select * from tab1 where a = \'1\'\n' +
           '这里‘1’是未使用#{}符号直接写入的数字，会报错。这里有可能会出现在筛选逻辑删除等场景，建议进行排查。\n'
       }
-      ]
+      ],
+      reviewList: [{
+        userName: 'seedoilz',
+        content: '我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。',
+        time: '2023年12月11日 13:13',
+        thumbs: 13
+      }]
     }
   }
 }
