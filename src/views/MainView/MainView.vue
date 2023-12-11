@@ -21,7 +21,7 @@
               <image class="mountBg" xlink:href="@/assets/mountbg.png" width="1200" height="800"/>
               <image class="mountMg" xlink:href="@/assets/mountmg.png" width="1200" height="800"/>
               <image class="cloud2" xlink:href="@/assets/cloud2.png" width="1200" height="800"/>
-              <image class="mountFg" xlink:href="@/assets/mountfg.png" width="1200" height="800"/>
+              <image class="mountFg" xlink:href="@/assets/mountfg.png" width="1200" height="916"/>
 <!--              <image class="cloud1" xlink:href="@/assets/cloud1.png"  width="1200" height="800"/>-->
               <image class="cloud3" xlink:href="@/assets/cloud3.png" width="1200" height="800"/>
               <text fill="#fff" x="150" y="150" font-size="2rem">printf("Hello World!");</text>
@@ -145,11 +145,11 @@ export default {
           // },
           scrub: 1}})
         .fromTo('.sky', {y: -20, rotation: -5}, {y: -70, rotation: 2}, 0)
-        .fromTo('.cloud1', {y: 100}, {y: -800}, 0)
+        .fromTo('.cloud1', {y: 500}, {y: -800}, 0)
         .fromTo('.cloud2', {y: -150}, {y: -500}, 0)
         .fromTo('.cloud3', {y: -50}, {y: -650}, 0)
-        .fromTo('.mountBg', {y: -10}, {y: -75}, 0)
-        .fromTo('.mountMg', {y: -30}, {y: -250}, 0)
+        .fromTo('.mountBg', {y: -50}, {y: -115}, 0)
+        .fromTo('.mountMg', {y: -30}, {y: -150}, 0)
         .fromTo('.mountFg', {y: -50}, {y: -600}, 0)
         .fromTo('.menu', {opacity: 0}, {opacity: 1}, 0)
     },
