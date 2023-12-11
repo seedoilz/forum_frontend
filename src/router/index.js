@@ -13,6 +13,7 @@ const ContentManagementView = () => import('@/views/UserView/ContentManagement')
 const InformationView = () => import('@/views/UserView/Information')
 const MyCollectView = () => import('@/views/UserView/MyCollect')
 const MyThumbsView = () => import('@/views/UserView/MyThumbs')
+const PostDetailView = () => import('@/views/PostDetailView/PostDetailView')
 
 Vue.use(Router)
 
@@ -32,6 +33,10 @@ const routes = [
   {
     path: PATH.MAIN_VIEW.path,
     component: MainView
+  },
+  {
+    path: PATH.POST_DETAIL_VIEW.path,
+    component: PostDetailView
   },
   {
     path: PATH.USER_VIEW.path,
