@@ -21,6 +21,9 @@ export const PATH = {
   POST_DETAIL_VIEW: {
     path: '/post_detail'
   },
+  TAG_SEARCH_VIEW: {
+    path: '/tag_search'
+  },
   ACCOUNT_SET_VIEW: {
     path: 'account_set'
   },

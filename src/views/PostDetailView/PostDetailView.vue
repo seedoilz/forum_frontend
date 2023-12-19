@@ -4,19 +4,19 @@
     </el-page-header>
     <PostDetail v-for="post in postList" :key="post.title"
                 :post="post"></PostDetail>
-    <Review style="width: 100%" v-for="review in reviewList" :key="review.title"
-                :review="review"></Review>
+    <Comment style="width: 100%" v-for="review in reviewList" :key="review.title"
+                :review="review"></Comment>
   </el-card>
 </template>
 
 <script>
 import PostDetail from '../../components/PostDetail.vue'
-import Review from '../../components/Review.vue'
+import Comment from '../../components/Comment.vue'
 export default {
   name: 'PostDetailView',
   components: {
     PostDetail,
-    Review
+    Comment
   },
   methods: {
     goBack () {

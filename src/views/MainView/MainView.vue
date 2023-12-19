@@ -66,8 +66,6 @@
           <post-card
             v-for="post in postList" :key="post.title"
             :post="post"></post-card>
-          <review></review>
-          <review-editor></review-editor>
         </div>
           <el-pagination
             :hide-on-single-page="true"
@@ -86,8 +84,8 @@
 <script>
 import NavMenu from '@/components/NavMenu'
 import PostCard from '@/components/PostCard'
-import Review from '@/components/Review.vue'
-import ReviewEditor from '@/components/ReviewEditor.vue'
+import Review from '@/components/Comment.vue'
+import ReviewEditor from '@/components/CommentEditor.vue'
 import {gsap} from 'gsap'
 import {ScrollTrigger} from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)

@@ -34,6 +34,9 @@
       <p style="max-height: 300px;width: 100%;">
         {{ post.content }}</p>
     </div>
+    <review
+    v-for="review in review_list" :key="review.id"
+            :review="review"></review>
   </el-card>
 </template>
 

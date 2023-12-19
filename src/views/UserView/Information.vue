@@ -4,7 +4,8 @@
       <!-- Avatar section -->
       <el-upload
         class="avatar-uploader"
-        action="/image/upload"
+        action="/api/image/upload"
+        :on-success="handleAvatarSuccess"
         :show-file-list="false"
         :before-upload="beforeAvatarUpload">
         <img v-if="this.personalInfo.avatar_url" :src="this.personalInfo.avatar_url" class="avatar">
@@ -120,6 +121,9 @@ export default {
       formData.append('filename', file.name)
       formData.append('file', file.raw)
       // TODO
+    },
+    handleAvatarSuccess (res) {
+      this.personalInfo.avatar_url = res.message
     },
     beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg'
