@@ -4,7 +4,8 @@
       <!-- Avatar section -->
       <el-upload
         class="avatar-uploader"
-        action="/api/image/upload"
+        action="/api/image/upload_avatar"
+        :headers="headers"
         :on-success="handleAvatarSuccess"
         :show-file-list="false"
         :before-upload="beforeAvatarUpload">
@@ -22,17 +23,17 @@
             <el-form v-if="isEditing">
               <!-- Name field -->
               <el-form-item label="昵称">
-                <el-input v-model="personalInfo.name"></el-input>
+                <el-input v-model="editForm.name"></el-input>
               </el-form-item>
 
               <!-- ID field -->
               <el-form-item label="邮箱">
-                <el-input v-model="personalInfo.email"></el-input>
+                <el-input v-model="editForm.email"></el-input>
               </el-form-item>
 
               <el-form-item label="性别">
                 <br>
-                <el-radio-group v-model="personalInfo.gender">
+                <el-radio-group v-model="editForm.gender">
                   <el-radio :label="1">男</el-radio>
                   <el-radio :label="-1">女</el-radio>
                   <el-radio :label="0">保密</el-radio>
@@ -64,7 +65,7 @@
             </div>
             <div class="info-item">
               <label>创建时间:</label>
-              <span>{{ personalInfo.created_time }}</span>
+              <span>{{ personalInfo.createdAt }}</span>
             </div>
             <!-- Add more display fields as needed -->
           </el-col>
@@ -75,22 +76,37 @@
 </template>
 
 <script>
+import {getCurrentUser} from '@/network/any'
+import {updateUser} from '../../network/any'
 
 export default {
   name: 'Information',
   data () {
     return {
+      headers: {},
       isEditing: false,
       personalInfo: {
-        name: 'John Doe',
-        id: '123456',
-        email: '123456789@outlook.com',
-        created_time: 'xxxx年x月x日',
-        avatar_url: 'https://study-course-seedoilz.oss-cn-shanghai.aliyuncs.com/avatar/20231211-192221-test.jpg',
-        gender: 1
+        name: '',
+        id: '',
+        email: '',
+        createdAt: '',
+        avatar_url: '',
+        gender: 10
         // other fields...
-      }
+      },
+      editForm: {}
     }
+  },
+  mounted () {
+    getCurrentUser().then((res) => {
+      if (res.code === 200) {
+        this.personalInfo = res.data
+        this.editForm = {...res.data}
+      } else {
+        this.$alert('System error')
+      }
+    })
+    this.headers = {'Authorization': 'bear ' + this.$getCookie('token')}
   },
   computed: {
     genderLabel () {
@@ -110,17 +126,24 @@ export default {
       this.isEditing = true
     },
     cancelEdit () {
-      // TODO
       this.isEditing = false
     },
     saveForm () {
-      // TODO
-    },
-    uploadAvatar (res, file) {
-      const formData = new FormData()
-      formData.append('filename', file.name)
-      formData.append('file', file.raw)
-      // TODO
+      let userForm = {
+        id: this.$getCookie('id'),
+        name: this.editForm.name,
+        email: this.editForm.email,
+        gender: this.editForm.gender
+      }
+      updateUser(userForm).then((res) => {
+        if (res.code === 200) {
+          this.personalInfo = {...this.editForm}
+          this.$alert('更新成功')
+          this.isEditing = false
+        } else {
+          this.$alert('更新失败')
+        }
+      })
     },
     handleAvatarSuccess (res) {
       this.personalInfo.avatar_url = res.message
@@ -172,7 +195,7 @@ export default {
   font-weight: bold;
   margin-right: 12px;
   min-width: 80px;
-//color: #606266;
+  //color: #606266;
 }
 
 /* Responsive design for smaller screens */
