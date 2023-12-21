@@ -62,7 +62,7 @@
       <el-main style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
 
         <!--        main-->
-        <div style="display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
+        <div style="width:100%;display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
           <post-card
             v-for="post in postList" :key="post.title"
             :post="post"></post-card>
@@ -96,6 +96,7 @@ export default {
   mounted () {
     this.setup()
     findPostList().then((res) => {
+      console.log(res)
       if (res.code === 200) {
         this.postList = res.data.list
       } else {

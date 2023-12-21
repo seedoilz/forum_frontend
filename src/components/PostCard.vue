@@ -19,7 +19,7 @@
   <!--        </template>-->
   <!--      </el-skeleton>-->
   <el-card shadow="hover" class="carousel-article" style="width: 60%; height: auto;border:0;"  @click.native="goToDetailView(post.id)">
-    <el-carousel :interval="5000" arrow="always">
+    <el-carousel v-if="post.imageUrls && post.imageUrls.length > 0" :interval="5000" arrow="always">
       <!-- Carousel Items -->
       <el-carousel-item style="height: 100%; width: 100%" v-for="imageUrl in post.imageUrls" :key="imageUrl">
         <el-image style="height: 100%; width: 100%; border-radius: 4px" :src="imageUrl" fit="contain"></el-image>
@@ -41,6 +41,7 @@
       <p style="max-height: 300px;width: 100%;">
         {{ post.content }}</p>
     </div>
+    <el-divider></el-divider>
 <!--    <review-->
 <!--      v-for="review in review_list" :key="review.id"-->
 <!--      :review="review"></review>-->
