@@ -26,8 +26,12 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$route.params.postId)
-    postDetailById(this.$route.params.postId).then((res) => {
+    let config = {
+      params: {
+        id: this.$route.params.postId
+      }
+    }
+    postDetailById(config).then((res) => {
       if (res.code === 200) {
         this.post = res.data
       } else {
