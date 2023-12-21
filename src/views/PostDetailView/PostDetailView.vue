@@ -27,8 +27,8 @@ export default {
   data () {
     return {
       post: {
-        imgUrl: 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-        userName: 'aaaaaa',
+        imageUrls: ['https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'],
+        userId: 123123,
         title: '鹿',
         content: '# 啊都放假啦啥地方就看看老大\n' +
           '**这里第**二种主键自增的情况在Kingbase数据库中，需创建自增序列，然后进入取值。如果迁移数据库中已有数据。可以将Start With 后面的数字调整到不会重复的大小。\n' +

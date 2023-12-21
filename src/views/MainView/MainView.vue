@@ -88,19 +88,28 @@ import Review from '@/components/Comment.vue'
 import ReviewEditor from '@/components/CommentEditor.vue'
 import {gsap} from 'gsap'
 import {ScrollTrigger} from 'gsap/ScrollTrigger'
+import {findPostList} from '@/network/any'
 gsap.registerPlugin(ScrollTrigger)
 export default {
   name: 'MainView',
   components: {ReviewEditor, Review, NavMenu, PostCard},
   mounted () {
     this.setup()
+    findPostList().then((res) => {
+      if (res.code === 200) {
+        this.postList = res.data.list
+      } else {
+        this.$alert('加载失败')
+      }
+    })
   },
   data () {
     return {
       count: 20,
       postList: [{
-        imgUrl: 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-        userName: 'aaaaaa',
+        id: 'test01',
+        imageUrls: ['https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'],
+        userId: 'aaaaaa',
         title: '鹿',
         content: '这里第二种主键自增的情况在Kingbase数据库中，需创建自增序列，然后进入取值。如果迁移数据库中已有数据。可以将Start With 后面的数字调整到不会重复的大小。\n' +
           '\n' +
