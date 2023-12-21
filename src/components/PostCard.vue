@@ -35,8 +35,7 @@
         </el-row>
       </div>
       <div style="margin-left: auto;">
-        <el-tag>标签一</el-tag>
-        <el-tag type="success">标签二</el-tag>
+        <el-tag v-for="tag in post.tags" :key="tag">{{tag}}</el-tag>
       </div>
       <p style="max-height: 300px;width: 100%;">
         {{ post.content }}</p>
@@ -76,5 +75,9 @@ p {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 6;
   overflow: hidden;
+}
+
+.el-tag + .el-tag {
+  margin-left: 10px;
 }
 </style>

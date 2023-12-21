@@ -1,6 +1,6 @@
 <template>
   <el-card class="carousel-article" style="width: 100%; height: auto">
-    <el-carousel :interval="5000" arrow="always">
+    <el-carousel v-if="post.imageUrls && post.imageUrls.length > 0" :interval="5000" arrow="always">
       <!-- Carousel Items -->
       <el-carousel-item style="height: 100%; width: 100%" v-for="imageUrl in post.imageUrls" :key="imageUrl">
         <el-image style="height: 100%; width: 100%;" :src="imageUrl" fit="contain"></el-image>
@@ -15,8 +15,7 @@
         </el-row>
       </div>
       <div style="margin-left: auto;">
-        <el-tag>标签一</el-tag>
-        <el-tag type="success">标签二</el-tag>
+        <el-tag v-for="tag in post.tags" :key="tag">{{ tag }}</el-tag>
       </div>
       <vue-markdown :source="post.content"></vue-markdown>
       <!--      <p style="max-height: 300px;width: 100%;">-->
@@ -39,6 +38,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
 </style>
