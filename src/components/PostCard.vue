@@ -18,7 +18,7 @@
   <!--          </div>-->
   <!--        </template>-->
   <!--      </el-skeleton>-->
-  <el-card class="carousel-article" style="width: 60%; height: auto;border:0;">
+  <el-card shadow="hover" class="carousel-article" style="width: 60%; height: auto;border:0;"  @click.native="goToDetailView(post.id)">
     <el-carousel :interval="5000" arrow="always">
       <!-- Carousel Items -->
       <el-carousel-item style="height: 100%; width: 100%" v-for="imageUrl in post.imageUrls" :key="imageUrl">
@@ -28,7 +28,8 @@
     <div>
       <div style="display: flex;justify-content: space-between">
         <h2>{{ post.title }}</h2>
-        <el-row style="margin-block-start: 0.83em;margin-block-end: 0.83em;margin-inline-start: 0;margin-inline-end: 0;">
+        <el-row
+          style="margin-block-start: 0.83em;margin-block-end: 0.83em;margin-inline-start: 0;margin-inline-end: 0;">
           <el-button type="success" icon="el-icon-star-off" circle></el-button>
           <el-button type="danger" icon="el-icon-thumb" circle></el-button>
         </el-row>
@@ -40,9 +41,9 @@
       <p style="max-height: 300px;width: 100%;">
         {{ post.content }}</p>
     </div>
-    <review
-    v-for="review in review_list" :key="review.id"
-            :review="review"></review>
+<!--    <review-->
+<!--      v-for="review in review_list" :key="review.id"-->
+<!--      :review="review"></review>-->
   </el-card>
 </template>
 
@@ -57,6 +58,12 @@ export default {
   },
   props: {
     post: Object
+  },
+  methods: {
+    goToDetailView (postId) {
+      // 使用Vue Router导航到DetailView，并传递不同的cardId参数
+      this.$router.push({name: 'PostDetailView', params: {postId}})
+    }
   }
 }
 

@@ -7,6 +7,7 @@ const POST = '/user/post'
 const DELETE = '/post/delete'
 const FIND_USER_BY_ID = '/user/detail'
 const FIND_POST_LIST = '/post/list'
+const POST_DETAIL_BY_ID = 'post/detail'
 
 module.exports = {
   REGISTER,
@@ -17,5 +18,6 @@ module.exports = {
   GET_CURRENT_USER,
   UPDATE_USER,
   FIND_USER_BY_ID,
-  FIND_POST_LIST
+  FIND_POST_LIST,
+  POST_DETAIL_BY_ID
 }

@@ -10,8 +10,9 @@
 </template>
 
 <script>
-import PostDetail from '../../components/PostDetail.vue'
-import Comment from '../../components/Comment.vue'
+import PostDetail from '@/components/PostDetail.vue'
+import Comment from '@/components/Comment.vue'
+import {postDetailById} from '@/network/any'
 
 export default {
   name: 'PostDetailView',
@@ -21,12 +22,23 @@ export default {
   },
   methods: {
     goBack () {
-      console.log('go back')
+      window.history.back()
     }
+  },
+  mounted () {
+    console.log(this.$route.params.postId)
+    postDetailById(this.$route.params.postId).then((res) => {
+      if (res.code === 200) {
+        this.post = res.data
+      } else {
+        this.$alert('出错')
+      }
+    })
   },
   data () {
     return {
       post: {
+        id: '',
         imageUrls: ['https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'],
         userId: 123123,
         title: '鹿',

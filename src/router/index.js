@@ -37,6 +37,7 @@ const routes = [
   },
   {
     path: PATH.POST_DETAIL_VIEW.path,
+    name: 'PostDetailView',
     component: PostDetailView
   },
   {

@@ -107,7 +107,7 @@ export default {
     return {
       count: 20,
       postList: [{
-        id: 'test01',
+        id: '6583b9c603a12c8160daa9fd',
         imageUrls: ['https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'],
         userId: 'aaaaaa',
         title: '鹿',
@@ -132,6 +132,10 @@ export default {
     }
   },
   methods: {
+    goToDetailView (cardId) {
+      // 使用Vue Router导航到DetailView，并传递不同的cardId参数
+      this.$router.push({name: 'PostDetailView', params: {cardId}})
+    },
     load () {
       this.count += 2
       console.log(this.count)
