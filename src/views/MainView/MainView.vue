@@ -133,9 +133,9 @@ export default {
     }
   },
   methods: {
-    goToDetailView (cardId) {
+    goToDetailView (postId) {
       // 使用Vue Router导航到DetailView，并传递不同的cardId参数
-      this.$router.push({name: 'PostDetailView', params: {cardId}})
+      this.$router.push({name: 'PostDetailView', params: {postId}})
     },
     load () {
       this.count += 2

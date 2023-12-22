@@ -11,6 +11,8 @@ const POST_DETAIL_BY_ID = '/post/detail'
 const COMMENT_BY_POST_ID = '/comment/list_by_post'
 const ADD_COMMENT = '/comment/add'
 const ADD_COLLECTOIN = '/collection/add'
+const USER_COLLECTION = '/collection/list_by_user'
+const DEL_COLLECTION = '/collection/delete'
 
 module.exports = {
   REGISTER,
@@ -25,5 +27,7 @@ module.exports = {
   POST_DETAIL_BY_ID,
   COMMENT_BY_POST_ID,
   ADD_COMMENT,
-  ADD_COLLECTOIN
+  ADD_COLLECTOIN,
+  USER_COLLECTION,
+  DEL_COLLECTION
 }

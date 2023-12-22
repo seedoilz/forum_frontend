@@ -15,3 +15,5 @@ export const postDetailById = config => request._get(API.POST_DETAIL_BY_ID, conf
 export const commentByPostId = config => request._get(API.COMMENT_BY_POST_ID, config)
 export const comment = data => request._post(API.ADD_COMMENT, data)
 export const collection = data => request._post(API.ADD_COLLECTOIN, data)
+export const userCollection = () => request._get(API.USER_COLLECTION)
+export const delCollection = config => request._get(API.DEL_COLLECTION, config)
