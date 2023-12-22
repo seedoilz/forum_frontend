@@ -7,20 +7,21 @@
       你还没有收藏哦,快去找些优质文章吧！
     </div>
     <div v-else class="myCollectA" v-for="(item,index) in collectList" :key="index">
-      <div class="myCollectTitle">
+      <div class="myCollectTitle" @click="goToDetailView(item.id)">
         <div class="title">{{ item.title }}</div>
-        <div class="description">{{ item.description }}</div>
+        <!--        <div class="description">{{ item.description }}</div>-->
         <div class="releaseTime">{{ item.releaseTime }}</div>
       </div>
       <div class="myCollectStar">
-        <img ref="star" @click="ChangeStar(index)"
-             :src="item.starStation? collectStar1:collectStar2">
+        <el-button type="danger" icon="el-icon-delete" circle @click="deleteCollection(item.id)"></el-button>
       </div>
     </div>
   </el-card>
 </template>
 
 <script>
+import {delCollection, postDetailById, userCollection} from '../../network/any'
+
 export default {
   name: 'MyCollect',
   data () {
@@ -36,29 +37,55 @@ export default {
       noneCollect: true
     }
   },
-  methods: {
-    ChangeStar (index) {
-      this.collectList[index].starStation = !this.collectList[index].starStation
-      // 开始收藏状态修正
-      if (this.collectList[index].starStation === true) {
-        // 开始收藏，将blogid转化成form-data格式
-        let formdata = new FormData()
-
-        formdata.append('blogid', this.collectList[index].id)
-
-        this.$axios.post('/blog/collect', formdata, this.config).then(res => {
-          this.$message({
-            message: '收藏成功',
-            type: 'success'
+  mounted () {
+    userCollection().then((res) => {
+      if (res.code === 200) {
+        this.collectIdList = res.data
+        console.log(this.collectIdList)
+        for (var i = 0; i < this.collectIdList.length; i++) {
+          console.log(this.collectIdList[i])
+          let config = {
+            params: {
+              id: this.collectIdList[i].postId
+            }
+          }
+          postDetailById(config).then((res) => {
+            console.log(res)
+            if (res.code === 200) {
+              this.collectList.push(res.data)
+              this.noneCollect = false
+            }
           })
-        })
+        }
+        // console.log(this.collectList)
+        // if (this.collectIdList && this.collectIdList.length > 0) {
+        //   this.noneCollect = false
+        // }
       } else {
-        // 取消收藏部分
-        this.$message({
-          message: '取消收藏成功',
-          type: 'success'
-        })
+        this.$alert('收藏获取失败')
       }
+    })
+  },
+  methods: {
+    goToDetailView (postId) {
+      // 使用Vue Router导航到DetailView，并传递不同的cardId参数
+      this.$router.push({name: 'PostDetailView', params: {postId}})
+    },
+    deleteCollection (postId) {
+      let config = {
+        params: {
+          postId: postId
+        }
+      }
+      delCollection(config).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$alert('取消收藏成功')
+          location.reload()
+        } else {
+          this.$alert('取消收藏出错')
+        }
+      })
     }
   }
 }
@@ -67,14 +94,14 @@ export default {
 <style>
 .content {
   width: 100%;
-//background: white; border-radius: 5px;
+  //background: white; border-radius: 5px;
 }
 
 .myCollectA {
   width: 100%;
   min-height: 80px;
-  background: white;
-  border: 1px solid rgb(213, 211, 211);
+  background: #1e1d1d;
+  border: 1px solid rgb(49, 49, 49);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -101,6 +128,7 @@ export default {
   .title {
     margin-bottom: 10px;
     font-size: 1.2rem;
+    color: #ffffff;
   }
 }
 

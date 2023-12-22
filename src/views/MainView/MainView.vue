@@ -62,12 +62,10 @@
       <el-main style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
 
         <!--        main-->
-        <div style="display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
+        <div style="width:100%;display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
           <post-card
             v-for="post in postList" :key="post.title"
             :post="post"></post-card>
-          <review></review>
-          <review-editor></review-editor>
         </div>
           <el-pagination
             :hide-on-single-page="true"
@@ -86,23 +84,33 @@
 <script>
 import NavMenu from '@/components/NavMenu'
 import PostCard from '@/components/PostCard'
-import Review from '@/components/Review.vue'
-import ReviewEditor from '@/components/ReviewEditor.vue'
+import Review from '@/components/Comment.vue'
+import ReviewEditor from '@/components/CommentEditor.vue'
 import {gsap} from 'gsap'
 import {ScrollTrigger} from 'gsap/ScrollTrigger'
+import {findPostList} from '@/network/any'
 gsap.registerPlugin(ScrollTrigger)
 export default {
   name: 'MainView',
   components: {ReviewEditor, Review, NavMenu, PostCard},
   mounted () {
     this.setup()
+    findPostList().then((res) => {
+      console.log(res)
+      if (res.code === 200) {
+        this.postList = res.data.list
+      } else {
+        this.$alert('加载失败')
+      }
+    })
   },
   data () {
     return {
       count: 20,
       postList: [{
-        imgUrl: 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-        userName: 'aaaaaa',
+        id: '6583b9c603a12c8160daa9fd',
+        imageUrls: ['https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'],
+        userId: 'aaaaaa',
         title: '鹿',
         content: '这里第二种主键自增的情况在Kingbase数据库中，需创建自增序列，然后进入取值。如果迁移数据库中已有数据。可以将Start With 后面的数字调整到不会重复的大小。\n' +
           '\n' +
@@ -125,6 +133,10 @@ export default {
     }
   },
   methods: {
+    goToDetailView (postId) {
+      // 使用Vue Router导航到DetailView，并传递不同的cardId参数
+      this.$router.push({name: 'PostDetailView', params: {postId}})
+    },
     load () {
       this.count += 2
       console.log(this.count)

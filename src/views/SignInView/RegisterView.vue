@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import {register} from '@/network/sign'
+import {register} from '@/network/any'
 import {PATH} from '@/commons/const'
 
 export default {

@@ -19,7 +19,10 @@ export const PATH = {
     path: '/user'
   },
   POST_DETAIL_VIEW: {
-    path: '/post_detail'
+    path: '/post_detail/:postId'
+  },
+  TAG_SEARCH_VIEW: {
+    path: '/tag_search'
   },
   ACCOUNT_SET_VIEW: {
     path: 'account_set'

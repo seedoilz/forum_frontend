@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { messagePost } from '@/network/sign'
+import { messagePost } from '@/network/any'
 import { PATH } from '@/commons/const'
 
 export default {

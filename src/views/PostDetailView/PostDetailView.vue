@@ -1,33 +1,67 @@
 <template>
-  <el-card style="margin: 1% 20% 0 20%;display: flex;flex-direction: column;align-items: center">
-    <el-page-header style="height: 50px; width: 100%; display: flex; flex-direction: row; align-items: center;" @back="goBack" content="详情页面">
+  <el-card style="margin: 1% 20% 0 20%;align-items: center">
+    <el-page-header style="height: 50px; width: 100%; display: flex; flex-direction: row; align-items: center;"
+                    @back="goBack" content="详情页面">
     </el-page-header>
-    <PostDetail v-for="post in postList" :key="post.title"
-                :post="post"></PostDetail>
-    <Review style="width: 100%" v-for="review in reviewList" :key="review.title"
-                :review="review"></Review>
+    <PostDetail style="width:100%" :post="post"></PostDetail>
+    <Comment style="width: 100%" v-for="review in reviewList" :key="review.title"
+             :review="review"></Comment>
+    <CommentEditor :postId="this.$route.params.postId"></CommentEditor>
   </el-card>
 </template>
 
 <script>
-import PostDetail from '../../components/PostDetail.vue'
-import Review from '../../components/Review.vue'
+import PostDetail from '@/components/PostDetail.vue'
+import Comment from '@/components/Comment.vue'
+import {postDetailById, commentByPostId} from '@/network/any'
+import CommentEditor from '@/components/CommentEditor.vue'
+
 export default {
   name: 'PostDetailView',
   components: {
+    CommentEditor,
     PostDetail,
-    Review
+    Comment
   },
   methods: {
     goBack () {
-      console.log('go back')
+      window.history.back()
     }
+  },
+  mounted () {
+    let config = {
+      params: {
+        id: this.$route.params.postId
+      }
+    }
+    postDetailById(config).then((res) => {
+      if (res.code === 200) {
+        this.post = res.data
+      } else {
+        this.$alert('出错')
+      }
+    })
+    let commentConfig = {
+      params: {
+        postId: this.$route.params.postId
+      }
+    }
+    commentByPostId(commentConfig).then((res) => {
+      console.log(res)
+      if (res.code === 200) {
+        this.reviewList = res.data
+        console.log(this.reviewList)
+      } else {
+        this.$alert('评论信息获取失败')
+      }
+    })
   },
   data () {
     return {
-      postList: [{
-        imgUrl: 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-        userName: 'aaaaaa',
+      post: {
+        id: '',
+        imageUrls: ['https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'],
+        userId: 123123,
         title: '鹿',
         content: '# 啊都放假啦啥地方就看看老大\n' +
           '**这里第**二种主键自增的情况在Kingbase数据库中，需创建自增序列，然后进入取值。如果迁移数据库中已有数据。可以将Start With 后面的数字调整到不会重复的大小。\n' +
@@ -46,14 +80,8 @@ export default {
           '// select * from tab1 where a = 1\n' +
           'select * from tab1 where a = \'1\'\n' +
           '这里‘1’是未使用#{}符号直接写入的数字，会报错。这里有可能会出现在筛选逻辑删除等场景，建议进行排查。\n'
-      }
-      ],
-      reviewList: [{
-        userName: 'seedoilz',
-        content: '我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。我的回复大概有这么长。',
-        time: '2023年12月11日 13:13',
-        thumbs: 13
-      }]
+      },
+      reviewList: []
     }
   }
 }

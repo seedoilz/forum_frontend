@@ -14,6 +14,7 @@ const InformationView = () => import('@/views/UserView/Information')
 const MyCollectView = () => import('@/views/UserView/MyCollect')
 const MyThumbsView = () => import('@/views/UserView/MyThumbs')
 const PostDetailView = () => import('@/views/PostDetailView/PostDetailView')
+const TagSearchView = () => import('@/views/TagSearchView/TagSearchView')
 
 Vue.use(Router)
 
@@ -36,7 +37,12 @@ const routes = [
   },
   {
     path: PATH.POST_DETAIL_VIEW.path,
+    name: 'PostDetailView',
     component: PostDetailView
+  },
+  {
+    path: PATH.TAG_SEARCH_VIEW.path,
+    component: TagSearchView
   },
   {
     path: PATH.USER_VIEW.path,

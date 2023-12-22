@@ -66,7 +66,7 @@
 
 <script>
 
-import {signIn} from '@/network/sign'
+import {signIn} from '@/network/any'
 import {PATH} from '@/commons/const'
 
 export default {
@@ -96,6 +96,7 @@ export default {
                 message: res.message
               })
               this.$setCookie('token', res.data.token)
+              this.$setCookie('id', res.data.id)
               this.$router.push(PATH.MAIN_VIEW)
             } else {
               this.$message({
