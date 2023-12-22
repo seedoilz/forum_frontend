@@ -1,8 +1,8 @@
 <template>
-  <div class="comment-box" style="width: 50%">
+  <div class="comment-box" style="width: 100%">
     <div style="display: flex;flex-direction: row">
-      <div style="margin-top: 10px;width: auto;margin-right: 10px">
-        <el-avatar src="path/to/avatar.jpg" ></el-avatar>
+      <div style="margin-top: 10px;width: 7%;margin-right: 10px">
+        <el-avatar style="margin:0 0 0 30%" src="path/to/avatar.jpg" ></el-avatar>
       </div>
       <div style="width: 90%;margin-top: 10px">
         <el-input
@@ -14,14 +14,14 @@
       </div>
     </div>
     <el-row style="display:flex;justify-content: end">
-      <el-button round style="margin-top: 10px">评论</el-button>
+      <el-button round style="margin:10px 20px 0 0">评论</el-button>
     </el-row>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ReviewEditor',
+  name: 'CommentEditor',
   data () {
     return {
       reviewContent: ''
