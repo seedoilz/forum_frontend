@@ -1,21 +1,15 @@
 <template>
   <div>
-       <NavMenu></NavMenu>
-<!--    <div style="display: flex;flex-direction: column;position: fixed;top: 0;width: 100%;z-index: 1000">-->
-<!--        <el-card style="width: 100%;z-index: 1000">-->
-
-<!--        </el-card>-->
-<!--    </div>-->
-
+    <NavMenu></NavMenu>
     <el-card style="margin: 70px 20% 0 20%;align-items: center">
-          <el-page-header style="height: 20px; width: 100%;align-items: center;"
-                    @back="goBack" content="详情页面">
-          </el-page-header>
-    <PostDetail style="width:100%" :post="post"></PostDetail>
-    <Comment style="width: 100%" v-for="review in reviewList" :key="review.title"
-             :review="review"></Comment>
-    <CommentEditor :postId="this.$route.params.postId"></CommentEditor>
-  </el-card>
+      <el-page-header style="height: 20px; width: 100%;align-items: center;"
+                      @back="goBack" content="详情页面">
+      </el-page-header>
+      <PostDetail style="width:100%" :post="post"></PostDetail>
+      <Comment style="width: 100%" v-for="review in reviewList" :key="review.title"
+               :review="review"></Comment>
+      <CommentEditor :postId="this.$route.params.postId"></CommentEditor>
+    </el-card>
   </div>
 
 </template>
