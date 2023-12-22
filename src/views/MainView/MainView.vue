@@ -17,62 +17,43 @@
                   <image xlink:href="@/assets/cloud1mask.jpg" width="1200" height="800"/>
                 </g>
               </mask>
-              <image id="sky" class="sky" x="-100" xlink:href="@/assets/sky.jpg"  width="1500" height="660" />
+              <image id="sky" class="sky" x="-100" xlink:href="@/assets/sky.jpg" width="1500" height="660"/>
               <image class="mountBg" xlink:href="@/assets/mountbg.png" width="1200" height="800"/>
               <image class="mountMg" xlink:href="@/assets/mountmg.png" width="1200" height="800"/>
               <image class="cloud2" xlink:href="@/assets/cloud2.png" width="1200" height="800"/>
               <image class="mountFg" xlink:href="@/assets/mountfg.png" width="1200" height="916"/>
-<!--              <image class="cloud1" xlink:href="@/assets/cloud1.png"  width="1200" height="800"/>-->
+              <!--              <image class="cloud1" xlink:href="@/assets/cloud1.png"  width="1200" height="800"/>-->
               <image class="cloud3" xlink:href="@/assets/cloud3.png" width="1200" height="800"/>
               <text fill="#fff" x="150" y="150" font-size="2rem">printf("Hello World!");</text>
               <g mask="url(#m)">
-                <rect fill="#171717" width="100%" height="100%" />
+                <rect fill="#171717" width="100%" height="100%"/>
                 <text x="200" y="150" fill="#162a43" font-size="2rem">Hello World!</text>
                 <text x="200" y="200" fill="#162a43" font-size="2rem">:)</text>
               </g>
             </svg>
           </div>
-          <el-menu
-            class="menu"
-            default-active="1"
-            mode="horizontal"
-            :ellipsis="false"
-            @select="handleSelect"
-            style="width: 100%;border: 0;margin: 0;padding: 0">
-            <el-menu-item index="1">处理中心</el-menu-item>
-            <el-submenu index="2">
-              <template slot="title">我的工作台</template>
-              <el-menu-item index="2-1">选项1</el-menu-item>
-              <el-menu-item index="2-2">选项2</el-menu-item>
-              <el-menu-item index="2-3">选项3</el-menu-item>
-              <el-submenu index="2-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="2-4-1">选项1</el-menu-item>
-                <el-menu-item index="2-4-2">选项2</el-menu-item>
-                <el-menu-item index="2-4-3">选项3</el-menu-item>
-              </el-submenu>
-            </el-submenu>
-            <el-menu-item index="3" disabled>消息中心</el-menu-item>
-            <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
-          </el-menu>
+        <NavTop class="menu"></NavTop>
         </div>
-<!--        <h1 style="font-size: 7rem;margin-top: 20%;margin-bottom: 20%;color: #ffffff">printf("Hello World!")</h1>-->
+        <!--        <h1 style="font-size: 7rem;margin-top: 20%;margin-bottom: 20%;color: #ffffff">printf("Hello World!")</h1>-->
       </el-header>
       <!--      el-main-start-->
       <el-main style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
 
         <!--        main-->
-        <div style="width:100%;display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
-          <post-card
-            v-for="post in postList" :key="post.title"
-            :post="post"></post-card>
+        <div
+          style="width:100%;display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
+          <keep-alive v-for="post in postList" :key="post.title">
+            <post-card
+              :post="post"></post-card>
+          </keep-alive>
+
         </div>
-          <el-pagination
-            :hide-on-single-page="true"
-            layout="prev, pager, next, jumper"
-            :total="100"
-          />
-<!--        </div>-->
+        <el-pagination
+          :hide-on-single-page="true"
+          layout="prev, pager, next, jumper"
+          :total="100"
+        />
+        <!--        </div>-->
         <!--        main-->
       </el-main>
       <!--      el-main-end-->
@@ -89,20 +70,53 @@ import ReviewEditor from '@/components/CommentEditor.vue'
 import {gsap} from 'gsap'
 import {ScrollTrigger} from 'gsap/ScrollTrigger'
 import {findPostList} from '@/network/any'
+import NavTop from '../../components/NavTop.vue'
+
 gsap.registerPlugin(ScrollTrigger)
 export default {
   name: 'MainView',
-  components: {ReviewEditor, Review, NavMenu, PostCard},
+  components: {NavTop, ReviewEditor, Review, NavMenu, PostCard},
   mounted () {
     this.setup()
-    findPostList().then((res) => {
-      console.log(res)
-      if (res.code === 200) {
-        this.postList = res.data.list
-      } else {
-        this.$alert('加载失败')
-      }
-    })
+    this.isFirstEnter = true
+    console.log('mounted')
+    // findPostList().then((res) => {
+    //   console.log(res)
+    //   if (res.code === 200) {
+    //     this.postList = res.data.list
+    //   } else {
+    //     this.$alert('加载失败')
+    //   }
+    // })
+  },
+  beforeRouteEnter (to, from, next) {
+    // 利用路由元信息中的 meta 字段设置变量，方便在各个位置获取。这就是为什么在 meta 中定义 isNeedRefresh。
+    // 当从详情页返回时，将 isNeedRefresh 设为 false，表示不刷新数据
+    if (from.name === 'PostDetailView') {
+      to.meta.isNeedRefresh = false
+    } else {
+      to.meta.isNeedRefresh = true
+    }
+    next()
+  },
+  activated () {
+    console.log('activated')
+    console.log(this.$route.meta.isNeedRefresh)
+    if (this.$route.meta.isNeedRefresh || this.isFirstEnter) {
+      // 如果 isNeedRefresh 是 true，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
+      findPostList().then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.postList = res.data.list
+        } else {
+          this.$alert('加载失败')
+        }
+      })
+    }
+    // 恢复成默认的 false，避免 isFirstEnter 一直是 true，导致重复获取数据
+    this.isFirstEnter = false
+    // 恢复成默认的 true，避免 isNeedRefresh 一直是 false，导致下次无法获取数据
+    this.$route.meta.isNeedRefresh = true
   },
   data () {
     return {
@@ -148,14 +162,18 @@ export default {
       gsap.set('.scrollDist',
         {width: '100vh', height: '200vh'})
       gsap.timeline(
-        {scrollTrigger: {trigger: '.scrollDist',
-          start: 'top top',
-          end: 'bottom bottom',
-          // toggleClass: {
-          //   targets: '.menu',
-          //   className: 'short'
-          // },
-          scrub: 1}})
+        {
+          scrollTrigger: {
+            trigger: '.scrollDist',
+            start: 'top top',
+            end: 'bottom bottom',
+            // toggleClass: {
+            //   targets: '.menu',
+            //   className: 'short'
+            // },
+            scrub: 1
+          }
+        })
         .fromTo('.sky', {y: -20, rotation: -5}, {y: -70, rotation: 2}, 0)
         .fromTo('.cloud1', {y: 500}, {y: -800}, 0)
         .fromTo('.cloud2', {y: -150}, {y: -500}, 0)
@@ -163,7 +181,7 @@ export default {
         .fromTo('.mountBg', {y: -50}, {y: -115}, 0)
         .fromTo('.mountMg', {y: -30}, {y: -150}, 0)
         .fromTo('.mountFg', {y: -50}, {y: -600}, 0)
-        .fromTo('.menu', {opacity: 0}, {opacity: 1}, 0)
+        // .fromTo('.menu', {opacity: 0}, {opacity: 1}, 0)
     },
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
@@ -188,8 +206,8 @@ body, html {
   height: 40%;
 }
 
-.menu{
-  top:0;
+.menu {
+  top: 0;
   left: 0;
   position: fixed;
   z-index: 1000;

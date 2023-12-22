@@ -25,10 +25,10 @@
           <i class="el-icon-star-on"></i>
           <span slot="title">我的收藏</span>
         </el-menu-item>
-        <el-menu-item :index="PATH.MY_THUMBS_VIEW.path">
-          <i class="el-icon-setting"></i>
-          <span slot="title">我的点赞</span>
-        </el-menu-item>
+<!--        <el-menu-item :index="PATH.MY_THUMBS_VIEW.path">-->
+<!--          <i class="el-icon-setting"></i>-->
+<!--          <span slot="title">我的点赞</span>-->
+<!--        </el-menu-item>-->
       </el-menu>
     </el-aside>
 

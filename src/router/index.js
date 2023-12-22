@@ -33,7 +33,11 @@ const routes = [
   },
   {
     path: PATH.MAIN_VIEW.path,
-    component: MainView
+    component: MainView,
+    meta: {
+      keepAlive: true,
+      isNeedRefresh: true
+    }
   },
   {
     path: PATH.POST_DETAIL_VIEW.path,

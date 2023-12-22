@@ -1,9 +1,25 @@
 <template>
-    <router-view/>
+<!--    <router-view/>-->
+  <div id="app">
+    <NavTop v-if="this.$route.path !== PATH.SIGN_IN_VIEW.path || this.$route.path !== PATH.REGISTER_VIEW.path" style="position: fixed;top: 0;width: 100%;z-index: 1000"></NavTop>
+          <keep-alive>
+            <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
+    </div>
 </template>
 
 <script>
+import NavTop from './components/NavTop.vue'
+import {PATH} from './commons/const'
+
 export default {
+  computed: {
+    PATH () {
+      return PATH
+    }
+  },
+  components: {NavTop}
 }
 </script>
 

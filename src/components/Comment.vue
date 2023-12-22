@@ -25,8 +25,6 @@
 <script>
 export default {
   name: 'Comment',
-  data () {
-  },
   methods: {},
   props: {
     review: Object
