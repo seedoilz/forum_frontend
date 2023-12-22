@@ -66,7 +66,7 @@ export default {
 
 <style scoped>
 .nav{
-  z-index: 1001;
+  z-index: 100;
   background-color: rgba(32,32,32,0.7);
   /*border-radius: 10px;*/
 }

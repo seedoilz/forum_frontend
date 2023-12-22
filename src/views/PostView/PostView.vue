@@ -8,9 +8,6 @@
 
     <el-container>
     <el-container direction="vertical" class="container-left">
-      <el-header style="text-align: right; font-size: 12px">
-
-      </el-header>
 
       <el-input
         placeholder="请输入标题"
@@ -27,6 +24,29 @@
           </el-select>
         </el-form-item>
 
+<!--        <el-tag
+          :key="tag"
+          v-for="tag in dynamicTags"
+          closable
+          :disable-transitions="false"
+          @close="handleClose(tag)">
+          {{tag}}
+        </el-tag>-->
+
+        <el-input
+          class="input-new-tag"
+          v-if="inputVisible"
+          v-model="inputValue"
+          ref="saveTagInput"
+          size="large"
+          @keyup.enter.native="handleInputConfirm"
+          @blur="handleInputConfirm"
+        >
+        </el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+      </el-form>
+
+      <el-container class="container-tags">
         <el-tag
           :key="tag"
           v-for="tag in dynamicTags"
@@ -35,23 +55,11 @@
           @close="handleClose(tag)">
           {{tag}}
         </el-tag>
-
-        <el-input
-          class="input-new-tag"
-          v-if="inputVisible"
-          v-model="inputValue"
-          ref="saveTagInput"
-          size="small"
-          @keyup.enter.native="handleInputConfirm"
-          @blur="handleInputConfirm"
-        >
-        </el-input>
-        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
-      </el-form>
+      </el-container>
 
       <el-input
         type="textarea"
-        :autosize="{ minRows: 18, maxRows: 22}"
+        :autosize="{ minRows: 20, maxRows: 22}"
         placeholder="请输入内容"
         v-model="textarea"
         class="content">
@@ -61,12 +69,31 @@
     <el-aside class="aside">
       <el-input
         type="textarea"
-        :rows=10
-        placeholder="此处为工具栏等，暂时留空"
+        :rows=2
+        placeholder="添加附件"
         >
       </el-input>
+
+      <quill-editor
+        v-model="content"
+        class="quill-editor2"
+        ref="myQuillEditor"
+        :options="editorOption"
+        @blur="onEditorBlur($event)"
+        @focus="onEditorFocus($event)"
+        @change="onEditorChange($event)">
+        style="height: 100%;"
+      </quill-editor>
+
     </el-aside>
     </el-container>
+
+    <el-footer>
+      <el-row>
+        <el-button type="primary" class="button-save">保存</el-button>
+        <el-button type="success" icon="el-icon-upload2" class="button-sendArticle">发帖</el-button>
+      </el-row>
+    </el-footer>
 
   </el-container>
 </template>
@@ -74,8 +101,16 @@
 <script>
 import { messagePost } from '@/network/any'
 import { PATH } from '@/commons/const'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
 
 export default {
+  components: {
+    quillEditor
+  },
   name: 'PostView',
   data () {
     return {
@@ -92,10 +127,22 @@ export default {
         title: '',
         content: '',
         tags: ''
-      }
+      },
+
+      // content: `<p>这是 vue-quill-editor 的内容！</p>`, // 双向数据绑定数据
+      editorOption: {
+        modules: {
+          toolbar: [
+            ['image', 'video'] // 链接、图片、视频
+          ]
+        }
+      }// 编辑器配置项
     }
   },
   methods: {
+    onEditorBlur () {}, // 失去焦点触发事件
+    onEditorFocus () {}, // 获得焦点触发事件
+    onEditorChange () {}, // 内容改变触发事件
     handleClose (tag) {
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
     },
@@ -167,24 +214,34 @@ export default {
 
 <style>
 .title{
-  border: 1px solid yellow;
+  //border: 1px solid ;
+  border-radius: 4px;
+  border: 0px solid #ebeef5;
+  background-color: #202020;
+  overflow: hidden;
+  color: #eeeef1;
   margin: 10px;
 }
 
 .content-title{
-  border: 1px solid yellow;
+  border-radius: 4px;
+  border: 0px solid #ebeef5;
+  background-color: #202020;
+  overflow: hidden;
+  color: #eeeef1;
   width: 95%;
   margin: 10px;
 }
 .content{
-  border: 1px solid yellow;
+  //border: 1px solid ;
   width: 95%;
   margin: 10px;
 }
 
 .container-main{
+  background-color: #202020;
   width: 75%;
-  height: 90vh;
+  height: 100vh;
   display: flex;
   align-content: center;
   justify-content: center;
@@ -194,7 +251,8 @@ export default {
 
 .container-left{
   width: 60%;
-  border: 1px solid yellow;
+  border-radius: 4px;
+  border: 0px solid #ebeef5;
   margin: 10px;
 }
 .middle{
@@ -203,15 +261,24 @@ export default {
 }
 
 .region{
-  height: 32px;
+  height: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.container-tags{
+  box-sizing: border-box;
+  overflow: auto;
   margin: 10px;
+  min-height: 50px;
+  max-height: 80px;
 }
 
 .el-tag{
-  margin: 10px;
-  height: 40px;
-  //text-align: center;
-  //vertical-align: center;
+  //height: 32px;
+  text-align: center;
+  vertical-align: center;
 }
 
 .el-tag + .el-tag {
@@ -227,6 +294,7 @@ export default {
 }
 .input-new-tag {
   margin: 10px;
+  height: 40px;
   width: 90px;
   vertical-align: center;
 }
@@ -236,8 +304,21 @@ export default {
 }
 
 .aside{
-  border: 1px solid yellow;
+  border-radius: 4px;
+  border: 0px solid #ebeef5;
+  background-color: #202020;
+  color: #eeeef1;
+  max-height: 78vh;
+  //border: 1px solid;
   margin: 10px;
+  overflow-y: auto;
 }
 
+.quill-editor2{
+  margin-top: 10px;
+  border-radius: 4px;
+  border: 0px solid #ebeef5;
+  background-color: #202020;
+  color: #eeeef1;
+}
 </style>
