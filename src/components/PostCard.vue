@@ -30,8 +30,8 @@
         <h2>{{ post.title }}</h2>
         <el-row
           style="margin-block-start: 0.83em;margin-block-end: 0.83em;margin-inline-start: 0;margin-inline-end: 0;">
-          <el-button type="success" icon="el-icon-star-off" circle></el-button>
-          <el-button type="danger" icon="el-icon-thumb" circle></el-button>
+          <el-button @click="addCollection(post.id)" type="success" icon="el-icon-star-off" circle></el-button>
+<!--          <el-button type="danger" icon="el-icon-thumb" circle></el-button>-->
         </el-row>
       </div>
       <div style="margin-left: auto;">
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import {collection} from '@/network/any'
+
 export default {
   name: 'PostCard',
   data () {
@@ -63,6 +65,20 @@ export default {
     goToDetailView (postId) {
       // 使用Vue Router导航到DetailView，并传递不同的cardId参数
       this.$router.push({name: 'PostDetailView', params: {postId}})
+    },
+    addCollection (postId) {
+      let collectionForm = {
+        userId: this.$getCookie('id'),
+        postId: postId,
+        createdAt: new Date()
+      }
+      collection(collectionForm).then((res) => {
+        if (res.code === 200) {
+          this.$alert('收藏成功')
+        } else {
+          this.$alert('收藏失败')
+        }
+      })
     }
   }
 }

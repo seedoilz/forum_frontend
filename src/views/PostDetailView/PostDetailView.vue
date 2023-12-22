@@ -6,7 +6,7 @@
     <PostDetail style="width:100%" :post="post"></PostDetail>
     <Comment style="width: 100%" v-for="review in reviewList" :key="review.title"
              :review="review"></Comment>
-    <CommentEditor></CommentEditor>
+    <CommentEditor :postId="this.$route.params.postId"></CommentEditor>
   </el-card>
 </template>
 

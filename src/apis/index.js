@@ -9,6 +9,8 @@ const FIND_USER_BY_ID = '/user/detail'
 const FIND_POST_LIST = '/post/list'
 const POST_DETAIL_BY_ID = '/post/detail'
 const COMMENT_BY_POST_ID = '/comment/list_by_post'
+const ADD_COMMENT = '/comment/add'
+const ADD_COLLECTOIN = '/collection/add'
 
 module.exports = {
   REGISTER,
@@ -21,5 +23,7 @@ module.exports = {
   FIND_USER_BY_ID,
   FIND_POST_LIST,
   POST_DETAIL_BY_ID,
-  COMMENT_BY_POST_ID
+  COMMENT_BY_POST_ID,
+  ADD_COMMENT,
+  ADD_COLLECTOIN
 }

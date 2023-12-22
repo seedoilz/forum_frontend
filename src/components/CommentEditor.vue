@@ -14,18 +14,42 @@
       </div>
     </div>
     <el-row style="display:flex;justify-content: end">
-      <el-button round style="margin:10px 20px 0 0">评论</el-button>
+      <el-button @click="submitComment()" round style="margin:10px 20px 0 0">评论</el-button>
     </el-row>
   </div>
 </template>
 
 <script>
+import {comment} from '@/network/any'
+
 export default {
   name: 'CommentEditor',
   data () {
     return {
       reviewContent: ''
     }
+  },
+  methods: {
+    submitComment () {
+      let commentForm = {
+        userId: this.$getCookie('id'),
+        postId: this.postId,
+        content: this.reviewContent,
+        thumbs: 0,
+        createdAt: new Date()
+      }
+      comment(commentForm).then((res) => {
+        if (res.code === 200) {
+          this.reviewContent = ''
+          location.reload()
+        } else {
+          this.$alert('评论失败')
+        }
+      })
+    }
+  },
+  props: {
+    postId: String
   }
 }
 </script>
