@@ -6,8 +6,10 @@
                       @back="goBack" content="详情页面">
       </el-page-header>
       <PostDetail style="width:100%" :post="post"></PostDetail>
-      <Comment style="width: 100%" v-for="review in reviewList" :key="review.title"
-               :review="review"></Comment>
+      <div v-if="this.renderAvailable"  style="width: 100%">
+        <Comment style="width: 100%" v-for="review in reviewList" :key="review.id"
+               :review="review" :likeShow="likeShowDict[review.id]"></Comment>
+      </div>
       <CommentEditor :postId="this.$route.params.postId"></CommentEditor>
     </el-card>
   </div>
@@ -21,6 +23,7 @@ import {postDetailById, commentByPostId} from '@/network/any'
 import CommentEditor from '@/components/CommentEditor.vue'
 import NavMenu from '../../components/NavMenu.vue'
 import NavTop from '../../components/NavTop.vue'
+import {userCommentThumbs} from '../../network/any'
 
 export default {
   name: 'PostDetailView',
@@ -36,7 +39,7 @@ export default {
       this.$router.back()
     }
   },
-  mounted () {
+  beforeMount () {
     let config = {
       params: {
         id: this.$route.params.postId
@@ -55,10 +58,33 @@ export default {
       }
     }
     commentByPostId(commentConfig).then((res) => {
-      console.log(res)
+      // console.log(res)
       if (res.code === 200) {
         this.reviewList = res.data
         console.log(this.reviewList)
+        for (let j in this.reviewList) {
+          this.likeShowDict[this.reviewList[j].id] = false
+        }
+        // console.log(this.likeShowDict)
+        let userCommentThumbsConfig = {
+          params: {
+            userId: this.$getCookie('id'),
+            postId: this.$route.params.postId
+          }
+        }
+        userCommentThumbs(userCommentThumbsConfig).then((res) => {
+          console.log(res)
+          if (res.code === 200) {
+            let arr = res.data
+            for (let i in arr) {
+              this.likeShowDict[arr[i]] = true
+            }
+            // console.log(this.likeShowDict)
+            this.renderAvailable = true
+          } else {
+            this.$alert('评论点赞获取失败')
+          }
+        })
       } else {
         this.$alert('评论信息获取失败')
       }
@@ -89,7 +115,9 @@ export default {
         //   'select * from tab1 where a = \'1\'\n' +
         //   '这里‘1’是未使用#{}符号直接写入的数字，会报错。这里有可能会出现在筛选逻辑删除等场景，建议进行排查。\n'
       },
-      reviewList: []
+      reviewList: [],
+      likeShowDict: {},
+      renderAvailable: false
     }
   }
 }

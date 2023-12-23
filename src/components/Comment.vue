@@ -12,22 +12,69 @@
         <div class="comment-time">{{ review.time }}</div>
       </el-col>
       <el-col :span="3" class="comment-actions">
-        <el-button type="text" icon="el-icon-chat-dot-square"></el-button>
-        <el-button type="text" icon="el-icon-thumb">
-          <span>{{ review.thumbs }}</span>
+        <!--        <el-button type="text" icon="el-icon-chat-dot-square"></el-button>-->
+        <el-button type="text" icon="el-icon-thumb" @click="thumb(review.id)">
+          <span>{{ this.thumbNums }}</span>
         </el-button>
-<!--        <el-button type="text" icon="el-icon-thumb-down"></el-button>-->
+        <!--        <el-button type="text" icon="el-icon-thumb-down"></el-button>-->
       </el-col>
     </el-row>
   </el-card>
 </template>
 
 <script>
+import {cancelCommentThumb, commentThumb} from '../network/any'
+
 export default {
   name: 'Comment',
-  methods: {},
+  data () {
+    return {
+      tempShow: false,
+      thumbNums: 0
+    }
+  },
+  mounted () {
+    this.tempShow = this.likeShow
+    this.thumbNums = this.review.thumbs
+  },
+  methods: {
+    thumb (commentId) {
+      if (this.tempShow) {
+        let config = {
+          params: {
+            commentId: commentId,
+            postId: this.$route.params.postId
+          }
+        }
+        cancelCommentThumb(config).then((res) => {
+          if (res.code === 200) {
+            this.tempShow = !this.tempShow
+            this.thumbNums = this.thumbNums - 1
+          } else {
+            this.$alert('失败')
+          }
+        })
+      } else {
+        let config = {
+          params: {
+            commentId: commentId,
+            postId: this.$route.params.postId
+          }
+        }
+        commentThumb(config).then((res) => {
+          if (res.code === 200) {
+            this.tempShow = !this.tempShow
+            this.thumbNums = this.thumbNums + 1
+          } else {
+            this.$alert('失败')
+          }
+        })
+      }
+    }
+  },
   props: {
-    review: Object
+    review: Object,
+    likeShow: Boolean
   }
 }
 </script>

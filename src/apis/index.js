@@ -13,6 +13,9 @@ const ADD_COMMENT = '/comment/add'
 const ADD_COLLECTOIN = '/collection/add'
 const USER_COLLECTION = '/collection/list_by_user'
 const DEL_COLLECTION = '/collection/delete'
+const COMMENT_THUMB = '/comment/thumb'
+const USER_COMMENT_THUMBS = '/comment/user_thumbs'
+const CANCEL_COMMENT_THUMB = 'comment/cancel_thumb'
 
 module.exports = {
   REGISTER,
@@ -29,5 +32,8 @@ module.exports = {
   ADD_COMMENT,
   ADD_COLLECTOIN,
   USER_COLLECTION,
-  DEL_COLLECTION
+  DEL_COLLECTION,
+  COMMENT_THUMB,
+  USER_COMMENT_THUMBS,
+  CANCEL_COMMENT_THUMB
 }
