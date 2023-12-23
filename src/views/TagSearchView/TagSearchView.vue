@@ -1,5 +1,5 @@
 <template>
-  <div :key="this.$route.params.tag">
+  <div>
     <NavMenu>
     </NavMenu>
     <!--    el-container-start-->
@@ -40,20 +40,17 @@ import {postsByTag} from '../../network/any'
 export default {
   name: 'TagSearchView',
   components: {ReviewEditor, Comment, NavMenu, PostCard},
-  mounted () {
-    let config = {
-      params: {
-        tag: this.$route.params.tag
+  watch: {
+    $route (to, from) {
+      // 当路由发生变化时，你可以在这里执行重新渲染的操作
+      if (to.path.startsWith('/tag_search')) {
+        // 执行重新渲染的逻辑，例如重新加载数据
+        this.loadData()
       }
     }
-    postsByTag(config).then((res) => {
-      console.log(res)
-      if (res.code === 200) {
-        this.postList = res.data
-      } else {
-        this.$alert('通过tag获取post数据失败')
-      }
-    })
+  },
+  mounted () {
+    this.loadData()
   },
   data () {
     return {
@@ -81,6 +78,23 @@ export default {
           '这里‘1’是未使用#{}符号直接写入的数字，会报错。这里有可能会出现在筛选逻辑删除等场景，建议进行排查。\n'
       }
       ]
+    }
+  },
+  methods: {
+    loadData () {
+      let config = {
+        params: {
+          tag: this.$route.params.tag
+        }
+      }
+      postsByTag(config).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.postList = res.data
+        } else {
+          this.$alert('通过tag获取post数据失败')
+        }
+      })
     }
   }
 }
