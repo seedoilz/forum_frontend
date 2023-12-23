@@ -22,7 +22,7 @@ export const PATH = {
     path: '/post_detail/:postId'
   },
   TAG_SEARCH_VIEW: {
-    path: '/tag_search'
+    path: '/tag_search/:tag'
   },
   ACCOUNT_SET_VIEW: {
     path: 'account_set'

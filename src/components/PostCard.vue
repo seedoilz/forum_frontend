@@ -35,7 +35,7 @@
         </el-row>
       </div>
       <div style="margin-left: auto;">
-        <el-tag v-for="tag in post.tags" :key="tag">{{tag}}</el-tag>
+        <el-tag v-for="tag in post.tags" :key="tag" @click.stop="goToTagSearchView(tag)">{{tag}}</el-tag>
       </div>
       <p style="max-height: 300px;width: 100%;">
         {{ post.content }}</p>
@@ -65,6 +65,9 @@ export default {
     goToDetailView (postId) {
       // 使用Vue Router导航到DetailView，并传递不同的cardId参数
       this.$router.push({name: 'PostDetailView', params: {postId}})
+    },
+    goToTagSearchView (tag) {
+      this.$router.push({name: 'TagSearchView', params: {tag}})
     },
     addCollection (postId) {
       let collectionForm = {

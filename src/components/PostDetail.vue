@@ -15,7 +15,7 @@
         </el-row>
       </div>
       <div style="margin-left: auto;">
-        <el-tag v-for="tag in post.tags" :key="tag">{{ tag }}</el-tag>
+        <el-tag v-for="tag in post.tags" :key="tag" @click.stop="goToTagSearchView(tag)">{{ tag }}</el-tag>
       </div>
       <vue-markdown :source="post.content"></vue-markdown>
       <!--      <p style="max-height: 300px;width: 100%;">-->
@@ -50,6 +50,9 @@ export default {
           this.$alert('收藏失败')
         }
       })
+    },
+    goToTagSearchView (tag) {
+      this.$router.push({name: 'TagSearchView', params: {tag}})
     }
   }
 }

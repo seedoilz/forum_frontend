@@ -15,7 +15,8 @@ const USER_COLLECTION = '/collection/list_by_user'
 const DEL_COLLECTION = '/collection/delete'
 const COMMENT_THUMB = '/comment/thumb'
 const USER_COMMENT_THUMBS = '/comment/user_thumbs'
-const CANCEL_COMMENT_THUMB = 'comment/cancel_thumb'
+const CANCEL_COMMENT_THUMB = '/comment/cancel_thumb'
+const POSTS_BY_TAG = '/post/posts_by_tag'
 
 module.exports = {
   REGISTER,
@@ -35,5 +36,6 @@ module.exports = {
   DEL_COLLECTION,
   COMMENT_THUMB,
   USER_COMMENT_THUMBS,
-  CANCEL_COMMENT_THUMB
+  CANCEL_COMMENT_THUMB,
+  POSTS_BY_TAG
 }

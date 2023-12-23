@@ -39,7 +39,7 @@ export default {
       this.$router.back()
     }
   },
-  beforeMount () {
+  mounted () {
     let config = {
       params: {
         id: this.$route.params.postId

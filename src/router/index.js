@@ -46,6 +46,7 @@ const routes = [
   },
   {
     path: PATH.TAG_SEARCH_VIEW.path,
+    name: 'TagSearchView',
     component: TagSearchView
   },
   {

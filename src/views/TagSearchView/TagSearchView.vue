@@ -1,48 +1,20 @@
 <template>
-  <div>
+  <div :key="this.$route.params.tag">
     <NavMenu>
     </NavMenu>
     <!--    el-container-start-->
     <el-container>
-      <el-header
-        height="2400"
-        class="title">
-        <el-menu
-          class="menu"
-          default-active="1"
-          mode="horizontal"
-          :ellipsis="false"
-          @select="handleSelect"
-          style="width: 100%;border: 0;margin: 0;padding: 0">
-          <el-menu-item index="1">处理中心</el-menu-item>
-          <el-submenu index="2">
-            <template slot="title">我的工作台</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项1</el-menu-item>
-              <el-menu-item index="2-4-2">选项2</el-menu-item>
-              <el-menu-item index="2-4-3">选项3</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-menu-item index="3" disabled>消息中心</el-menu-item>
-          <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
-        </el-menu>
-        <!--        <h1 style="font-size: 7rem;margin-top: 20%;margin-bottom: 20%;color: #ffffff">printf("Hello World!")</h1>-->
-      </el-header>
       <!--      el-main-start-->
       <el-main style="display: flex;align-items: center;flex-direction: column;">
 
         <!--        main-->
         <div
-          style="display: flex;align-items: center;margin-top:0;justify-content: center;flex-direction: column; z-index: 100">
-          <post-card
-            v-for="post in postList" :key="post.title"
-            :post="post" style="margin-top:10px"></post-card>
-<!--          <review></review>-->
-<!--          <review-editor></review-editor>-->
+          style="width:100%;display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
+          <keep-alive v-for="post in postList" :key="post.title">
+            <post-card
+              :post="post"></post-card>
+          </keep-alive>
+
         </div>
         <el-pagination
           :hide-on-single-page="true"
@@ -63,19 +35,33 @@ import ReviewEditor from '../../components/CommentEditor.vue'
 import Comment from '../../components/Comment.vue'
 import NavMenu from '../../components/NavMenu.vue'
 import PostCard from '../../components/PostCard.vue'
+import {postsByTag} from '../../network/any'
 
 export default {
-  name: 'MainView',
+  name: 'TagSearchView',
   components: {ReviewEditor, Comment, NavMenu, PostCard},
   mounted () {
-    this.setup()
+    let config = {
+      params: {
+        tag: this.$route.params.tag
+      }
+    }
+    postsByTag(config).then((res) => {
+      console.log(res)
+      if (res.code === 200) {
+        this.postList = res.data
+      } else {
+        this.$alert('通过tag获取post数据失败')
+      }
+    })
   },
   data () {
     return {
       count: 20,
       postList: [{
-        imgUrl: 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-        userName: 'aaaaaa',
+        id: '6583b9c603a12c8160daa9fd',
+        imageUrls: ['https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'],
+        userId: 'aaaaaa',
         title: '鹿',
         content: '这里第二种主键自增的情况在Kingbase数据库中，需创建自增序列，然后进入取值。如果迁移数据库中已有数据。可以将Start With 后面的数字调整到不会重复的大小。\n' +
           '\n' +
