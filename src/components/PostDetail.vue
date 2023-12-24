@@ -15,7 +15,7 @@
         </el-row>
       </div>
       <div style="margin-left: auto;">
-        <el-tag v-for="tag in post.tags" :key="tag" @click.stop="goToTagSearchView(tag)">{{ tag }}</el-tag>
+        <el-tag v-for="tag in post.tags" :key="tag" effect="dark" style="cursor: pointer" @click.stop="goToTagSearchView(tag)">{{ tag }}</el-tag>
       </div>
       <vue-markdown :source="post.content"></vue-markdown>
       <!--      <p style="max-height: 300px;width: 100%;">-->

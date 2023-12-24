@@ -1,4 +1,24 @@
 # wanted
+##TODO LIST
+1.主页
+1.1搜索框
+1.2tag热度展示
+1.3导航栏
+1.4条件搜索 排序:热度.时间 筛选:tag.时间区间
+2.tag页修正
+3.发帖页面
+4.消息页面
+5.我的空间（别人可点进去查看）
+6.删除、管理帖子等
+
+##BUG LIST
+1.重复收藏
+2.评论没有正确的父子关系排列
+3.评论没有分页
+4.收藏不应该多次请求
+5.收藏没有分页
+
+
 
 > wanted frontend
 
@@ -17,5 +37,3 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

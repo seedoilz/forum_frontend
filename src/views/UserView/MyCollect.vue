@@ -42,6 +42,7 @@ export default {
       if (res.code === 200) {
         this.collectIdList = res.data
         console.log(this.collectIdList)
+
         for (var i = 0; i < this.collectIdList.length; i++) {
           console.log(this.collectIdList[i])
           let config = {
@@ -52,7 +53,14 @@ export default {
           postDetailById(config).then((res) => {
             console.log(res)
             if (res.code === 200) {
-              this.collectList.push(res.data)
+              if (res.data == null) {
+                this.collectList.push({
+                  title: '信息已删除',
+                  id: config.params.id
+                })
+              } else {
+                this.collectList.push(res.data)
+              }
               this.noneCollect = false
             }
           })

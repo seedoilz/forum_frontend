@@ -35,7 +35,7 @@
         </el-row>
       </div>
       <div style="margin-left: auto;">
-        <el-tag v-for="tag in post.tags" :key="tag" @click.stop="goToTagSearchView(tag)">{{tag}}</el-tag>
+        <el-tag v-for="tag in post.tags" effect="dark" style="cursor: pointer" :key="tag" @click.stop="goToTagSearchView(tag)">{{tag}}</el-tag>
       </div>
       <p style="max-height: 300px;width: 100%;">
         {{ post.content }}</p>

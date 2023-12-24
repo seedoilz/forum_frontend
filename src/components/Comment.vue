@@ -2,7 +2,7 @@
   <el-card class="comment" v-on:click="commentOnComment">
     <el-row type="flex" align="middle" class="comment-row">
       <el-col :span="2">
-        <el-avatar src="path/to/avatar.jpg"></el-avatar>
+        <el-avatar :src="review.avatarUrl"></el-avatar>
       </el-col>
       <el-col :span="18" class="comment-content">
         <div>

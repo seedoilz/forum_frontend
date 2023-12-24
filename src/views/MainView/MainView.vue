@@ -8,7 +8,7 @@
         height="2400"
         class="title">
         <div>
-          <div class="scrollDist"></div>
+          <div class="scrollDist" ref="scrollDist"></div>
           <div class="main">
             <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
               <mask id="m">
@@ -24,12 +24,13 @@
               <image class="mountFg" xlink:href="@/assets/mountfg.png" width="1200" height="916"/>
               <!--              <image class="cloud1" xlink:href="@/assets/cloud1.png"  width="1200" height="800"/>-->
               <image class="cloud3" xlink:href="@/assets/cloud3.png" width="1200" height="800"/>
-              <text fill="#fff" x="150" y="150" font-size="2rem">printf("Hello World!");</text>
+              <text fill="#fff" x="150" y="150" font-size="2rem">嗷嗷嗷~</text>
               <g mask="url(#m)">
                 <rect fill="#171717" width="100%" height="100%"/>
-                <text x="200" y="150" fill="#162a43" font-size="2rem">Hello World!</text>
+                <text x="200" y="150" fill="#162a43" font-size="2rem">🐺</text>
                 <text x="200" y="200" fill="#162a43" font-size="2rem">:)</text>
               </g>
+              <rect ref="arrowBtn" width="80%" height="100%" opacity="0" x="10%" y="0%" style="cursor:pointer"/>
             </svg>
           </div>
         <NavTop class="menu"></NavTop>
@@ -79,6 +80,9 @@ export default {
     this.setup()
     this.isFirstEnter = true
     console.log('mounted')
+    this.currentPage = 1
+    this.noMore = false
+    this.getNextPage()
     // findPostList().then((res) => {
     //   console.log(res)
     //   if (res.code === 200) {
@@ -110,6 +114,7 @@ export default {
     if (this.$route.meta.isNeedRefresh || this.isFirstEnter) {
       console.log('nextPage')
       this.currentPage = 1
+      this.noMore = false
       // this.getNextPage()
       // 如果 isNeedRefresh 是 true，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
       // let conf = {
@@ -227,7 +232,7 @@ export default {
       console.log(this.count)
     },
     setup () {
-      gsap.registerPlugin()
+      // gsap.registerPlugin()
       gsap.set('.main',
         {position: 'fixed', width: '100%', height: '100%', top: 0, left: '50%', x: '-50%'})
       gsap.set('.scrollDist',
@@ -253,6 +258,9 @@ export default {
         .fromTo('.mountMg', {y: -30}, {y: -150}, 0)
         .fromTo('.mountFg', {y: -50}, {y: -600}, 0)
         // .fromTo('.menu', {opacity: 0}, {opacity: 1}, 0)
+      this.$refs['arrowBtn'].addEventListener('click', (e) => {
+        gsap.to(window, {scrollTo: 1500, duration: 1, ease: 'power1.inOut'})
+      }, true)
     },
     handleSelect (key, keyPath) {
       console.log(key, keyPath)

@@ -103,7 +103,10 @@ export default {
         this.personalInfo = res.data
         this.editForm = {...res.data}
       } else {
-        this.$alert('System error')
+        this.$message({
+          message: '系统错误',
+          type: 'error'
+        })
       }
     })
     this.headers = {'Authorization': 'bear ' + this.$getCookie('token')}
@@ -138,10 +141,16 @@ export default {
       updateUser(userForm).then((res) => {
         if (res.code === 200) {
           this.personalInfo = {...this.editForm}
-          this.$alert('更新成功')
+          this.$message({
+            message: '更新成功',
+            type: 'success'
+          })
           this.isEditing = false
         } else {
-          this.$alert('更新失败')
+          this.$message({
+            message: '更新失败',
+            type: 'error'
+          })
         }
       })
     },
