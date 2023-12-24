@@ -8,7 +8,8 @@
       <PostDetail style="width:100%" :post="post"></PostDetail>
       <div v-if="this.renderAvailable"  style="width: 100%">
         <Comment style="width: 100%" v-for="review in reviewList" :key="review.id"
-               :review="review" :likeShow="likeShowDict[review.id]"></Comment>
+               :review="review" :likeShow="likeShowDict[review.id]" :selected="selectedComment"
+        @selectThis="selectComment"></Comment>
       </div>
       <CommentEditor :postId="this.$route.params.postId"></CommentEditor>
     </el-card>
@@ -37,6 +38,14 @@ export default {
   methods: {
     goBack () {
       this.$router.back()
+    },
+    selectComment (id) {
+      console.log('father', id)
+      if (this.selectedComment === id) {
+        this.selectedComment = ''
+      } else {
+        this.selectedComment = id
+      }
     }
   },
   mounted () {
@@ -49,7 +58,10 @@ export default {
       if (res.code === 200) {
         this.post = res.data
       } else {
-        this.$alert('出错')
+        this.$message({
+          message: '出错',
+          type: 'error'
+        })
       }
     })
     let commentConfig = {
@@ -82,11 +94,17 @@ export default {
             // console.log(this.likeShowDict)
             this.renderAvailable = true
           } else {
-            this.$alert('评论点赞获取失败')
+            this.$message({
+              message: '评论点赞获取失败',
+              type: 'error'
+            })
           }
         })
       } else {
-        this.$alert('评论信息获取失败')
+        this.$message({
+          message: '评论信息获取失败',
+          type: 'error'
+        })
       }
     })
   },
@@ -117,7 +135,8 @@ export default {
       },
       reviewList: [],
       likeShowDict: {},
-      renderAvailable: false
+      renderAvailable: false,
+      selectedComment: ''
     }
   }
 }

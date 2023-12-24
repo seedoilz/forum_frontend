@@ -42,17 +42,11 @@
         <!--        main-->
         <div
           style="width:100%;display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
-          <keep-alive v-for="post in postList" :key="post.title">
-            <post-card
-              :post="post"></post-card>
+          <keep-alive v-for="post in postList" :key="post.id">
+            <post-card :post="post"></post-card>
           </keep-alive>
 
         </div>
-        <el-pagination
-          :hide-on-single-page="true"
-          layout="prev, pager, next, jumper"
-          :total="100"
-        />
         <!--        </div>-->
         <!--        main-->
       </el-main>
@@ -76,7 +70,12 @@ gsap.registerPlugin(ScrollTrigger)
 export default {
   name: 'MainView',
   components: {NavTop, ReviewEditor, Review, NavMenu, PostCard},
+  destroyed () {
+    window.removeEventListener('scroll', this.windowScroll)// 销毁滚动事件
+  },
   mounted () {
+    console.log('added')
+    window.addEventListener('scroll', this.windowScroll, true) // 监听页面滚动
     this.setup()
     this.isFirstEnter = true
     console.log('mounted')
@@ -99,19 +98,39 @@ export default {
     }
     next()
   },
+  beforeRouteLeave (to, from, next) {
+    window.removeEventListener('scroll', this.windowScroll, true)// 销毁滚动事件
+    console.log('destroyed')
+    next()
+  },
   activated () {
+    window.addEventListener('scroll', this.windowScroll, true) // 监听页面滚动
     console.log('activated')
     console.log(this.$route.meta.isNeedRefresh)
     if (this.$route.meta.isNeedRefresh || this.isFirstEnter) {
+      console.log('nextPage')
+      this.currentPage = 1
+      // this.getNextPage()
       // 如果 isNeedRefresh 是 true，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
-      findPostList().then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.postList = res.data.list
-        } else {
-          this.$alert('加载失败')
-        }
-      })
+      // let conf = {
+      //   config: {
+      //     page: 0,
+      //     size: 1
+      //   }
+      // }
+      // findPostList(conf).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     this.postList = res.data.list
+      //     console.log(this.res.data)
+      //     this.currentPage += 1
+      //   } else {
+      //     this.$message({
+      //       message: '出错',
+      //       type: 'error'
+      //     })
+      //   }
+      // })
     }
     // 恢复成默认的 false，避免 isFirstEnter 一直是 true，导致重复获取数据
     this.isFirstEnter = false
@@ -121,32 +140,84 @@ export default {
   data () {
     return {
       count: 20,
-      postList: [{
-        id: '6583b9c603a12c8160daa9fd',
-        imageUrls: ['https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'],
-        userId: 'aaaaaa',
-        title: '鹿',
-        content: '这里第二种主键自增的情况在Kingbase数据库中，需创建自增序列，然后进入取值。如果迁移数据库中已有数据。可以将Start With 后面的数字调整到不会重复的大小。\n' +
-          '\n' +
-          '4、迁移的表格中如果有sys_xxxxx形式的表格，可能会和Kinbgbase自带表格重名，不指定查询模式时会查串。查询时可以添加模式名，a为模式名（注意不是数据库名）。\n' +
-          '\n' +
-          'select  * from a.sys_user\n' +
-          '5、如果在Mapper中查询语句使用了!=null 或 !=\'\'，换成is not null。（注意，只有SQL语句部分替换，<if>标签中不用替换）\n' +
-          '\n' +
-          '6、时间格式函数据替（Kingbase中没有date_format函数）。\n' +
-          '\n' +
-          '// date_format(create_time, "YYMMdd")\n' +
-          'to_char(to_date(create_time),\'YYMMdd\')\n' +
-          ' 7、bit类型数据比较。a为bit类型数据。\n' +
-          '\n' +
-          '// select * from tab1 where a = 1\n' +
-          'select * from tab1 where a = \'1\'\n' +
-          '这里‘1’是未使用#{}符号直接写入的数字，会报错。这里有可能会出现在筛选逻辑删除等场景，建议进行排查。\n'
-      }
-      ]
+      currentPage: 1,
+      postList: [],
+      noMore: false
     }
   },
   methods: {
+    windowScroll () {
+      // 获取三个值
+      let scrollTop = this.getScrollTop()
+      let clientHeight = this.getClientHeight()
+      let scrollHeight = this.getScrollHeight()
+      // console.log(scrollTop + clientHeight, scrollHeight)
+      // 如果满足公式则，确实到底了
+      if (Math.abs(scrollHeight - (scrollTop + clientHeight)) < 1) {
+        // 发送异步请求请求数据，同时携带offset并自增offset
+        // noMore是自定义变量，如果是最后一批数据则以后都不加载
+        if (!this.noMore) {
+          console.log('loading next!!!')
+          this.getNextPage()
+        } else {
+          this.$message({
+            message: '没有更多了',
+            type: 'warning'
+          })
+        }
+      }
+    },
+    // 获取当前可视范围的高度
+    getClientHeight () {
+      var clientHeight = 0
+      if (document.body.clientHeight && document.documentElement.clientHeight) {
+        clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight)
+      } else {
+        clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight)
+      }
+      return clientHeight
+    },
+
+    // 获取文档完整的高度
+    getScrollHeight () {
+      return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)
+    },
+    // 获取当前滚动条的位置
+    getScrollTop () {
+      var scrollTop = 0
+      // window.pageYOffset = document.documentElement.scrollTop
+      if (document.documentElement && document.documentElement.scrollTop) {
+        scrollTop = document.documentElement.scrollTop
+      } else if (document.body) {
+        scrollTop = document.body.scrollTop
+      }
+      return scrollTop
+    },
+
+    getNextPage () {
+      let conf = {
+        params: {
+          page: this.currentPage,
+          size: 30
+        }
+      }
+      findPostList(conf).then((res) => {
+        if (res.code === 200) {
+          if (res.data.length < 30) {
+            this.noMore = true
+          }
+          console.log('page', this.currentPage)
+          this.postList = this.postList.concat(res.data)
+          this.currentPage += 1
+          console.log(this.postList)
+        } else {
+          this.$message({
+            message: '出错',
+            type: 'error'
+          })
+        }
+      })
+    },
     goToDetailView (postId) {
       // 使用Vue Router导航到DetailView，并传递不同的cardId参数
       this.$router.push({name: 'PostDetailView', params: {postId}})

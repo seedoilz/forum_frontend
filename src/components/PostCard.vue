@@ -77,9 +77,15 @@ export default {
       }
       collection(collectionForm).then((res) => {
         if (res.code === 200) {
-          this.$alert('收藏成功')
+          this.$message({
+            message: '收藏成功',
+            type: 'success'
+          })
         } else {
-          this.$alert('收藏失败')
+          this.$message({
+            message: '收藏失败',
+            type: 'error'
+          })
         }
       })
     }

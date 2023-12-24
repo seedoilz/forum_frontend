@@ -62,7 +62,10 @@ export default {
         //   this.noneCollect = false
         // }
       } else {
-        this.$alert('收藏获取失败')
+        this.$message({
+          message: '获取收藏失败',
+          type: 'error'
+        })
       }
     })
   },
@@ -80,10 +83,16 @@ export default {
       delCollection(config).then((res) => {
         console.log(res)
         if (res.code === 200) {
-          this.$alert('取消收藏成功')
+          this.$message({
+            message: '取消收藏成功',
+            type: 'success'
+          })
           location.reload()
         } else {
-          this.$alert('取消收藏出错')
+          this.$message({
+            message: '取消收藏出错',
+            type: 'error'
+          })
         }
       })
     }
@@ -107,7 +116,6 @@ export default {
   align-items: center;
   margin: 10px 0;
   transition: all 0.1s linear;
-
   &:hover {
     transform: scale(1.01);
   }

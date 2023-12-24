@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavMenu>
+    <NavMenu style="z-index: 200">
     </NavMenu>
     <!--    el-container-start-->
     <el-container>

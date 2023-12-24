@@ -1,11 +1,12 @@
 <template>
-  <el-container style="height:100%; margin:3% 20% 0 20%;">
+  <el-container style="height:100%; margin:5% 20% 0 20%;">
     <el-aside width="20%" style="height: 100%">
       <el-menu
         :default-active="getActivePath"
-        class="el-menu-vertical-demo"
         @select="handleSelect"
-        style="width: 90%;
+        style="width: 10%;top: 20%;left:20%;
+        border-radius: 4px;
+        position: fixed;
         justify-content: center;
         border: 0"
       >
@@ -31,8 +32,9 @@
 <!--        </el-menu-item>-->
       </el-menu>
     </el-aside>
-
-    <router-view :key="this.$route.fullPath" style="width:80%"></router-view>
+    <el-main>
+      <router-view :key="this.$route.fullPath" style="width:100%"></router-view>
+    </el-main>
   </el-container>
 </template>
 
@@ -60,6 +62,9 @@ export default {
         return this.activePath
       }
     }
+  },
+  mounted () {
+    this.$router.push('/user/' + PATH.INFORMATION_VIEW.path)
   },
   data () {
     return {
