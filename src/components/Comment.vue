@@ -82,6 +82,7 @@ export default {
         userId: this.$getCookie('id'),
         postId: this.review.postId,
         parentId: commentId,
+        rootId: commentId,
         content: this.reviewContent,
         thumbs: 0,
         createdAt: new Date()
