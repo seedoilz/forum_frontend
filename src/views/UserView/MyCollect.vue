@@ -10,7 +10,7 @@
       <div class="myCollectTitle" @click="goToDetailView(item.id)">
         <div class="title">{{ item.title }}</div>
         <!--        <div class="description">{{ item.description }}</div>-->
-        <div class="releaseTime">{{ item.releaseTime }}</div>
+<!--        <div class="releaseTime">{{ item.releaseTime }}</div>-->
       </div>
       <div class="myCollectStar">
         <el-button type="danger" icon="el-icon-delete" circle @click="deleteCollection(item.id)"></el-button>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import {delCollection, postDetailById, userCollection} from '../../network/any'
+import {delCollection, userCollection} from '../../network/any'
 
 export default {
   name: 'MyCollect',
@@ -39,31 +39,11 @@ export default {
   },
   mounted () {
     userCollection().then((res) => {
+      console.log(res.data)
       if (res.code === 200) {
-        this.collectIdList = res.data
-        console.log(this.collectIdList)
-
-        for (var i = 0; i < this.collectIdList.length; i++) {
-          console.log(this.collectIdList[i])
-          let config = {
-            params: {
-              id: this.collectIdList[i].postId
-            }
-          }
-          postDetailById(config).then((res) => {
-            console.log(res)
-            if (res.code === 200) {
-              if (res.data == null) {
-                this.collectList.push({
-                  title: '信息已删除',
-                  id: config.params.id
-                })
-              } else {
-                this.collectList.push(res.data)
-              }
-              this.noneCollect = false
-            }
-          })
+        this.collectList = res.data.list
+        if (this.collectList.length > 0) {
+          this.noneCollect = false
         }
         // console.log(this.collectList)
         // if (this.collectIdList && this.collectIdList.length > 0) {
