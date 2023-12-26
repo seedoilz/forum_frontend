@@ -30,7 +30,7 @@
         <h2>{{ post.title }}</h2>
         <el-row
           style="margin-block-start: 0.83em;margin-block-end: 0.83em;margin-inline-start: 0;margin-inline-end: 0;">
-          <el-button @click="addCollection(post.id)" type="success" icon="el-icon-star-off" circle></el-button>
+          <el-button @click="addCollection(post.id, post.collected)" :plain="!this.tempCollected" type="success" icon="el-icon-star-off" circle></el-button>
 <!--          <el-button type="danger" icon="el-icon-thumb" circle></el-button>-->
         </el-row>
       </div>
@@ -48,18 +48,22 @@
 </template>
 
 <script>
-import {collection} from '@/network/any'
+import {collection, delCollection} from '@/network/any'
 
 export default {
   name: 'PostCard',
   data () {
     return {
       loading: true,
-      currentDate: '2021-06-01'
+      currentDate: '2021-06-01',
+      tempCollected: false
     }
   },
   props: {
     post: Object
+  },
+  mounted () {
+    this.tempCollected = this.post.collected
   },
   methods: {
     goToDetailView (postId) {
@@ -70,24 +74,48 @@ export default {
       this.$router.push({name: 'TagSearchView', params: {tag}})
     },
     addCollection (postId) {
-      let collectionForm = {
-        userId: this.$getCookie('id'),
-        postId: postId,
-        createdAt: new Date()
-      }
-      collection(collectionForm).then((res) => {
-        if (res.code === 200) {
-          this.$message({
-            message: '收藏成功',
-            type: 'success'
-          })
-        } else {
-          this.$message({
-            message: '收藏失败',
-            type: 'error'
-          })
+      if (this.tempCollected) {
+        let config = {
+          params: {
+            postId: postId
+          }
         }
-      })
+        delCollection(config).then((res) => {
+          if (res.code === 200) {
+            this.$message({
+              message: '取消收藏成功',
+              type: 'success'
+            })
+            this.tempCollected = !this.tempCollected
+            location.reload()
+          } else {
+            this.$message({
+              message: '取消收藏出错',
+              type: 'error'
+            })
+          }
+        })
+      } else {
+        let collectionForm = {
+          userId: this.$getCookie('id'),
+          postId: postId,
+          createdAt: new Date()
+        }
+        collection(collectionForm).then((res) => {
+          if (res.code === 200) {
+            this.$message({
+              message: '收藏成功',
+              type: 'success'
+            })
+            this.tempCollected = !this.tempCollected
+          } else {
+            this.$message({
+              message: '收藏失败',
+              type: 'error'
+            })
+          }
+        })
+      }
     }
   }
 }

@@ -198,7 +198,6 @@ export default {
       }
       return scrollTop
     },
-
     getNextPage () {
       let conf = {
         params: {

@@ -40,7 +40,7 @@ export default {
       this.$router.back()
     },
     selectComment (id) {
-      console.log('father', id)
+      // console.log('father', id)
       if (this.selectedComment === id) {
         this.selectedComment = ''
       } else {
@@ -73,7 +73,7 @@ export default {
       // console.log(res)
       if (res.code === 200) {
         this.reviewList = res.data
-        console.log(this.reviewList)
+        // console.log(this.reviewList)
         for (let j in this.reviewList) {
           this.likeShowDict[this.reviewList[j].id] = false
         }
@@ -85,7 +85,7 @@ export default {
           }
         }
         userCommentThumbs(userCommentThumbsConfig).then((res) => {
-          console.log(res)
+          // console.log(res)
           if (res.code === 200) {
             let arr = res.data
             for (let i in arr) {

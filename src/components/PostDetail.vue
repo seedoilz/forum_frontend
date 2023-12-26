@@ -10,12 +10,15 @@
       <div style="display: flex;justify-content: space-between">
         <h1>{{ post.title }}</h1>
         <el-row style="margin-block-start: 1.5em;margin-block-end: 1.5em;margin-inline-start: 0;margin-inline-end: 0;">
-          <el-button @click="addCollection(post.id)" type="success" icon="el-icon-star-off" circle></el-button>
-<!--          <el-button type="danger" icon="el-icon-thumb" circle></el-button>-->
+          <el-button @click="addCollection(post.id)" :plain="!post.collected" type="success" icon="el-icon-star-off"
+                     circle></el-button>
+          <!--          <el-button type="danger" icon="el-icon-thumb" circle></el-button>-->
         </el-row>
       </div>
       <div style="margin-left: auto;">
-        <el-tag v-for="tag in post.tags" :key="tag" effect="dark" style="cursor: pointer" @click.stop="goToTagSearchView(tag)">{{ tag }}</el-tag>
+        <el-tag v-for="tag in post.tags" :key="tag" effect="dark" style="cursor: pointer"
+                @click.stop="goToTagSearchView(tag)">{{ tag }}
+        </el-tag>
       </div>
       <vue-markdown :source="post.content"></vue-markdown>
       <!--      <p style="max-height: 300px;width: 100%;">-->
@@ -26,7 +29,7 @@
 
 <script>
 import VueMarkdown from 'vue-markdown'
-import {collection} from '@/network/any'
+import {collection, delCollection} from '@/network/any'
 
 export default {
   name: 'PostDetail',
@@ -36,26 +39,59 @@ export default {
   props: {
     post: Object
   },
+  data () {
+    return {
+      tempCollected: false
+    }
+  },
+  mounted () {
+    this.tempCollected = this.post.collected
+  },
   methods: {
     addCollection (postId) {
-      let collectionForm = {
-        userId: this.$getCookie('id'),
-        postId: postId,
-        createdAt: new Date()
-      }
-      collection(collectionForm).then((res) => {
-        if (res.code === 200) {
-          this.$message({
-            message: '收藏成功',
-            type: 'success'
-          })
-        } else {
-          this.$message({
-            message: '收藏失败',
-            type: 'error'
-          })
+      if (this.post.collected) {
+        let config = {
+          params: {
+            postId: postId
+          }
         }
-      })
+        delCollection(config).then((res) => {
+          console.log(res)
+          if (res.code === 200) {
+            this.$message({
+              message: '取消收藏成功',
+              type: 'success'
+            })
+            this.post.collected = !this.post.collected
+            location.reload()
+          } else {
+            this.$message({
+              message: '取消收藏出错',
+              type: 'error'
+            })
+          }
+        })
+      } else {
+        let collectionForm = {
+          userId: this.$getCookie('id'),
+          postId: postId,
+          createdAt: new Date()
+        }
+        collection(collectionForm).then((res) => {
+          if (res.code === 200) {
+            this.$message({
+              message: '收藏成功',
+              type: 'success'
+            })
+            this.post.collected = !this.post.collected
+          } else {
+            this.$message({
+              message: '收藏失败',
+              type: 'error'
+            })
+          }
+        })
+      }
     },
     goToTagSearchView (tag) {
       this.$router.push({name: 'TagSearchView', params: {tag}})
