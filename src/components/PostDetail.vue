@@ -10,7 +10,7 @@
       <div style="display: flex;justify-content: space-between">
         <h1>{{ post.title }}</h1>
         <el-row style="margin-block-start: 1.5em;margin-block-end: 1.5em;margin-inline-start: 0;margin-inline-end: 0;">
-          <el-button @click="addCollection(post.id)" :plain="!post.collected" type="success" icon="el-icon-star-off"
+          <el-button @click.stop="addCollection(post.id)" :plain="!post.collected" type="success" icon="el-icon-star-off"
                      circle></el-button>
           <!--          <el-button type="danger" icon="el-icon-thumb" circle></el-button>-->
         </el-row>

@@ -30,7 +30,7 @@
         <h2>{{ post.title }}</h2>
         <el-row
           style="margin-block-start: 0.83em;margin-block-end: 0.83em;margin-inline-start: 0;margin-inline-end: 0;">
-          <el-button @click="addCollection(post.id, post.collected)" :plain="!this.tempCollected" type="success" icon="el-icon-star-off" circle></el-button>
+          <el-button @click.stop="addCollection(post.id, post.collected)" :plain="!this.tempCollected" type="success" icon="el-icon-star-off" circle></el-button>
 <!--          <el-button type="danger" icon="el-icon-thumb" circle></el-button>-->
         </el-row>
       </div>
