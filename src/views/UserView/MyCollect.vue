@@ -10,12 +10,18 @@
       <div class="myCollectTitle" @click="goToDetailView(item.id)">
         <div class="title">{{ item.title }}</div>
         <!--        <div class="description">{{ item.description }}</div>-->
-<!--        <div class="releaseTime">{{ item.releaseTime }}</div>-->
+        <!--        <div class="releaseTime">{{ item.releaseTime }}</div>-->
       </div>
       <div class="myCollectStar">
         <el-button type="danger" icon="el-icon-delete" circle @click="deleteCollection(item.id)"></el-button>
       </div>
     </div>
+    <el-pagination
+      layout="prev, pager, next"
+      :total="50"
+      :current-page="currentPage"
+      @current-change="handleCurrentChange">
+    </el-pagination>
   </el-card>
 </template>
 
@@ -34,28 +40,12 @@ export default {
           'token': localStorage.getItem('token')
         }
       },
-      noneCollect: true
+      noneCollect: true,
+      currentPage: 1
     }
   },
   mounted () {
-    userCollection().then((res) => {
-      console.log(res.data)
-      if (res.code === 200) {
-        this.collectList = res.data.list
-        if (this.collectList.length > 0) {
-          this.noneCollect = false
-        }
-        // console.log(this.collectList)
-        // if (this.collectIdList && this.collectIdList.length > 0) {
-        //   this.noneCollect = false
-        // }
-      } else {
-        this.$message({
-          message: '获取收藏失败',
-          type: 'error'
-        })
-      }
-    })
+    this.getCollectionList()
   },
   methods: {
     goToDetailView (postId) {
@@ -83,6 +73,38 @@ export default {
           })
         }
       })
+    },
+    getCollectionList () {
+      let config = {
+        params: {
+          page: this.currentPage,
+          size: 5
+        }
+      }
+      console.log(config)
+      userCollection(config).then((res) => {
+        console.log(res.data)
+        if (res.code === 200) {
+          this.collectList = res.data
+          if (this.collectList.length > 0) {
+            this.noneCollect = false
+          }
+        // console.log(this.collectList)
+        // if (this.collectIdList && this.collectIdList.length > 0) {
+        //   this.noneCollect = false
+        // }
+        } else {
+          this.$message({
+            message: '获取收藏失败',
+            type: 'error'
+          })
+        }
+      })
+    },
+    handleCurrentChange (newPage) {
+      this.currentPage = newPage
+      // 再次请求数据
+      this.getCollectionList()
     }
   }
 }
@@ -104,6 +126,7 @@ export default {
   align-items: center;
   margin: 10px 0;
   transition: all 0.1s linear;
+
   &:hover {
     transform: scale(1.01);
   }
