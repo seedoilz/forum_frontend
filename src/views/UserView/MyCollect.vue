@@ -18,8 +18,9 @@
     </div>
     <el-pagination
       layout="prev, pager, next"
-      :total="50"
       :current-page="currentPage"
+      page-size="5"
+      :total="total"
       @current-change="handleCurrentChange">
     </el-pagination>
   </el-card>
@@ -41,7 +42,8 @@ export default {
         }
       },
       noneCollect: true,
-      currentPage: 1
+      currentPage: 1,
+      total: 50
     }
   },
   mounted () {
@@ -59,7 +61,6 @@ export default {
         }
       }
       delCollection(config).then((res) => {
-        console.log(res)
         if (res.code === 200) {
           this.$message({
             message: '取消收藏成功',
@@ -81,11 +82,10 @@ export default {
           size: 5
         }
       }
-      console.log(config)
       userCollection(config).then((res) => {
-        console.log(res.data)
         if (res.code === 200) {
-          this.collectList = res.data
+          this.collectList = res.data.list
+          this.total = res.data.total
           if (this.collectList.length > 0) {
             this.noneCollect = false
           }
