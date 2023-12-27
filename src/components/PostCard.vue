@@ -18,7 +18,17 @@
   <!--          </div>-->
   <!--        </template>-->
   <!--      </el-skeleton>-->
-  <el-card shadow="hover" class="carousel-article" style="width: 60%; height: auto;border:0;"  @click.native="goToDetailView(post.id)">
+  <el-card shadow="hover" class="carousel-article" style="width: 60%; height: auto;border:0;"
+           @click.native="goToDetailView(post.id)">
+    <el-row type="flex" align="middle" style="margin-bottom: 25px">
+      <el-col :span="2" style="display: flex;justify-content: center;align-items: center">
+        <el-avatar :src="post.avatarUrl"></el-avatar>
+      </el-col>
+      <el-col :span="6" style="margin-left: 14px;font-size:16px;display: flex;align-items: center">
+        <span>{{ post.name }}</span>
+      </el-col>
+    </el-row>
+
     <el-carousel v-if="post.imageUrls && post.imageUrls.length > 0" :interval="5000" arrow="always">
       <!-- Carousel Items -->
       <el-carousel-item style="height: 100%; width: 100%" v-for="imageUrl in post.imageUrls" :key="imageUrl">
@@ -30,20 +40,23 @@
         <h2>{{ post.title }}</h2>
         <el-row
           style="margin-block-start: 0.83em;margin-block-end: 0.83em;margin-inline-start: 0;margin-inline-end: 0;">
-          <el-button @click.stop="addCollection(post.id, post.collected)" :plain="!this.tempCollected" type="success" icon="el-icon-star-off" circle></el-button>
-<!--          <el-button type="danger" icon="el-icon-thumb" circle></el-button>-->
+          <el-button @click.stop="addCollection(post.id, post.collected)" :plain="!this.tempCollected" type="success"
+                     icon="el-icon-star-off" circle></el-button>
+          <!--          <el-button type="danger" icon="el-icon-thumb" circle></el-button>-->
         </el-row>
       </div>
       <div style="margin-left: auto;">
-        <el-tag v-for="tag in post.tags" effect="dark" style="cursor: pointer" :key="tag" @click.stop="goToTagSearchView(tag)">{{tag}}</el-tag>
+        <el-tag v-for="tag in post.tags" effect="dark" style="cursor: pointer" :key="tag"
+                @click.stop="goToTagSearchView(tag)">{{ tag }}
+        </el-tag>
       </div>
       <p style="max-height: 300px;width: 100%;">
         {{ post.content }}</p>
     </div>
     <el-divider></el-divider>
-<!--    <review-->
-<!--      v-for="review in review_list" :key="review.id"-->
-<!--      :review="review"></review>-->
+    <!--    <review-->
+    <!--      v-for="review in review_list" :key="review.id"-->
+    <!--      :review="review"></review>-->
   </el-card>
 </template>
 

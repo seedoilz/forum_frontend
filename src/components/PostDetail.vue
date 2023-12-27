@@ -1,5 +1,13 @@
 <template>
   <el-card class="carousel-article" style="width: 100%; height: auto">
+    <el-row type="flex" align="middle">
+      <el-col :span="2" style="display: flex;justify-content: center;align-items: center;height: 100px">
+        <el-avatar style="height: 50px;width: 50px" :src="post.avatarUrl"></el-avatar>
+      </el-col>
+      <el-col :span="6" style="margin-left: 20px;display: flex;align-items: center">
+        <span style="font-size: 20px">{{ post.name }}</span>
+      </el-col>
+    </el-row>
     <el-carousel v-if="post.imageUrls && post.imageUrls.length > 0" :interval="5000" arrow="always">
       <!-- Carousel Items -->
       <el-carousel-item style="height: 100%; width: 100%" v-for="imageUrl in post.imageUrls" :key="imageUrl">
