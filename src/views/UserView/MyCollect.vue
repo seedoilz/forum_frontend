@@ -6,20 +6,20 @@
     <div v-if="noneCollect" class="noneCollect">
       你还没有收藏哦,快去找些优质文章吧！
     </div>
-    <div v-else class="myCollectA" v-for="(item,index) in collectList" :key="index">
-      <div class="myCollectTitle" @click="goToDetailView(item.id)">
+    <div v-else class="myCollectA" v-for="(item,index) in collectList" :key="index" @click="goToDetailView(item.postId)">
+      <div class="myCollectTitle">
         <div class="title">{{ item.title }}</div>
         <!--        <div class="description">{{ item.description }}</div>-->
         <!--        <div class="releaseTime">{{ item.releaseTime }}</div>-->
       </div>
       <div class="myCollectStar">
-        <el-button type="danger" icon="el-icon-delete" circle @click="deleteCollection(item.id)"></el-button>
+        <el-button type="danger" icon="el-icon-delete" circle @click.stop="deleteCollection(item.id)"></el-button>
       </div>
     </div>
     <el-pagination
       layout="prev, pager, next"
       :current-page="currentPage"
-      page-size="5"
+      :page-size="5"
       :total="total"
       @current-change="handleCurrentChange">
     </el-pagination>
@@ -54,10 +54,10 @@ export default {
       // 使用Vue Router导航到DetailView，并传递不同的cardId参数
       this.$router.push({name: 'PostDetailView', params: {postId}})
     },
-    deleteCollection (postId) {
+    deleteCollection (id) {
       let config = {
         params: {
-          postId: postId
+          id: id
         }
       }
       delCollection(config).then((res) => {
@@ -66,7 +66,8 @@ export default {
             message: '取消收藏成功',
             type: 'success'
           })
-          location.reload()
+          this.getCollectionList()
+          // location.reload()
         } else {
           this.$message({
             message: '取消收藏出错',
