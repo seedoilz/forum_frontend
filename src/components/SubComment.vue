@@ -1,39 +1,36 @@
 <template>
   <div style="width: 100%; right: 0;display: flex;align-items: end;flex-direction: column;">
-  <el-card class="comment" v-on:click="commentOnComment" style="width: 100%">
-    <el-row type="flex" align="middle" class="comment-row">
-      <el-col :span="2">
-        <el-avatar :src="review.avatarUrl"></el-avatar>
-      </el-col>
-      <el-col :span="18" class="comment-content">
-        <div>
-          <span class="username">{{ review.username }}</span>
-          <span class="username">:</span>
-          <span class="comment-text">{{ review.content }}</span>
-        </div>
-        <div class="comment-time">{{ getDate(review.createdAt)  }}</div>
-      </el-col>
-      <el-col :span="3" class="comment-actions">
-        <!--        <el-button type="text" icon="el-icon-chat-dot-square"></el-button>-->
-        <span>
+    <el-card class="comment" v-on:click="commentOnComment" style="width: 100%">
+      <el-row type="flex" align="middle" class="comment-row">
+        <el-col :span="2">
+          <el-avatar :src="review.avatarUrl"></el-avatar>
+        </el-col>
+        <el-col :span="18" class="comment-content">
+          <div>
+            <span class="username">{{ review.username }}</span>
+            <span> 回复 </span>
+            <span class="username">{{ review.parentName }}:</span>
+            <span class="comment-text">{{ review.content }}</span>
+          </div>
+          <div class="comment-time">{{ getDate(review.createdAt)  }}</div>
+        </el-col>
+        <el-col :span="3" class="comment-actions">
+          <!--        <el-button type="text" icon="el-icon-chat-dot-square"></el-button>-->
+          <span>
           <el-button  circle type="primary" :plain="!tempShow" icon="el-icon-thumb" @click="thumb(review.id)">
           </el-button>
           <span>{{ this.thumbNums }}</span>
         </span>
-        <!--        <el-button type="text" icon="el-icon-thumb-down"></el-button>-->
-      </el-col>
-      <el-col :span="1" class="comment-comment">
+          <!--        <el-button type="text" icon="el-icon-thumb-down"></el-button>-->
+        </el-col>
+        <el-col :span="1" class="comment-comment">
         <span>
           <el-button type="text" icon="el-icon-more" @click="commentOnComment(review.id)">
           </el-button>
         </span>
-      </el-col>
-    </el-row>
-  </el-card>
-    <SubComment v-if="'subComments' in review" v-for="subComment in review.subComments" :key="subComment.id" style="width: 95%;margin-top: 10px"
-             :review="subComment" :likeShow="likeShowDict.includes(subComment.id)" @selectThis="selectComment" :selected="selectedComment"
-             :rootId="review.id"
-    ></SubComment>
+        </el-col>
+      </el-row>
+    </el-card>
     <div class="comment-editor" v-show="selected===review.id" style="width: 100%;">
       <span style="width: 80%;margin-top: 10px">
         <el-input
@@ -51,12 +48,10 @@
 </template>
 
 <script>
-import {cancelCommentThumb, comment, commentThumb} from '../network/any'
-import SubComment from '@/components/SubComment'
+import {cancelCommentThumb, comment, commentThumb} from '@/network/any'
 
 export default {
-  name: 'Comment',
-  components: {SubComment},
+  name: 'SubComment',
   data () {
     return {
       tempShow: false,
@@ -66,19 +61,10 @@ export default {
     }
   },
   mounted () {
-    this.tempShow = this.likeShowDict.includes(this.review.id)
+    this.tempShow = this.likeShow
     this.thumbNums = this.review.thumbs
   },
   methods: {
-    selectComment (id) {
-      // console.log('father', id)
-      if (this.selectedComment === id) {
-        this.selectedComment = ''
-      } else {
-        this.selectedComment = id
-      }
-      this.$emit('selectThis', '')
-    },
     getDate (timestamp) {
       const date = new Date(timestamp)
       const year = date.getFullYear()
@@ -99,7 +85,7 @@ export default {
         userId: this.$getCookie('id'),
         postId: this.review.postId,
         parentId: commentId,
-        rootId: commentId,
+        rootId: this.rootId,
         content: this.reviewContent,
         thumbs: 0,
         createdAt: new Date()
@@ -152,9 +138,10 @@ export default {
   },
   props: {
     review: Object,
-    likeShowDict: Array,
     selected: String,
-    showEditor: Boolean
+    showEditor: Boolean,
+    rootId: String,
+    likeShow: Boolean
   }
 }
 </script>

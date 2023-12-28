@@ -8,7 +8,7 @@
       <PostDetail style="width:100%" :post="post"></PostDetail>
       <div v-if="this.renderAvailable"  style="width: 100%">
         <Comment style="width: 100%" v-for="review in reviewList" :key="review.id"
-               :review="review" :likeShow="likeShowDict[review.id]" :selected="selectedComment"
+               :review="review" :likeShowDict="likeShowDict" :selected="selectedComment"
         @selectThis="selectComment"></Comment>
       </div>
       <CommentEditor :postId="this.$route.params.postId"></CommentEditor>
@@ -70,13 +70,13 @@ export default {
       }
     }
     commentByPostId(commentConfig).then((res) => {
-      // console.log(res)
+      console.log(res)
       if (res.code === 200) {
         this.reviewList = res.data
         // console.log(this.reviewList)
-        for (let j in this.reviewList) {
-          this.likeShowDict[this.reviewList[j].id] = false
-        }
+        // for (let j in this.reviewList) {
+        //   this.likeShowDict[this.reviewList[j].id] = false
+        // }
         // console.log(this.likeShowDict)
         let userCommentThumbsConfig = {
           params: {
@@ -89,9 +89,10 @@ export default {
           if (res.code === 200) {
             let arr = res.data
             for (let i in arr) {
-              this.likeShowDict[arr[i]] = true
+              this.likeShowDict.push(arr[i])
+              // this.likeShowDict[arr[i]] = true
             }
-            // console.log(this.likeShowDict)
+            console.log(this.likeShowDict)
             this.renderAvailable = true
           } else {
             this.$message({
@@ -134,7 +135,7 @@ export default {
         //   '这里‘1’是未使用#{}符号直接写入的数字，会报错。这里有可能会出现在筛选逻辑删除等场景，建议进行排查。\n'
       },
       reviewList: [],
-      likeShowDict: {},
+      likeShowDict: [],
       renderAvailable: false,
       selectedComment: ''
     }
