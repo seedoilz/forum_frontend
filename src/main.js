@@ -18,8 +18,18 @@ Vue.prototype.$setCookie = setCookie
 Vue.prototype.$checkCookie = checkCookie
 Vue.prototype.$clearCookie = clearCookie
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
+const store = {
+  debug: true,
+  state: {
+    screenWidth: document.documentElement.clientWidth, // 屏幕宽度
+    screenHeight: document.documentElement.clientHeight // 屏幕高度
+  }
+}
 
 new Vue({
   router,
+  data: {
+    store: store
+  },
   render: h => h(App)
 }).$mount('#app')
