@@ -1,12 +1,11 @@
 <template>
   <div>
-    <NavMenu>
-    </NavMenu>
     <!--    el-container-start-->
     <el-container>
       <el-header
         height="2400"
         class="title">
+        <div ref="arrowBtn" style="top: 10%;width: 80%;height:120%;cursor:pointer;position: absolute;z-index: 1000"></div>
         <div>
           <div class="scrollDist" ref="scrollDist"></div>
           <div class="main">
@@ -30,17 +29,53 @@
                 <text x="200" y="150" fill="#162a43" font-size="2rem">🐺</text>
                 <text x="200" y="200" fill="#162a43" font-size="2rem">:)</text>
               </g>
-              <rect ref="arrowBtn" width="80%" height="100%" opacity="0" x="10%" y="0%" style="cursor:pointer"/>
             </svg>
           </div>
-        <NavTop class="menu"></NavTop>
         </div>
         <!--        <h1 style="font-size: 7rem;margin-top: 20%;margin-bottom: 20%;color: #ffffff">printf("Hello World!")</h1>-->
       </el-header>
       <!--      el-main-start-->
-      <el-main style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
+      <el-main id="main-content" style="display: flex;align-items: center;justify-content: center;flex-direction: column;">
 
         <!--        main-->
+        <el-row class="selector">
+          <el-col :span="1" class="selector-item">
+            <i class="el-icon-s-tools" style="font-size: 2rem;color: white"></i>
+          </el-col>
+          <el-col :span="4" class="selector-item">
+            <span class="selector-label">时间</span>
+            <el-select v-model="options.time">
+              <el-option
+                v-for="item in time"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="4" class="selector-item">
+            <span class="selector-label">排序</span>
+            <el-select v-model="options.sortBy">
+              <el-option
+                v-for="item in sortBy"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="4" class="selector-item">
+            <span class="selector-label">顺序</span>
+            <el-select v-model="options.order">
+            <el-option
+              v-for="item in order"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+          </el-col>
+        </el-row>
         <div
           style="width:100%;display: flex;align-items: center;margin-top:10%;justify-content: center;flex-direction: column; z-index: 100">
           <keep-alive v-for="post in postList" :key="post.id">
@@ -83,14 +118,6 @@ export default {
     this.currentPage = 1
     this.noMore = false
     this.getNextPage()
-    // findPostList().then((res) => {
-    //   console.log(res)
-    //   if (res.code === 200) {
-    //     this.postList = res.data.list
-    //   } else {
-    //     this.$alert('加载失败')
-    //   }
-    // })
   },
   beforeRouteEnter (to, from, next) {
     // 利用路由元信息中的 meta 字段设置变量，方便在各个位置获取。这就是为什么在 meta 中定义 isNeedRefresh。
@@ -115,27 +142,6 @@ export default {
       console.log('nextPage')
       this.currentPage = 1
       this.noMore = false
-      // this.getNextPage()
-      // 如果 isNeedRefresh 是 true，表明需要获取新数据，否则就不再请求，直接使用缓存的数据
-      // let conf = {
-      //   config: {
-      //     page: 0,
-      //     size: 1
-      //   }
-      // }
-      // findPostList(conf).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.postList = res.data.list
-      //     console.log(this.res.data)
-      //     this.currentPage += 1
-      //   } else {
-      //     this.$message({
-      //       message: '出错',
-      //       type: 'error'
-      //     })
-      //   }
-      // })
     }
     // 恢复成默认的 false，避免 isFirstEnter 一直是 true，导致重复获取数据
     this.isFirstEnter = false
@@ -147,7 +153,15 @@ export default {
       count: 20,
       currentPage: 1,
       postList: [],
-      noMore: false
+      noMore: false,
+      options: {
+        time: '所有时间',
+        sortBy: '热度',
+        order: '降序'
+      },
+      time: ['所有时间', '一天内', '一周内', '一月内', '一年内'],
+      sortBy: ['热度', '时间', '评论数'],
+      order: ['降序', '升序']
     }
   },
   methods: {
@@ -158,7 +172,7 @@ export default {
       let scrollHeight = this.getScrollHeight()
       // console.log(scrollTop + clientHeight, scrollHeight)
       // 如果满足公式则，确实到底了
-      if (Math.abs(scrollHeight - (scrollTop + clientHeight)) < 1) {
+      if (Math.abs(scrollHeight - (scrollTop + clientHeight)) < 100) {
         // 发送异步请求请求数据，同时携带offset并自增offset
         // noMore是自定义变量，如果是最后一批数据则以后都不加载
         if (!this.noMore) {
@@ -235,7 +249,7 @@ export default {
       gsap.set('.main',
         {position: 'fixed', width: '100%', height: '100%', top: 0, left: '50%', x: '-50%'})
       gsap.set('.scrollDist',
-        {width: '100vh', height: '200vh'})
+        {width: '100vh', height: '101vh'})
       gsap.timeline(
         {
           scrollTrigger: {
@@ -256,9 +270,10 @@ export default {
         .fromTo('.mountBg', {y: -50}, {y: -115}, 0)
         .fromTo('.mountMg', {y: -30}, {y: -150}, 0)
         .fromTo('.mountFg', {y: -50}, {y: -600}, 0)
+        .fromTo('#main-content', {y: 100}, {y: -500}, 0)
         // .fromTo('.menu', {opacity: 0}, {opacity: 1}, 0)
       this.$refs['arrowBtn'].addEventListener('click', (e) => {
-        gsap.to(window, {scrollTo: 1500, duration: 1, ease: 'power1.inOut'})
+        gsap.to(window, {scrollTo: 1000, duration: 0.5, ease: 'power1.inOut'})
       }, true)
     },
     handleSelect (key, keyPath) {
@@ -276,12 +291,30 @@ body, html {
 /*div {*/
 /*  position:absolute;*/
 /*}*/
+.selector{
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  justify-content: end;
+}
+
+.selector-item{
+  width: 120px;
+  margin: 10px;
+}
+
+.selector-label{
+  margin-left: 5px;
+  color: white;
+  font-size: 1rem;
+}
 
 .title {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40%;
+
 }
 
 .menu {

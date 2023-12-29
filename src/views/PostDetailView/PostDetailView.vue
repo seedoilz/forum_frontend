@@ -1,7 +1,6 @@
 <template>
   <div>
-    <NavMenu></NavMenu>
-    <el-card style="margin: 70px 20% 0 20%;align-items: center">
+    <el-card v-if="this.$root.store.state.screenWidth>800" style="margin: 70px 20% 0 20%;align-items: center">
       <el-page-header style="height: 20px; width: 100%;align-items: center;"
                       @back="goBack" content="详情页面">
       </el-page-header>
@@ -10,6 +9,18 @@
         <Comment style="width: 100%" v-for="review in reviewList" :key="review.id"
                :review="review" :likeShowDict="likeShowDict" :selected="selectedComment"
         @selectThis="selectComment"></Comment>
+      </div>
+      <CommentEditor :postId="this.$route.params.postId"> </CommentEditor>
+    </el-card>
+    <el-card v-if="this.$root.store.state.screenWidth<800" style="margin: 70px 5% 0 5%;align-items: center">
+      <el-page-header style="height: 20px; width: 100%;align-items: center;"
+                      @back="goBack" content="详情页面">
+      </el-page-header>
+      <PostDetail style="width:100%" :post="post"></PostDetail>
+      <div v-if="this.renderAvailable"  style="width: 100%">
+        <Comment style="width: 100%" v-for="review in reviewList" :key="review.id"
+                 :review="review" :likeShowDict="likeShowDict" :selected="selectedComment"
+                 @selectThis="selectComment"></Comment>
       </div>
       <CommentEditor :postId="this.$route.params.postId"></CommentEditor>
     </el-card>
