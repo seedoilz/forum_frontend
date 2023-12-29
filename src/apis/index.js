@@ -17,7 +17,8 @@ const COMMENT_THUMB = '/comment/thumb'
 const USER_COMMENT_THUMBS = '/comment/user_thumbs'
 const CANCEL_COMMENT_THUMB = '/comment/cancel_thumb'
 const POSTS_BY_TAG = '/post/posts_by_tag'
-
+const ADD_POST = '/post/add'
+const ADD_IMAGE = '/image/upload'
 module.exports = {
   REGISTER,
   SIGN_IN,
@@ -37,5 +38,7 @@ module.exports = {
   COMMENT_THUMB,
   USER_COMMENT_THUMBS,
   CANCEL_COMMENT_THUMB,
-  POSTS_BY_TAG
+  POSTS_BY_TAG,
+  ADD_IMAGE,
+  ADD_POST
 }

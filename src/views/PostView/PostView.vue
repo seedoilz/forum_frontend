@@ -10,28 +10,14 @@
     <el-container direction="vertical" class="container-left">
 
       <el-input
+        ref="title"
         placeholder="请输入标题"
-        v-model="input"
+        v-model="postMessage.title"
         clearable
         class="content-title">
       </el-input>
 
-      <el-form :inline="true" class="middle">
-        <el-form-item class="region">
-          <el-select v-model="region" placeholder="选择板块" class="region-inner" >
-            <el-option label="板块一" value="1"></el-option>
-            <el-option label="板块二" value="2"></el-option>
-          </el-select>
-        </el-form-item>
-
-<!--        <el-tag
-          :key="tag"
-          v-for="tag in dynamicTags"
-          closable
-          :disable-transitions="false"
-          @close="handleClose(tag)">
-          {{tag}}
-        </el-tag>-->
+      <el-form :inline="true" class="middle" @submit.native.prevent>
 
         <el-input
           class="input-new-tag"
@@ -49,7 +35,7 @@
       <el-container class="container-tags">
         <el-tag
           :key="tag"
-          v-for="tag in dynamicTags"
+          v-for="tag in postMessage.tags"
           closable
           :disable-transitions="false"
           @close="handleClose(tag)">
@@ -58,23 +44,13 @@
       </el-container>
 
       <quill-editor
-        v-model="content"
+        v-model="postMessage.content"
         class="quill-editor1"
         ref="myQuillEditor"
         :options="editorOption2"
-        @blur="onEditorBlur($event)"
-        @focus="onEditorFocus($event)"
-        @change="onEditorChange($event)">
+        >
         style="height: 100%;"
       </quill-editor>
-
-<!--      <el-input
-        type="textarea"
-        :autosize="{ minRows: 20, maxRows: 22}"
-        placeholder="请输入内容"
-        v-model="textarea"
-        class="content">
-      </el-input>-->
     </el-container>
 
     <el-aside class="aside">
@@ -84,18 +60,17 @@
         placeholder="添加你的图片"
         >
       </el-input>
-      <el-upload class="avatar-uploader" :action="uploadUrl" name="img" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeUpload">
+
+      <el-upload
+        class="upload"
+        action=""
+        :http-request="uploadImg"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :file-list="fileList"
+        list-type="picture">
+        <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
-      <quill-editor
-        v-model="content"
-        class="quill-editor2"
-        ref="myQuillEditor"
-        :options="editorOption"
-        @blur="onEditorBlur($event)"
-        @focus="onEditorFocus($event)"
-        @change="onEditorChange($event)">
-        style="height: 100%;"
-      </quill-editor>
 
     </el-aside>
     </el-container>
@@ -103,7 +78,7 @@
     <el-footer>
       <el-row>
         <el-button type="primary" class="button-save">保存</el-button>
-        <el-button type="success" icon="el-icon-upload2" class="button-sendArticle">发帖</el-button>
+        <el-button type="success" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>
       </el-row>
     </el-footer>
 
@@ -111,7 +86,9 @@
 </template>
 
 <script>
-import { messagePost } from '@/network/any'
+// eslint-disable-next-line no-unused-vars
+import { addImage, messagePost } from '@/network/any'
+
 import { PATH } from '@/commons/const'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -126,23 +103,22 @@ export default {
   name: 'PostView',
   data () {
     return {
-      input: '',
-      region: '',
-
-      dynamicTags: ['标签一', '标签二', '标签三'],
+      fileList: [],
       inputVisible: false,
       inputValue: '',
 
       textarea: '',
 
       postMessage: {
+        userId: this.$getCookie('id'),
         title: '',
         content: '',
-        tags: ''
+        imageUrls: [],
+        anony: false,
+        createdAt: new Date(),
+        tags: ['标签一', '标签二']
       },
-
-      // content: `<p>这是 vue-quill-editor 的内容！</p>`, // 双向数据绑定数据
-      editorOption: {
+      editorOptionImg: {
         modules: {
           toolbar: [
             ['image'] // 链接、图片、视频
@@ -170,12 +146,23 @@ export default {
       }// 编辑器配置项
     }
   },
+  mounted () {
+  },
   methods: {
-    onEditorBlur () {}, // 失去焦点触发事件
-    onEditorFocus () {}, // 获得焦点触发事件
-    onEditorChange () {}, // 内容改变触发事件
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview (file) {
+      console.log(file)
+    },
+    uploadImg (file) {
+      let formData = new FormData()
+      formData.append('file', file.file)
+      let newUrl = addImage(formData)
+      this.postMessage.imageUrls.push(newUrl)
+    },
     handleClose (tag) {
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+      this.postMessage.tags.splice(this.postMessage.tags.indexOf(tag), 1)
     },
 
     showInput () {
@@ -188,13 +175,14 @@ export default {
     handleInputConfirm () {
       let inputValue = this.inputValue
       if (inputValue) {
-        this.dynamicTags.push(inputValue)
+        this.postMessage.tags.push(inputValue)
       }
       this.inputVisible = false
       this.inputValue = ''
     },
     submitPost () {
       console.log(this.postMessage.title)
+      console.log(this.postMessage)
       if (this.postMessage.title === '') {
         this.$notify({
           title: '警告',
@@ -247,7 +235,7 @@ export default {
 .title{
   //border: 1px solid ;
   border-radius: 4px;
-  border: 0px solid #ebeef5;
+  border: 0 solid #ebeef5;
   background-color: #202020;
   overflow: hidden;
   color: #eeeef1;
@@ -256,7 +244,7 @@ export default {
 
 .content-title{
   border-radius: 4px;
-  border: 0px solid #ebeef5;
+  border: 0 solid #ebeef5;
   background-color: #202020;
   overflow: hidden;
   color: #eeeef1;
@@ -264,7 +252,6 @@ export default {
   margin: 10px;
 }
 .content{
-  //border: 1px solid ;
   width: 95%;
   margin: 10px;
 }
@@ -283,19 +270,12 @@ export default {
 .container-left{
   width: 60%;
   border-radius: 4px;
-  border: 0px solid #ebeef5;
+  border: 0 solid #ebeef5;
   margin: 10px;
 }
 .middle{
   margin: 10px;
   display: flex;
-}
-
-.region{
-  height: 40px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-right: 10px;
 }
 
 .container-tags{
@@ -316,15 +296,12 @@ export default {
   margin-left: 10px;
 }
 .button-new-tag {
-  margin: 10px;
-
   height: 40px;
   line-height: 40px;
   padding-top: 0;
   padding-bottom: 0;
 }
 .input-new-tag {
-  margin: 10px;
   height: 40px;
   width: 90px;
   vertical-align: center;
@@ -336,7 +313,7 @@ export default {
 
 .aside{
   border-radius: 4px;
-  border: 0px solid #ebeef5;
+  border: 0 solid #ebeef5;
   background-color: #202020;
   color: #eeeef1;
   max-height: 78vh;
@@ -350,17 +327,10 @@ export default {
   height: 400px;
   margin: 10px;
   border-radius: 4px;
-  border: 0px solid #ebeef5;
+  border: 0 solid #ebeef5;
   background-color: #202020;
   color: #eeeef1;
 }
-.quill-editor2{
-  line-height: normal !important;
-  height: 600px;
-  margin-top: 10px;
-  border-radius: 4px;
-  border: 0px solid #ebeef5;
-  background-color: #202020;
-  color: #eeeef1;
+.upload{
 }
 </style>
