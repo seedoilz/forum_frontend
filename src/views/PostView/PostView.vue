@@ -57,23 +57,35 @@
         </el-tag>
       </el-container>
 
-      <el-input
+      <quill-editor
+        v-model="content"
+        class="quill-editor1"
+        ref="myQuillEditor"
+        :options="editorOption2"
+        @blur="onEditorBlur($event)"
+        @focus="onEditorFocus($event)"
+        @change="onEditorChange($event)">
+        style="height: 100%;"
+      </quill-editor>
+
+<!--      <el-input
         type="textarea"
         :autosize="{ minRows: 20, maxRows: 22}"
         placeholder="请输入内容"
         v-model="textarea"
         class="content">
-      </el-input>
+      </el-input>-->
     </el-container>
 
     <el-aside class="aside">
       <el-input
         type="textarea"
-        :rows=2
-        placeholder="添加附件"
+        :rows=1
+        placeholder="添加你的图片"
         >
       </el-input>
-
+      <el-upload class="avatar-uploader" :action="uploadUrl" name="img" :show-file-list="false" :on-success="uploadSuccess" :before-upload="beforeUpload">
+      </el-upload>
       <quill-editor
         v-model="content"
         class="quill-editor2"
@@ -133,7 +145,26 @@ export default {
       editorOption: {
         modules: {
           toolbar: [
-            ['image', 'video'] // 链接、图片、视频
+            ['image'] // 链接、图片、视频
+          ]
+        }
+      }, // 编辑器配置项
+      editorOption2: {
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'], // 加粗 斜体 下划线 删除线 -----['bold', 'italic', 'underline', 'strike']
+            ['blockquote', 'code-block'], // 引用  代码块-----['blockquote', 'code-block']
+            [{ header: 1 }, { header: 2 }], // 1、2 级标题-----[{ header: 1 }, { header: 2 }]
+            [{ list: 'ordered' }, { list: 'bullet' }], // 有序、无序列表-----[{ list: 'ordered' }, { list: 'bullet' }]
+            [{ script: 'sub' }, { script: 'super' }], // 上标/下标-----[{ script: 'sub' }, { script: 'super' }]
+            [{ indent: '-1' }, { indent: '+1' }], // 缩进-----[{ indent: '-1' }, { indent: '+1' }]
+            [{ direction: 'rtl' }], // 文本方向-----[{'direction': 'rtl'}]
+            [{ size: ['small', false, 'large', 'huge'] }], // 字体大小-----[{ size: ['small', false, 'large', 'huge'] }]
+            [{ header: [1, 2, 3, 4, 5, 6, false] }], // 标题-----[{ header: [1, 2, 3, 4, 5, 6, false] }]
+            [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色-----[{ color: [] }, { background: [] }]
+            [{ font: [] }], // 字体种类-----[{ font: [] }]
+            [{ align: [] }], // 对齐方式-----[{ align: [] }]
+            ['clean'] // 清除文本格式-----['clean']
           ]
         }
       }// 编辑器配置项
@@ -271,8 +302,8 @@ export default {
   box-sizing: border-box;
   overflow: auto;
   margin: 10px;
-  min-height: 50px;
-  max-height: 80px;
+  min-height: 40px;
+  max-height: 40px;
 }
 
 .el-tag{
@@ -314,7 +345,18 @@ export default {
   overflow-y: auto;
 }
 
+.quill-editor1{
+  line-height: normal !important;
+  height: 400px;
+  margin: 10px;
+  border-radius: 4px;
+  border: 0px solid #ebeef5;
+  background-color: #202020;
+  color: #eeeef1;
+}
 .quill-editor2{
+  line-height: normal !important;
+  height: 600px;
   margin-top: 10px;
   border-radius: 4px;
   border: 0px solid #ebeef5;
