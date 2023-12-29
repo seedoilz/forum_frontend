@@ -3,7 +3,7 @@
     <el-card v-if="this.$root.store.state.screenWidth>800" shadow="hover" class="carousel-article" style="width: 60%; height: auto;border:0;"
              @click.native="goToDetailView(post.id)">
       <el-row type="flex" align="middle" style="margin-bottom: 25px">
-        <el-col :span="2" style="display: flex;justify-content: center;align-items: center">
+        <el-col :span="2">
           <el-avatar :src="post.avatarUrl"></el-avatar>
         </el-col>
         <el-col :span="6" style="margin-left: 14px;font-size:16px;display: flex;align-items: center">
@@ -43,7 +43,7 @@
     <el-card v-if="this.$root.store.state.screenWidth<800" shadow="hover" class="carousel-article" style="width: 90%; height: auto;border:0;"
              @click.native="goToDetailView(post.id)">
       <el-row type="flex" align="middle" style="margin-bottom: 25px">
-        <el-col :span="2" style="display: flex;justify-content: center;align-items: center">
+        <el-col :span="2">
           <el-avatar :src="post.avatarUrl"></el-avatar>
         </el-col>
         <el-col :span="6" style="margin-left: 14px;font-size:16px;display: flex;align-items: center">

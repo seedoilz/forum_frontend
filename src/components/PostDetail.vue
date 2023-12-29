@@ -1,7 +1,7 @@
 <template>
   <el-card class="carousel-article" style="width: 100%; height: auto">
     <el-row type="flex" align="middle">
-      <el-col :span="2" style="display: flex;justify-content: center;align-items: center;height: 100px">
+      <el-col :span="2">
         <el-avatar style="height: 50px;width: 50px" :src="post.avatarUrl"></el-avatar>
       </el-col>
       <el-col :span="6" style="margin-left: 20px;display: flex;align-items: center">
