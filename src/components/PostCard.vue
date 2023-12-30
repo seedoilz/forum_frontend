@@ -32,8 +32,9 @@
                   @click.stop="goToTagSearchView(tag)">{{ tag }}
           </el-tag>
         </div>
-        <p style="max-height: 300px;width: 100%;">
-          {{ post.content }}</p>
+        <vue-markdown :source="post.content"></vue-markdown>
+<!--        <div style="max-height: 300px;width: 100%;">-->
+<!--          {{ post.content }}</div>-->
       </div>
       <el-divider></el-divider>
       <!--    <review-->
@@ -72,8 +73,9 @@
                   @click.stop="goToTagSearchView(tag)">{{ tag }}
           </el-tag>
         </div>
-        <p style="max-height: 300px;width: 100%;">
-          {{ post.content }}</p>
+        <vue-markdown :source="post.content"></vue-markdown>
+<!--        <p style="max-height: 300px;width: 100%;">-->
+<!--          23124214211421</p>-->
       </div>
       <el-divider></el-divider>
       <!--    <review-->
@@ -85,9 +87,11 @@
 
 <script>
 import {collection, delCollection} from '@/network/any'
+import VueMarkdown from 'vue-markdown'
 
 export default {
   name: 'PostCard',
+  components: {VueMarkdown},
   data () {
     return {
       loading: true,

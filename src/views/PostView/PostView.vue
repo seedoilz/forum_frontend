@@ -48,6 +48,7 @@
         class="quill-editor1"
         ref="myQuillEditor"
         :options="editorOption2"
+        style="color: #b4bccc"
         >
         style="height: 100%;"
       </quill-editor>
@@ -90,9 +91,9 @@
 import { addImage, messagePost } from '@/network/any'
 
 import { PATH } from '@/commons/const'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+import '@/assets/css/quill.bubble.css'
+import '@/assets/css/quill.core.css'
+import '@/assets/css/quill.snow.css'
 
 import { quillEditor } from 'vue-quill-editor'
 
