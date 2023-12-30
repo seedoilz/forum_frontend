@@ -29,7 +29,7 @@
           @blur="handleInputConfirm"
         >
         </el-input>
-        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+添加标签</el-button>
       </el-form>
 
       <el-container class="container-tags">
@@ -54,10 +54,11 @@
     </el-container>
 
     <el-aside class="aside">
-      <el-input
+      <el-container direction="vertical" class="aside-container">
+      <el-input class="aside-input"
         type="textarea"
         :rows=1
-        placeholder="添加你的图片"
+        placeholder="添加图片"
         >
       </el-input>
 
@@ -69,16 +70,15 @@
         :on-remove="handleRemove"
         :file-list="fileList"
         list-type="picture">
-        <el-button size="small" type="primary">点击上传</el-button>
+        <el-button size="small" type="primary" icon="">点击上传<i class="el-icon-upload el-icon--right"></i></el-button>
       </el-upload>
-
+    </el-container>
     </el-aside>
     </el-container>
 
-    <el-footer>
+    <el-footer class="footer">
       <el-row>
-        <el-button type="primary" class="button-save">保存</el-button>
-        <el-button type="success" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>
+        <el-button type="primary" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>
       </el-row>
     </el-footer>
 
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-// eslint-disable-next-line no-unused-vars
+
 import { addImage, messagePost } from '@/network/any'
 
 import { PATH } from '@/commons/const'
@@ -116,15 +116,8 @@ export default {
         imageUrls: [],
         anony: false,
         createdAt: new Date(),
-        tags: ['标签一', '标签二']
+        tags: ['默认标签']
       },
-      editorOptionImg: {
-        modules: {
-          toolbar: [
-            ['image'] // 链接、图片、视频
-          ]
-        }
-      }, // 编辑器配置项
       editorOption2: {
         modules: {
           toolbar: [
@@ -174,7 +167,21 @@ export default {
 
     handleInputConfirm () {
       let inputValue = this.inputValue
-      if (inputValue) {
+      // 判断是否有重复tag
+      let tagLength = this.postMessage.tags.length
+      let dup = false
+      for (let i = 0; i < tagLength; i++) {
+        if (inputValue === this.postMessage.tags[i]) {
+          dup = true
+        }
+      }
+      if (dup) {
+        this.$notify({
+          title: '警告',
+          message: '标签重复~~',
+          type: 'warning'
+        })
+      } else if (inputValue) {
         this.postMessage.tags.push(inputValue)
       }
       this.inputVisible = false
@@ -308,12 +315,12 @@ export default {
 }
 
 .el-textarea__inner{
+  border: 0;
   resize: none;
 }
 
 .aside{
   border-radius: 4px;
-  border: 0 solid #ebeef5;
   background-color: #202020;
   color: #eeeef1;
   max-height: 78vh;
@@ -324,13 +331,23 @@ export default {
 
 .quill-editor1{
   line-height: normal !important;
-  height: 400px;
+  min-height: 420px;
+  max-height: 480px;
   margin: 10px;
   border-radius: 4px;
   border: 0 solid #ebeef5;
   background-color: #202020;
   color: #eeeef1;
 }
+.aside-container{
+  margin: 10px;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+}
 .upload{
+  margin: 10px;
+}
+.aside-input{
+  border: 0 solid #ebeef5;
 }
 </style>
