@@ -5,7 +5,7 @@
       <el-header
         height="2400"
         class="title">
-        <div ref="arrowBtn" style="top: 10%;width: 80%;height:120%;cursor:pointer;position: absolute;z-index: 1000"></div>
+        <div id="arrowBtn" ref="arrowBtn" style="top: 10%;width: 80%;height:90%;cursor:pointer;position: absolute;z-index: 1000"></div>
         <div>
           <div class="scrollDist" ref="scrollDist"></div>
           <div class="main">
@@ -106,6 +106,20 @@ gsap.registerPlugin(ScrollTrigger)
 export default {
   name: 'MainView',
   components: {NavTop, ReviewEditor, Review, NavMenu, PostCard},
+  watch: {
+    options: {
+      immediate: false,
+      deep: true,
+      handler (val) {
+        console.log(val)
+        this.isFirstEnter = true
+        this.postList = []
+        this.currentPage = 1
+        this.noMore = false
+        this.getNextPage()
+      }
+    }
+  },
   destroyed () {
     window.removeEventListener('scroll', this.windowScroll)// 销毁滚动事件
   },
@@ -113,11 +127,12 @@ export default {
     console.log('added')
     window.addEventListener('scroll', this.windowScroll, true) // 监听页面滚动
     this.setup()
+    this.postList = []
     this.isFirstEnter = true
     console.log('mounted')
-    this.currentPage = 1
-    this.noMore = false
-    this.getNextPage()
+    // this.currentPage = 1
+    // this.noMore = false
+    // this.getNextPage()
   },
   beforeRouteEnter (to, from, next) {
     // 利用路由元信息中的 meta 字段设置变量，方便在各个位置获取。这就是为什么在 meta 中定义 isNeedRefresh。
@@ -140,8 +155,10 @@ export default {
     console.log(this.$route.meta.isNeedRefresh)
     if (this.$route.meta.isNeedRefresh || this.isFirstEnter) {
       console.log('nextPage')
+      this.postList = []
       this.currentPage = 1
       this.noMore = false
+      this.getNextPage()
     }
     // 恢复成默认的 false，避免 isFirstEnter 一直是 true，导致重复获取数据
     this.isFirstEnter = false
@@ -151,6 +168,7 @@ export default {
   data () {
     return {
       count: 20,
+      lastTime: 0,
       currentPage: 1,
       postList: [],
       noMore: false,
@@ -167,22 +185,29 @@ export default {
   methods: {
     windowScroll () {
       // 获取三个值
+      let now = new Date().valueOf()
       let scrollTop = this.getScrollTop()
       let clientHeight = this.getClientHeight()
       let scrollHeight = this.getScrollHeight()
       // console.log(scrollTop + clientHeight, scrollHeight)
       // 如果满足公式则，确实到底了
-      if (Math.abs(scrollHeight - (scrollTop + clientHeight)) < 100) {
+      if (Math.abs(scrollHeight - (scrollTop + clientHeight)) < 200) {
         // 发送异步请求请求数据，同时携带offset并自增offset
         // noMore是自定义变量，如果是最后一批数据则以后都不加载
-        if (!this.noMore) {
-          console.log('loading next!!!')
-          this.getNextPage()
+        if (this.lastTime === 0 || (now - this.lastTime) > 2000) {
+          if (!this.noMore) {
+            console.log('loading next!!!')
+            this.getNextPage()
+          } else {
+            this.$message({
+              message: '没有更多了',
+              type: 'warning'
+            })
+          }
+          console.log('触发事件')
+          this.lastTime = now
         } else {
-          this.$message({
-            message: '没有更多了',
-            type: 'warning'
-          })
+          console.log('不触发')
         }
       }
     },
@@ -216,12 +241,12 @@ export default {
       let conf = {
         params: {
           page: this.currentPage,
-          size: 30
+          size: 5
         }
       }
-      findPostList(conf).then((res) => {
+      findPostList(this.options, conf).then((res) => {
         if (res.code === 200) {
-          if (res.data.length < 30) {
+          if (res.data.length < 5) {
             this.noMore = true
           }
           console.log('page', this.currentPage)
@@ -271,9 +296,10 @@ export default {
         .fromTo('.mountMg', {y: -30}, {y: -150}, 0)
         .fromTo('.mountFg', {y: -50}, {y: -600}, 0)
         .fromTo('#main-content', {y: 100}, {y: -500}, 0)
+        .fromTo('#arrowBtn', {y: 0}, {y: -600}, 0)
         // .fromTo('.menu', {opacity: 0}, {opacity: 1}, 0)
       this.$refs['arrowBtn'].addEventListener('click', (e) => {
-        gsap.to(window, {scrollTo: 1000, duration: 0.5, ease: 'power1.inOut'})
+        gsap.to(window, {scrollTo: 100, duration: 0.5, ease: 'power1.inOut'})
       }, true)
     },
     handleSelect (key, keyPath) {
