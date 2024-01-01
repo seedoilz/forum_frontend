@@ -1,9 +1,10 @@
 <template>
   <el-menu
     :default-active="getActivePath"
-    style="position: fixed;"
+    style="position: fixed;border-radius: 4px"
     mode="vertical"
     class="nav"
+    :router="true"
     @select="handleSelect"
     @open="handleOpen"
     @close="handleClose"
@@ -15,13 +16,13 @@
     <el-menu-item
       :index="PATH.MAIN_VIEW.path">
       <i class="el-icon-s-home"></i>
-      <template #title>Main Center</template>
+      <template #title>主页</template>
     </el-menu-item>
     <el-menu-item
-      index="TEMP"
+      :index="PATH.POST_VIEW.path"
     >
       <i class="el-icon-plus"></i>
-      <template #title>Others</template>
+      <template #title>发帖</template>
     </el-menu-item>
   </el-menu>
 </template>
@@ -67,7 +68,7 @@ export default {
 <style scoped>
 .nav{
   z-index: 100;
-  background-color: rgba(32,32,32,0.7);
+  background-color: rgba(32,32,32,1);
   /*border-radius: 10px;*/
 }
 .nav .el-menu-item{
@@ -102,5 +103,6 @@ export default {
 .nav.el-menu--collapse .el-menu-item:hover .el-icon-arrow-right{
   transform: none;
   transition: 0.2s;
+  border-radius: 4px;
 }
 </style>

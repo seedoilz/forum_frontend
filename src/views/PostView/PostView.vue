@@ -1,10 +1,10 @@
 <template>
   <el-container class="container-main" >
-    <el-header
-      height="60"
-      class="title">
-      <h1 style="font-size: 3rem;margin-top: 10px;margin-bottom: 10px;color: #DDFF03">☣TITLE</h1>
-    </el-header>
+<!--    <el-header-->
+<!--      height="60"-->
+<!--      class="title">-->
+<!--      <h1 style="font-size: 3rem;margin-top: 10px;margin-bottom: 10px;color: #DDFF03">☣TITLE</h1>-->
+<!--    </el-header>-->
 
     <el-container>
     <el-container direction="vertical" class="container-left">
@@ -55,7 +55,7 @@
     </el-container>
 
     <el-aside class="aside">
-      <el-container direction="vertical" class="aside-container">
+      <el-container direction="vertical" class="aside-container" >
       <el-input class="aside-input"
         type="textarea"
         :rows=1
@@ -73,16 +73,16 @@
         list-type="picture">
         <el-button size="small" type="primary" icon="">点击上传<i class="el-icon-upload el-icon--right"></i></el-button>
       </el-upload>
-    </el-container>
+    </el-container  >
+      <el-footer class="footer">
+        <el-row style="align-items: end;justify-content: end;display: flex;">
+          <el-button type="danger" icon="el-icon-delete-solid" class="button-sendArticle" >清空</el-button>
+          <el-button type="primary" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>
+        </el-row>
+      </el-footer>
+<!--      <el-button style="position: relative;bottom: 0;" type="primary" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>-->
     </el-aside>
     </el-container>
-
-    <el-footer class="footer">
-      <el-row>
-        <el-button type="primary" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>
-      </el-row>
-    </el-footer>
-
   </el-container>
 </template>
 
@@ -104,6 +104,7 @@ export default {
   name: 'PostView',
   data () {
     return {
+      fileUrls: {},
       fileList: [],
       inputVisible: false,
       inputValue: '',
@@ -144,7 +145,10 @@ export default {
   },
   methods: {
     handleRemove (file, fileList) {
-      console.log(file, fileList)
+      console.log('remove', file, fileList)
+      this.postMessage.imageUrls = this.postMessage.imageUrls.filter(x => x !== this.fileUrls[file.uid])
+      // this.fileUrls = this.fileUrls.filter(x => x.key !== file.url)
+      console.log(this.fileUrls, this.postMessage.imageUrls)
     },
     handlePreview (file) {
       console.log(file)
@@ -152,8 +156,12 @@ export default {
     uploadImg (file) {
       let formData = new FormData()
       formData.append('file', file.file)
-      let newUrl = addImage(formData)
-      this.postMessage.imageUrls.push(newUrl)
+      // let newUrl = addImage(formData)
+      addImage(formData).then(res => {
+        this.postMessage.imageUrls.push(res.message)
+        console.log(file.file)
+        this.fileUrls[file.file.uid] = res.message
+      })
     },
     handleClose (tag) {
       this.postMessage.tags.splice(this.postMessage.tags.indexOf(tag), 1)
@@ -240,6 +248,11 @@ export default {
 </script>
 
 <style>
+.footer{
+  bottom: 0;
+  position: absolute;
+}
+
 .title{
   //border: 1px solid ;
   border-radius: 4px;
@@ -271,7 +284,7 @@ export default {
   display: flex;
   align-content: center;
   justify-content: center;
-  margin: auto;
+  margin: 5% auto;
 
 }
 
@@ -332,8 +345,8 @@ export default {
 
 .quill-editor1{
   line-height: normal !important;
-  min-height: 420px;
-  max-height: 480px;
+  min-height: 50%;
+  max-height: 100%;
   margin: 10px;
   border-radius: 4px;
   border: 0 solid #ebeef5;
