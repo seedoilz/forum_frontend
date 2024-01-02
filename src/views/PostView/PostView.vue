@@ -69,6 +69,7 @@
         :http-request="uploadImg"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
+        ref="upload"
         :file-list="fileList"
         list-type="picture">
         <el-button size="small" type="primary" icon="">点击上传<i class="el-icon-upload el-icon--right"></i></el-button>
@@ -76,7 +77,7 @@
     </el-container  >
       <el-footer class="footer">
         <el-row style="align-items: end;justify-content: end;display: flex;">
-          <el-button type="danger" icon="el-icon-delete-solid" class="button-sendArticle" >清空</el-button>
+          <el-button type="danger" icon="el-icon-delete-solid" class="button-clearAll" @click="cleanAll">清空</el-button>
           <el-button type="primary" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>
         </el-row>
       </el-footer>
@@ -144,6 +145,26 @@ export default {
   mounted () {
   },
   methods: {
+    async cleanAll () {
+      if (confirm('确定要清空页面吗？')) {
+        this.postMessage.title = ''
+        this.postMessage.content = ''
+        this.postMessage.tags = ['默认标签']
+        this.$refs.upload.uploadFiles = []
+        // console.log(this.$refs.upload)
+        // this.$refs.upload.clearFiles()
+        this.postMessage.imageUrls = []
+        this.$notify({
+          title: '成功',
+          message: '清空完成~~'
+        })
+      } else {
+        this.$notify({
+          title: '取消',
+          message: '清空取消~~'
+        })
+      }
+    },
     handleRemove (file, fileList) {
       console.log('remove', file, fileList)
       this.postMessage.imageUrls = this.postMessage.imageUrls.filter(x => x !== this.fileUrls[file.uid])
@@ -151,6 +172,7 @@ export default {
       console.log(this.fileUrls, this.postMessage.imageUrls)
     },
     handlePreview (file) {
+      window.open(this.fileUrls[file.uid])
       console.log(file)
     },
     uploadImg (file) {
