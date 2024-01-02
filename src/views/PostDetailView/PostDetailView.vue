@@ -38,6 +38,16 @@ import {userCommentThumbs} from '../../network/any'
 
 export default {
   name: 'PostDetailView',
+  watch: {
+    $route (to, from) {
+      console.log(to.path)
+      // 当路由发生变化时，你可以在这里执行重新渲染的操作
+      if (to.path.startsWith('/post_detail')) {
+        // 执行重新渲染的逻辑，例如重新加载数据
+        location.reload()
+      }
+    }
+  },
   components: {
     NavTop,
     CommentEditor,

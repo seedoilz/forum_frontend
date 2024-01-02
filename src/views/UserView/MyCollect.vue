@@ -13,7 +13,7 @@
         <!--        <div class="releaseTime">{{ item.releaseTime }}</div>-->
       </div>
       <div class="myCollectStar">
-        <el-button type="danger" icon="el-icon-delete" circle @click.stop="deleteCollection(item.id)"></el-button>
+        <el-button type="danger" icon="el-icon-delete" circle @click.stop="deleteCollection(item.postId)"></el-button>
       </div>
     </div>
     <el-pagination
@@ -57,7 +57,7 @@ export default {
     deleteCollection (id) {
       let config = {
         params: {
-          id: id
+          postId: id
         }
       }
       delCollection(config).then((res) => {
