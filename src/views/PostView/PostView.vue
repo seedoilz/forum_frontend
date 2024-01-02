@@ -239,10 +239,10 @@ export default {
       } else {
         messagePost(this.postMessage).then(res => {
           if (res.code === 200) {
-            this.$message({
-              type: 'success',
-              message: res.message
-            })
+            // this.$message({
+            //   type: 'success',
+            //   message: res.message
+            // })
             this.$message({
               message: '发布成功',
               type: 'success'

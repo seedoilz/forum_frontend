@@ -28,7 +28,13 @@
                 @click.stop="goToTagSearchView(tag)">{{ tag }}
         </el-tag>
       </div>
-      <vue-markdown :source="post.content"></vue-markdown>
+      <div class="ql-snow">
+        <div class="ql-editor">
+          <div v-html="post.content"></div>
+        </div>
+      </div>
+
+<!--      <vue-markdown :source="post.content"></vue-markdown>-->
       <!--      <p style="max-height: 300px;width: 100%;">-->
       <!--        {{ post.content }}</p>-->
     </div>
@@ -38,7 +44,9 @@
 <script>
 import VueMarkdown from 'vue-markdown'
 import {collection, delCollection} from '@/network/any'
-
+import '@/assets/css/quill.bubble.css'
+import '@/assets/css/quill.core.css'
+import '@/assets/css/quill.snow.css'
 export default {
   name: 'PostDetail',
   components: {
