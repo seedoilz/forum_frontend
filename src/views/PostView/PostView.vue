@@ -152,7 +152,7 @@ export default {
         this.postMessage.tags = ['默认标签']
         this.$refs.upload.uploadFiles = []
         // console.log(this.$refs.upload)
-        // this.$refs.upload.clearFiles()
+        this.fileUrls = []
         this.postMessage.imageUrls = []
         this.$notify({
           title: '成功',
