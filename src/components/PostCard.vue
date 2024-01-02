@@ -1,6 +1,6 @@
 <template>
-  <div style="width: 100%;display: flex;flex-direction: column;align-items: center">
-    <el-card v-if="this.$root.store.state.screenWidth>800" shadow="hover" class="carousel-article" style="width: 60%; height: auto;border:0;"
+  <div style="width: 100%;display: flex;flex-direction: column;align-items: center;margin-top: 10px">
+    <el-card v-if="this.$root.store.state.screenWidth>=800" shadow="hover" class="carousel-article" style="width: 60%; height: auto;border:0;"
              @click.native="goToDetailView(post.id)">
       <el-row type="flex" align="middle" style="margin-bottom: 25px">
         <el-col :span="2">
@@ -36,7 +36,7 @@
 <!--        <div style="max-height: 300px;width: 100%;">-->
 <!--          {{ post.content }}</div>-->
       </div>
-      <el-divider></el-divider>
+<!--      <el-divider></el-divider>-->
       <!--    <review-->
       <!--      v-for="review in review_list" :key="review.id"-->
       <!--      :review="review"></review>-->
@@ -77,7 +77,7 @@
 <!--        <p style="max-height: 300px;width: 100%;">-->
 <!--          23124214211421</p>-->
       </div>
-      <el-divider></el-divider>
+<!--      <el-divider></el-divider>-->
       <!--    <review-->
       <!--      v-for="review in review_list" :key="review.id"-->
       <!--      :review="review"></review>-->

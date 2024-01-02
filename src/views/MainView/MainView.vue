@@ -39,9 +39,6 @@
 
         <!--        main-->
         <el-row class="selector">
-          <el-col :span="1" class="selector-item">
-            <i class="el-icon-s-tools" style="font-size: 2rem;color: white"></i>
-          </el-col>
           <el-col :span="4" class="selector-item">
             <span class="selector-label">时间</span>
             <el-select v-model="options.time">
@@ -93,7 +90,6 @@
 </template>
 
 <script>
-import NavMenu from '@/components/NavMenu'
 import PostCard from '@/components/PostCard'
 import Review from '@/components/Comment.vue'
 import ReviewEditor from '@/components/CommentEditor.vue'
@@ -105,7 +101,7 @@ import NavTop from '../../components/NavTop.vue'
 gsap.registerPlugin(ScrollTrigger)
 export default {
   name: 'MainView',
-  components: {NavTop, ReviewEditor, Review, NavMenu, PostCard},
+  components: {NavTop, ReviewEditor, Review, PostCard},
   watch: {
     options: {
       immediate: false,

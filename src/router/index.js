@@ -15,6 +15,7 @@ const MyCollectView = () => import('@/views/UserView/MyCollect')
 const MyThumbsView = () => import('@/views/UserView/MyThumbs')
 const PostDetailView = () => import('@/views/PostDetailView/PostDetailView')
 const TagSearchView = () => import('@/views/TagSearchView/TagSearchView')
+const MessageView = () => import('@/views/MessageView/MessageView')
 
 Vue.use(Router)
 
@@ -78,6 +79,10 @@ const routes = [
   {
     path: PATH.POST_VIEW.path,
     component: PostView
+  },
+  {
+    path: PATH.MESSAGE_VIEW.path,
+    component: MessageView
   },
   {
     path: '*',

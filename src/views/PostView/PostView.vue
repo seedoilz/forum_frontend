@@ -118,7 +118,7 @@ export default {
         imageUrls: [],
         anony: false,
         createdAt: new Date(),
-        tags: ['默认标签']
+        tags: []
       },
       editorOption2: {
         modules: {
@@ -185,7 +185,7 @@ export default {
         }
       }
       if (dup) {
-        this.$notify({
+        this.$message({
           title: '警告',
           message: '标签重复~~',
           type: 'warning'
@@ -200,21 +200,18 @@ export default {
       console.log(this.postMessage.title)
       console.log(this.postMessage)
       if (this.postMessage.title === '') {
-        this.$notify({
-          title: '警告',
-          message: '缺少标题~~',
+        this.$message({
+          message: '缺少标题',
           type: 'warning'
         })
       } else if (this.postMessage.content === '') {
-        this.$notify({
-          title: '警告',
-          message: '缺少正文~~',
+        this.$message({
+          message: '缺少正文',
           type: 'warning'
         })
       } else if (this.postMessage.tags === '') {
-        this.$notify({
-          title: '警告',
-          message: '缺少标签~~',
+        this.$message({
+          message: '缺少标签',
           type: 'warning'
         })
       } else {
@@ -224,17 +221,12 @@ export default {
               type: 'success',
               message: res.message
             })
-            this.$notify({
-              title: '成功',
-              message: '发布成功~~',
+            this.$message({
+              message: '发布成功',
               type: 'success'
             })
             this.$router.push(PATH.MAIN_VIEW)
           } else {
-            this.$notify.error({
-              title: '错误',
-              message: '发布失败！'
-            })
             this.$message({
               type: 'error',
               message: res.message

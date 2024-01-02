@@ -33,7 +33,6 @@ import PostDetail from '@/components/PostDetail.vue'
 import Comment from '@/components/Comment.vue'
 import {postDetailById, commentByPostId} from '@/network/any'
 import CommentEditor from '@/components/CommentEditor.vue'
-import NavMenu from '../../components/NavMenu.vue'
 import NavTop from '../../components/NavTop.vue'
 import {userCommentThumbs} from '../../network/any'
 
@@ -41,7 +40,6 @@ export default {
   name: 'PostDetailView',
   components: {
     NavTop,
-    NavMenu,
     CommentEditor,
     PostDetail,
     Comment

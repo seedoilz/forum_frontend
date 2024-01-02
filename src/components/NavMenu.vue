@@ -1,7 +1,6 @@
 <template>
   <el-menu
     :default-active="getActivePath"
-    style="position: fixed;border-radius: 4px"
     mode="vertical"
     class="nav"
     :router="true"
@@ -16,13 +15,13 @@
     <el-menu-item
       :index="PATH.MAIN_VIEW.path">
       <i class="el-icon-s-home"></i>
-      <template #title>主页</template>
+      <span slot="title">主页</span>
     </el-menu-item>
     <el-menu-item
       :index="PATH.POST_VIEW.path"
     >
       <i class="el-icon-plus"></i>
-      <template #title>发帖</template>
+      <span slot="title">发帖</span>
     </el-menu-item>
   </el-menu>
 </template>
@@ -70,34 +69,42 @@ export default {
   z-index: 100;
   background-color: rgba(32,32,32,1);
   /*border-radius: 10px;*/
+  border-radius: 4px;
 }
+
 .nav .el-menu-item{
   /*border-radius: 10px;*/
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
 }
 
 .nav:not(.el-menu--collapse){
-  margin-top: 15%;
   width: 150px;
   border: 0;
+  border-radius: 4px;
 }
 
 .nav.el-menu--collapse{
-  margin-top: 15%;
   border: 0;
+  border-radius: 4px;
 }
 .nav:not(.el-menu--collapse) .el-menu-item .el-icon-arrow-right{
   transform: none;
   transition: 0.2s;
+  border-radius: 4px;
 }
 
 .nav:not(.el-menu--collapse) .el-menu-item:hover .el-icon-arrow-right{
   transform: rotate(180deg);
   transition: 0.2s;
+  border-radius: 4px;
 }
 
 .nav.el-menu--collapse .el-icon-arrow-right{
   transform: rotate(180deg);
   transition: 0.2s;
+  border-radius: 4px;
 }
 
 .nav.el-menu--collapse .el-menu-item:hover .el-icon-arrow-right{

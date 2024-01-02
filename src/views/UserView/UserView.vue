@@ -12,19 +12,19 @@
       >
         <el-menu-item class="el-menu-item" :index="PATH.INFORMATION_VIEW.path">
           <i class="el-icon-location"></i>
-          <span slot="title">个人信息</span>
+          <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">个人信息</span>
         </el-menu-item>
         <el-menu-item :index="PATH.ACCOUNT_SET_VIEW.path">
           <i class="el-icon-menu"></i>
-          <span slot="title">帐号设置</span>
+          <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">帐号设置</span>
         </el-menu-item>
         <el-menu-item :index="PATH.CONTENT_MANAGEMENT_VIEW.path">
           <i class="el-icon-document"></i>
-          <span slot="title">内容管理</span>
+          <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">内容管理</span>
         </el-menu-item>
         <el-menu-item :index="PATH.MY_COLLECT_VIEW.path">
           <i class="el-icon-star-on"></i>
-          <span slot="title">我的收藏</span>
+          <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">我的收藏</span>
         </el-menu-item>
 <!--        <el-menu-item :index="PATH.MY_THUMBS_VIEW.path">-->
 <!--          <i class="el-icon-setting"></i>-->

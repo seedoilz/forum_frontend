@@ -6,6 +6,9 @@ export const PATH = {
   SIGN_IN_VIEW: {
     path: '/signIn'
   },
+  MESSAGE_VIEW: {
+    path: '/message'
+  },
   REGISTER_VIEW: {
     path: '/register'
   },

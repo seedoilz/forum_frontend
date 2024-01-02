@@ -3,7 +3,7 @@
   <div id="app">
     <FloatingButton style="z-index: 1000"></FloatingButton>
     <NavMenu v-if="this.$root.store.state.screenWidth>800 && this.$route.path !== PATH.SIGN_IN_VIEW.path && this.$route.path !== PATH.REGISTER_VIEW.path"
-             style="position: fixed;z-index: 1005"
+             style="position: fixed;z-index: 1005;top:25%"
     >
     </NavMenu>
     <NavTop v-if="this.$route.path !== PATH.SIGN_IN_VIEW.path && this.$route.path !== PATH.REGISTER_VIEW.path" style="position: fixed;top: 0;width: 100%;z-index: 1005"></NavTop>

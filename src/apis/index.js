@@ -19,6 +19,10 @@ const CANCEL_COMMENT_THUMB = '/comment/cancel_thumb'
 const POSTS_BY_TAG = '/post/posts_by_tag'
 const ADD_POST = '/post/add'
 const ADD_IMAGE = '/image/upload'
+const LIST_MESSAGE = '/action/message'
+const LIST_ALL_MESSAGE = '/action/all'
+const UPDATE_MESSAGE = '/action/update'
+const UPDATE_ALL_MESSAGE = '/action/updateAll'
 module.exports = {
   REGISTER,
   SIGN_IN,
@@ -40,5 +44,9 @@ module.exports = {
   CANCEL_COMMENT_THUMB,
   POSTS_BY_TAG,
   ADD_IMAGE,
-  ADD_POST
+  ADD_POST,
+  LIST_MESSAGE,
+  LIST_ALL_MESSAGE,
+  UPDATE_MESSAGE,
+  UPDATE_ALL_MESSAGE
 }
