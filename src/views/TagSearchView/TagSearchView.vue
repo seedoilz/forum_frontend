@@ -106,11 +106,11 @@ export default {
       total: 50,
       options: {
         time: '所有时间',
-        sortBy: '热度',
+        sortBy: '时间',
         order: '降序'
       },
       time: ['所有时间', '一天内', '一周内', '一月内', '一年内'],
-      sortBy: ['热度', '时间', '评论数'],
+      sortBy: ['时间', '热度', '评论数'],
       order: ['降序', '升序']
     }
   },
