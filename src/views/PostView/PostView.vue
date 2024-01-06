@@ -113,12 +113,12 @@ export default {
       textarea: '',
 
       postMessage: {
-        userId: this.$getCookie('id'),
+        // userId: this.$getCookie('id'),
         title: '',
         content: '',
         imageUrls: [],
         anony: false,
-        createdAt: new Date(),
+        // createdAt: new Date(),
         tags: []
       },
       editorOption2: {

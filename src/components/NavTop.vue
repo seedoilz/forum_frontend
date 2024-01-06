@@ -190,6 +190,8 @@ export default {
         console.log(res.data)
         this.username = res.data.name
         this.avatarUrl = res.data.avatar_url
+        this.$root.store.name = res.data.name
+        this.$root.store.avatarUrl = res.data.avatar_url
       } else {
         this.$alert('System error')
       }

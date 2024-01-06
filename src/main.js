@@ -17,13 +17,17 @@ Vue.prototype.$getCookie = getCookie
 Vue.prototype.$setCookie = setCookie
 Vue.prototype.$checkCookie = checkCookie
 Vue.prototype.$clearCookie = clearCookie
+Vue.prototype.$level = getCookie('level')
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 const store = {
   debug: true,
   state: {
     screenWidth: document.documentElement.clientWidth, // 屏幕宽度
     screenHeight: document.documentElement.clientHeight // 屏幕高度
-  }
+  },
+  name: '',
+  avatarUrl: '',
+  level: ''
 }
 
 new Vue({

@@ -1,9 +1,9 @@
 <template>
   <div style="width: 100%; right: 0;display: flex;align-items: end;flex-direction: column;">
-  <el-card class="comment" v-on:click="commentOnComment" style="width: 100%">
+  <el-card body-style="padding:1rem 0.5rem 1rem 0.5rem;" class="comment" v-on:click="commentOnComment" style="width: 100%">
     <el-row type="flex" align="middle" class="comment-row">
       <el-col :span="2">
-        <el-avatar :src="review.avatarUrl"></el-avatar>
+        <el-avatar class="comment-avatar" :src="review.avatarUrl"></el-avatar>
       </el-col>
       <el-col :span="18" class="comment-content">
         <div>
@@ -16,21 +16,25 @@
       <el-col :span="3" class="comment-actions">
         <!--        <el-button type="text" icon="el-icon-chat-dot-square"></el-button>-->
         <span>
-          <el-button  circle type="primary" :plain="!tempShow" icon="el-icon-thumb" @click="thumb(review.id)">
+          <el-button size="mini" circle type="primary" :plain="!tempShow" icon="el-icon-thumb" @click="thumb(review.id)" style="text-align: center">
           </el-button>
-          <span>{{ this.thumbNums }}</span>
+
         </span>
+
         <!--        <el-button type="text" icon="el-icon-thumb-down"></el-button>-->
+      </el-col>
+      <el-col :span="1" style="text-align: center;justify-content: center">
+        <el-badge class="mark" type="primary" :value="thumbNums" />
       </el-col>
       <el-col :span="1" class="comment-comment">
         <span>
-          <el-button type="text" icon="el-icon-more" @click="commentOnComment(review.id)">
+          <el-button size="mini" type="text" icon="el-icon-s-comment" @click="commentOnComment(review.id)">
           </el-button>
         </span>
       </el-col>
     </el-row>
   </el-card>
-    <SubComment v-if="'subComments' in review" v-for="subComment in review.subComments" :key="subComment.id" style="width: 95%;margin-top: 10px"
+    <SubComment v-if="'subComments' in review" v-for="subComment in review.subComments" :key="subComment.id" style="width: 97%;margin-top: 10px"
              :review="subComment" :likeShow="likeShowDict.includes(subComment.id)" @selectThis="selectComment" :selected="selectedComment"
              :rootId="review.id"
     ></SubComment>
@@ -96,13 +100,13 @@ export default {
     },
     submitComment (commentId) {
       let commentInfo = {
-        userId: this.$getCookie('id'),
+        // userId: this.$getCookie('id'),
         postId: this.review.postId,
         parentId: commentId,
         rootId: commentId,
         content: this.reviewContent,
-        thumbs: 0,
-        createdAt: new Date()
+        thumbs: 0
+        // createdAt: new Date()
       }
       comment(commentInfo).then((res) => {
         if (res.code === 200) {
@@ -164,10 +168,16 @@ export default {
   width: 50%;
   border-radius: 4px;
   margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.comment-avatar{
+  width: 2rem;
+  height: 2rem;
 }
 
 .comment-row {
-  align-items: flex-start;
+  font-size: 1rem;
 }
 
 .username {
@@ -190,6 +200,14 @@ export default {
 
 .comment-comment{
   text-align: right;
+}
+
+.comment button{
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .comment-actions .el-button span {

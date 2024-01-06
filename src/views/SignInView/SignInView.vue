@@ -97,6 +97,8 @@ export default {
               })
               this.$setCookie('token', res.data.token)
               this.$setCookie('id', res.data.id)
+              this.$setCookie('level', res.data.level)
+              this.$root.store.level = res.data.level
               this.$router.push(PATH.MAIN_VIEW)
             } else {
               this.$message({

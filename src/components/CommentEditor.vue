@@ -2,9 +2,9 @@
   <div class="comment-box" style="width: 100%">
     <div style="display: flex;flex-direction: row">
       <div style="margin-top: 10px;width: 7%;margin-right: 10px">
-        <el-avatar style="margin:0 0 0 30%" src="path/to/avatar.jpg" ></el-avatar>
+        <el-avatar style="margin:0 0 0 30%; width: 2rem;height: 2rem" :src="$root.store.avatarUrl" ></el-avatar>
       </div>
-      <div style="width: 90%;margin-top: 10px">
+      <div style="width: 90%;margin:0 2rem 0 2rem;display: flex;align-items: center">
         <el-input
           type="textarea"
           placeholder="发布你的评论"
@@ -32,11 +32,11 @@ export default {
   methods: {
     submitComment () {
       let commentForm = {
-        userId: this.$getCookie('id'),
+        // userId: this.$getCookie('id'),
         postId: this.postId,
         content: this.reviewContent,
-        thumbs: 0,
-        createdAt: new Date()
+        thumbs: 0
+        // createdAt: new Date()
       }
       comment(commentForm).then((res) => {
         if (res.code === 200) {
@@ -55,5 +55,7 @@ export default {
 </script>
 
 <style scoped>
+.comment-box{
 
+}
 </style>

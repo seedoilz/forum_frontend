@@ -7,6 +7,20 @@
       <el-col :span="6" style="margin-left: 20px;display: flex;align-items: center">
         <span style="font-size: 20px">{{ post.name }}</span>
       </el-col>
+      <el-col :span="16" align="right" v-if="this.level >=2">
+        <el-popconfirm
+          @confirm="deletePost(post.id)"
+          style="border: 0"
+          confirm-button-text='确认'
+          cancel-button-text='取消'
+          icon="el-icon-info"
+          icon-color="red"
+          title="确认删除帖子？"
+        >
+          <el-button slot="reference" @click.stop="console.log('delete')"  type="danger" plain
+                     icon="el-icon-delete-solid" circle style="border: 0;"></el-button>
+        </el-popconfirm>
+      </el-col>
     </el-row>
     <el-carousel v-if="post.imageUrls && post.imageUrls.length > 0" :interval="5000" arrow="always">
       <!-- Carousel Items -->
@@ -19,7 +33,7 @@
         <h1>{{ post.title }}</h1>
         <el-row style="margin-block-start: 1.5em;margin-block-end: 1.5em;margin-inline-start: 0;margin-inline-end: 0;">
           <el-button @click.stop="addCollection(post.id)" :plain="!post.collected" type="success" icon="el-icon-star-off"
-                     circle></el-button>
+                     circle style="border: 0"></el-button>
           <!--          <el-button type="danger" icon="el-icon-thumb" circle></el-button>-->
         </el-row>
       </div>
@@ -43,7 +57,7 @@
 
 <script>
 import VueMarkdown from 'vue-markdown'
-import {collection, delCollection} from '@/network/any'
+import {collection, delCollection, deletePost} from '@/network/any'
 import '@/assets/css/quill.bubble.css'
 import '@/assets/css/quill.core.css'
 import '@/assets/css/quill.snow.css'
@@ -57,13 +71,33 @@ export default {
   },
   data () {
     return {
-      tempCollected: false
+      tempCollected: false,
+      level: 0
     }
   },
   mounted () {
     this.tempCollected = this.post.collected
+    this.level = this.$level
   },
   methods: {
+    deletePost (postId) {
+      deletePost({params: {
+        postId: postId
+      }}).then(res => {
+        if (res.code === 200) {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.$router.back()
+        } else {
+          this.$message({
+            message: res.message,
+            type: 'error'
+          })
+        }
+      })
+    },
     addCollection (postId) {
       if (this.post.collected) {
         let config = {
@@ -89,9 +123,9 @@ export default {
         })
       } else {
         let collectionForm = {
-          userId: this.$getCookie('id'),
-          postId: postId,
-          createdAt: new Date()
+          // userId: this.$getCookie('id'),
+          postId: postId
+          // createdAt: new Date()
         }
         collection(collectionForm).then((res) => {
           if (res.code === 200) {
