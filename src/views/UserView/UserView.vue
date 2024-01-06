@@ -1,47 +1,85 @@
 <template>
-  <el-container style="height:100%; margin:5% 20% 0 20%;">
-    <el-aside width="20%" style="height: 100%">
-      <el-menu
-        :default-active="getActivePath"
-        @select="handleSelect"
-        style="width: 10%;top: 20%;left:20%;
+  <div>
+    <el-container v-if="this.$root.store.state.screenWidth>=800" key="pc" style="height:100%; margin:5% 20% 0 20%;">
+      <el-aside width="20%" style="height: 100%">
+        <el-menu
+          :default-active="getActivePath"
+          @select="handleSelect"
+          style="width: 10%;top: 20%;left:20%;
         border-radius: 4px;
         position: fixed;
         justify-content: center;
         border: 0"
-      >
-        <el-menu-item class="el-menu-item" :index="PATH.INFORMATION_VIEW.path">
-          <i class="el-icon-location"></i>
-          <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">个人信息</span>
-        </el-menu-item>
-        <el-menu-item :index="PATH.ACCOUNT_SET_VIEW.path">
-          <i class="el-icon-menu"></i>
-          <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">帐号设置</span>
-        </el-menu-item>
-        <el-menu-item :index="PATH.CONTENT_MANAGEMENT_VIEW.path">
-          <i class="el-icon-document"></i>
-          <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">内容管理</span>
-        </el-menu-item>
-        <el-menu-item :index="PATH.MY_COLLECT_VIEW.path">
-          <i class="el-icon-star-on"></i>
-          <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">我的收藏</span>
-        </el-menu-item>
-<!--        <el-menu-item :index="PATH.MY_THUMBS_VIEW.path">-->
-<!--          <i class="el-icon-setting"></i>-->
-<!--          <span slot="title">我的点赞</span>-->
-<!--        </el-menu-item>-->
-      </el-menu>
-    </el-aside>
-    <el-main>
-      <router-view :key="this.$route.fullPath" style="width:100%"></router-view>
-    </el-main>
-  </el-container>
+        >
+          <el-menu-item class="el-menu-item" :index="PATH.INFORMATION_VIEW.path">
+            <i class="el-icon-location"></i>
+            <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">个人信息</span>
+          </el-menu-item>
+          <el-menu-item :index="PATH.ACCOUNT_SET_VIEW.path">
+            <i class="el-icon-menu"></i>
+            <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">帐号设置</span>
+          </el-menu-item>
+          <el-menu-item :index="PATH.CONTENT_MANAGEMENT_VIEW.path">
+            <i class="el-icon-document"></i>
+            <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">内容管理</span>
+          </el-menu-item>
+          <el-menu-item :index="PATH.MY_COLLECT_VIEW.path">
+            <i class="el-icon-star-on"></i>
+            <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">我的收藏</span>
+          </el-menu-item>
+          <!--        <el-menu-item :index="PATH.MY_THUMBS_VIEW.path">-->
+          <!--          <i class="el-icon-setting"></i>-->
+          <!--          <span slot="title">我的点赞</span>-->
+          <!--        </el-menu-item>-->
+        </el-menu>
+      </el-aside>
+      <el-main style="overflow-x: hidden">
+        <router-view :key="this.$route.fullPath" style="width:100%"></router-view>
+      </el-main>
+    </el-container>
+    <div v-if="this.$root.store.state.screenWidth<800" key="ph" style="height:100%; margin:5% 0.5rem 0 3.5rem;">
+        <el-menu
+          :default-active="getActivePath"
+          @select="handleSelect"
+          style="width: 3rem;top: 20%;left:0;
+        border-radius: 4px;
+        position: fixed;
+        justify-content: center;
+        border: 0;"
+        >
+          <el-menu-item class="el-menu-item" :index="PATH.INFORMATION_VIEW.path">
+            <i class="el-icon-location"></i>
+            <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">个人信息</span>
+          </el-menu-item>
+          <el-menu-item :index="PATH.ACCOUNT_SET_VIEW.path">
+            <i class="el-icon-menu"></i>
+            <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">帐号设置</span>
+          </el-menu-item>
+          <el-menu-item :index="PATH.CONTENT_MANAGEMENT_VIEW.path">
+            <i class="el-icon-document"></i>
+            <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">内容管理</span>
+          </el-menu-item>
+          <el-menu-item :index="PATH.MY_COLLECT_VIEW.path">
+            <i class="el-icon-star-on"></i>
+            <span v-if="this.$root.store.state.screenWidth>= 900" slot="title">我的收藏</span>
+          </el-menu-item>
+          <!--        <el-menu-item :index="PATH.MY_THUMBS_VIEW.path">-->
+          <!--          <i class="el-icon-setting"></i>-->
+          <!--          <span slot="title">我的点赞</span>-->
+          <!--        </el-menu-item>-->
+        </el-menu>
+      <div style="width: 100%;margin: 40% 0 0 0;">
+        <router-view :key="this.$route.fullPath" style="width:100%;margin: 0"></router-view>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <style>
 .el-menu-item{
-  height:80px;
-  padding-left: 15px !important;
+  height:4rem;
+  padding: 1rem !important;
   display: flex;
   justify-content: center; /* 水平居中对齐 */
   align-items: center; /* 垂直居中对齐 */

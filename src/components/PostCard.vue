@@ -9,7 +9,7 @@
         <el-col :span="6" style="margin-left: 14px;font-size:16px;display: flex;align-items: center">
           <span>{{ post.name }}</span>
         </el-col>
-        <el-col :span="16" align="right" v-if="this.level >=2">
+        <el-col :span="16" align="right" v-if="this.level >=2 || (this.id - this.post.userId) === 0">
           <el-popconfirm
             @confirm="deletePost(post.id)"
             style="border: 0"
@@ -66,7 +66,7 @@
         <el-col :span="6" style="margin-left: 14px;font-size:16px;display: flex;align-items: center">
           <span>{{ post.name }}</span>
         </el-col>
-        <el-col :span="16" align="right" v-if="this.level >=2">
+        <el-col :span="16" align="right" v-if="this.level >=2 || (this.id - this.post.userId) === 0">
           <el-popconfirm
             @confirm="deletePost(post.id)"
             style="border: 0"
@@ -125,6 +125,7 @@ export default {
   data () {
     return {
       level: 0,
+      id: -1,
       loading: true,
       currentDate: '2021-06-01',
       tempCollected: false
@@ -136,7 +137,8 @@ export default {
   mounted () {
     this.tempCollected = this.post.collected
     this.level = this.$level
-    console.log(this.level)
+    this.id = this.$id
+    console.log(this.id, this.post.userId, (this.id - this.post.userId) === 0)
   },
   methods: {
     deletePost (postId) {

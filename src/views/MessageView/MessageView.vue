@@ -1,49 +1,95 @@
 <template>
-  <el-container style="height:100%; margin:5% 20% 0 20%;">
-    <el-aside width="20%" style="height: 100%">
-      <el-menu
-        @select="handleSelect"
-        style="width: 10%;top: 20%;left:20%;
+  <div>
+    <el-container v-if="this.$root.store.state.screenWidth>=800" key="pc" style="height:100%; margin:5% 20% 0 20%;">
+      <el-aside width="20%" style="height: 100%">
+        <el-menu
+          @select="handleSelect"
+          style="width: 10%;top: 20%;left:20%;
         border-radius: 4px;
         position: fixed;
         justify-content: center;
         border: 0"
-      >
-        <el-menu-item index="unread">
-          <div>
-            <i class="el-icon-bell"></i>
-            <span v-if="this.$root.store.state.screenWidth>= 1200" slot="title">未读消息</span>
-          </div>
+        >
+          <el-menu-item index="unread">
+            <div>
+              <i class="el-icon-bell"></i>
+              <span v-if="this.$root.store.state.screenWidth>= 1200" slot="title">未读消息</span>
+            </div>
 
-          <el-badge class="mark" :value="unread" v-if="this.$root.store.state.screenWidth>= 700 && unread>0"></el-badge>
-        </el-menu-item >
-        <el-menu-item index="all">
-          <div>
-            <i class="el-icon-message-solid"></i>
-            <span v-if="this.$root.store.state.screenWidth>= 1200" slot="title">所有消息</span>
-          </div>
-        </el-menu-item>
-      </el-menu>
-      <el-button class="button" icon="el-icon-delete-solid" circle @click="clear"></el-button>
-    </el-aside>
-    <el-main style="overflow-x: hidden">
-      <el-card class="message" v-for="message in messages" :key="message.id" style="width: 100%">
-        <el-link type="primary" @click="$router.push('/post_detail/'+message.targetId);readMessage(message.id)">{{message.postName}}</el-link>
-        <el-row>
-          <el-col><i>{{message.name1}}</i></el-col>
-          <el-col>{{message.opName}}了你的发布</el-col>
-        </el-row>
-        <div></div>
-      </el-card>
-      <el-pagination
-        layout="prev, pager, next"
-        :current-page="currentPage"
-        :page-size="20"
-        :total="total"
-        @current-change="handleCurrentChange">
-      </el-pagination>
-    </el-main>
-  </el-container>
+            <el-badge class="mark" :value="unread" v-if="this.$root.store.state.screenWidth>= 700 && unread>0"></el-badge>
+          </el-menu-item >
+          <el-menu-item index="all">
+            <div>
+              <i class="el-icon-message-solid"></i>
+              <span v-if="this.$root.store.state.screenWidth>= 1200" slot="title">所有消息</span>
+            </div>
+          </el-menu-item>
+        </el-menu>
+        <el-button class="button" icon="el-icon-delete-solid" circle @click="clear"></el-button>
+      </el-aside>
+      <el-main style="overflow-x: hidden">
+        <el-card class="message" v-for="message in messages" :key="message.id" style="width: 100%">
+          <el-link type="primary" @click="$router.push('/post_detail/'+message.targetId);readMessage(message.id)">{{message.postName}}</el-link>
+          <el-row>
+            <el-col><i>{{message.name1}}</i></el-col>
+            <el-col>{{message.opName}}了你的发布</el-col>
+          </el-row>
+          <div></div>
+        </el-card>
+        <el-pagination
+          layout="prev, pager, next"
+          :current-page="currentPage"
+          :page-size="20"
+          :total="total"
+          @current-change="handleCurrentChange">
+        </el-pagination>
+      </el-main>
+    </el-container>
+    <div v-if="this.$root.store.state.screenWidth<800" key="ph" style="height:100%; margin:15% 0.5rem 0 3.5rem;">
+        <el-menu
+          @select="handleSelect"
+          style="width: 3rem;top: 20%;left:0;
+        border-radius: 4px;
+        position: fixed;
+        justify-content: center;
+        border: 0"
+        >
+          <el-menu-item index="unread">
+            <div>
+              <i class="el-icon-bell"></i>
+              <span v-if="this.$root.store.state.screenWidth>= 1200" slot="title">未读消息</span>
+            </div>
+
+            <el-badge class="mark" :value="unread" v-if="this.$root.store.state.screenWidth>= 700 && unread>0"></el-badge>
+          </el-menu-item >
+          <el-menu-item index="all">
+            <div>
+              <i class="el-icon-message-solid"></i>
+              <span v-if="this.$root.store.state.screenWidth>= 1200" slot="title">所有消息</span>
+            </div>
+          </el-menu-item>
+        </el-menu>
+        <el-button class="button" style="left: 0" icon="el-icon-delete-solid" circle @click="clear"></el-button>
+      <el-main style="overflow-x: hidden">
+        <el-card class="message" v-for="message in messages" :key="message.id" style="width: 100%">
+          <el-link type="primary" @click="$router.push('/post_detail/'+message.targetId);readMessage(message.id)">{{message.postName}}</el-link>
+          <el-row>
+            <el-col><i>{{message.name1}}</i></el-col>
+            <el-col>{{message.opName}}了你的发布</el-col>
+          </el-row>
+          <div></div>
+        </el-card>
+        <el-pagination
+          layout="prev, pager, next"
+          :current-page="currentPage"
+          :page-size="20"
+          :total="total"
+          @current-change="handleCurrentChange">
+        </el-pagination>
+      </el-main>
+    </div>
+  </div>
+
 </template>
 
 <style>

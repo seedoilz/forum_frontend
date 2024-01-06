@@ -18,6 +18,7 @@ Vue.prototype.$setCookie = setCookie
 Vue.prototype.$checkCookie = checkCookie
 Vue.prototype.$clearCookie = clearCookie
 Vue.prototype.$level = getCookie('level')
+Vue.prototype.$id = getCookie('id')
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 const store = {
   debug: true,

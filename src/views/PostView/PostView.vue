@@ -1,90 +1,161 @@
 <template>
-  <el-container class="container-main" >
-<!--    <el-header-->
-<!--      height="60"-->
-<!--      class="title">-->
-<!--      <h1 style="font-size: 3rem;margin-top: 10px;margin-bottom: 10px;color: #DDFF03">☣TITLE</h1>-->
-<!--    </el-header>-->
+  <div>
+    <div v-if="this.$root.store.state.screenWidth>=800" key="pc" >
+      <el-container class="container-main" >
+        <el-container>
+          <el-container direction="vertical" class="container-left">
 
-    <el-container>
-    <el-container direction="vertical" class="container-left">
+            <el-input
+              ref="title"
+              placeholder="请输入标题"
+              v-model="postMessage.title"
+              clearable
+              class="content-title">
+            </el-input>
 
-      <el-input
-        ref="title"
-        placeholder="请输入标题"
-        v-model="postMessage.title"
-        clearable
-        class="content-title">
-      </el-input>
+            <el-form :inline="true" class="middle" @submit.native.prevent>
 
-      <el-form :inline="true" class="middle" @submit.native.prevent>
+              <el-input
+                class="input-new-tag"
+                v-if="inputVisible"
+                v-model="inputValue"
+                ref="saveTagInput"
+                size="large"
+                @keyup.enter.native="handleInputConfirm"
+                @blur="handleInputConfirm"
+              >
+              </el-input>
+              <el-button v-else class="button-new-tag" size="small" @click="showInput">+添加标签</el-button>
+            </el-form>
 
-        <el-input
-          class="input-new-tag"
-          v-if="inputVisible"
-          v-model="inputValue"
-          ref="saveTagInput"
-          size="large"
-          @keyup.enter.native="handleInputConfirm"
-          @blur="handleInputConfirm"
-        >
-        </el-input>
-        <el-button v-else class="button-new-tag" size="small" @click="showInput">+添加标签</el-button>
-      </el-form>
+            <el-container class="container-tags">
+              <el-tag
+                :key="tag"
+                v-for="tag in postMessage.tags"
+                closable
+                :disable-transitions="false"
+                @close="handleClose(tag)">
+                {{tag}}
+              </el-tag>
+            </el-container>
 
-      <el-container class="container-tags">
-        <el-tag
-          :key="tag"
-          v-for="tag in postMessage.tags"
-          closable
-          :disable-transitions="false"
-          @close="handleClose(tag)">
-          {{tag}}
-        </el-tag>
+            <quill-editor
+              v-model="postMessage.content"
+              class="quill-editor1"
+              ref="myQuillEditor"
+              :options="editorOption2"
+              style="color: #b4bccc"
+            >
+            </quill-editor>
+          </el-container>
+          <el-aside class="aside">
+            <el-container direction="vertical" class="aside-container" >
+              <el-input class="aside-input"
+                        type="textarea"
+                        :rows=1
+                        placeholder="添加图片"
+              >
+              </el-input>
+
+              <el-upload
+                class="upload"
+                action=""
+                :http-request="uploadImg"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                ref="upload"
+                :file-list="fileList"
+                list-type="picture">
+                <el-button size="small" type="primary" icon="">点击上传<i class="el-icon-upload el-icon--right"></i></el-button>
+              </el-upload>
+            </el-container  >
+            <el-footer class="footer">
+              <el-row style="align-items: end;justify-content: end;display: flex;">
+                <el-button type="danger" icon="el-icon-delete-solid" class="button-clearAll" @click="cleanAll">清空</el-button>
+                <el-button type="primary" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>
+              </el-row>
+            </el-footer>
+            <!--      <el-button style="position: relative;bottom: 0;" type="primary" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>-->
+          </el-aside>
+        </el-container>
       </el-container>
+    </div>
+    <div v-if="this.$root.store.state.screenWidth<800" key="ph">
+      <el-container  class="container-main" style="width: 96%;margin-top: 20%;height: 150vh">
+        <el-container>
+          <el-input
+            ref="title"
+            placeholder="请输入标题"
+            v-model="postMessage.title"
+            clearable
+            style="width: 60%; margin: 10px;">
+          </el-input>
 
-      <quill-editor
-        v-model="postMessage.content"
-        class="quill-editor1"
-        ref="myQuillEditor"
-        :options="editorOption2"
-        style="color: #b4bccc"
-        >
-        style="height: 100%;"
-      </quill-editor>
-    </el-container>
+          <el-form :inline="true" class="middle" @submit.native.prevent>
 
-    <el-aside class="aside">
-      <el-container direction="vertical" class="aside-container" >
-      <el-input class="aside-input"
-        type="textarea"
-        :rows=1
-        placeholder="添加图片"
-        >
-      </el-input>
+            <el-input
+              class="input-new-tag"
+              v-if="inputVisible"
+              v-model="inputValue"
+              ref="saveTagInput"
+              size="large"
+              @keyup.enter.native="handleInputConfirm"
+              @blur="handleInputConfirm"
+            >
+            </el-input>
+            <el-button v-else class="button-new-tag" size="small" @click="showInput">+添加标签</el-button>
+          </el-form>
 
-      <el-upload
-        class="upload"
-        action=""
-        :http-request="uploadImg"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        ref="upload"
-        :file-list="fileList"
-        list-type="picture">
-        <el-button size="small" type="primary" icon="">点击上传<i class="el-icon-upload el-icon--right"></i></el-button>
-      </el-upload>
-    </el-container  >
-      <el-footer class="footer">
-        <el-row style="align-items: end;justify-content: end;display: flex;">
-          <el-button type="danger" icon="el-icon-delete-solid" class="button-clearAll" @click="cleanAll">清空</el-button>
-          <el-button type="primary" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>
-        </el-row>
-      </el-footer>
-<!--      <el-button style="position: relative;bottom: 0;" type="primary" icon="el-icon-upload2" class="button-sendArticle" @click="submitPost">发帖</el-button>-->
-    </el-aside>
-    </el-container>
-  </el-container>
+          <el-container class="container-tags">
+            <el-tag
+              :key="tag"
+              v-for="tag in postMessage.tags"
+              closable
+              :disable-transitions="false"
+              @close="handleClose(tag)">
+              {{tag}}
+            </el-tag>
+          </el-container>
+
+          <quill-editor
+            v-model="postMessage.content"
+            class="quill-editor1"
+            ref="myQuillEditor"
+            :options="editorOption2"
+            style="color: #b4bccc; margin-bottom: 10%;"
+          >
+          </quill-editor>
+          <el-container direction="vertical" class="aside-container" style="margin-top: 5rem" >
+            <el-input class="aside-input"
+                      type="textarea"
+                      :rows=1
+                      placeholder="添加图片"
+            >
+            </el-input>
+
+            <el-upload
+              class="upload"
+              action=""
+              :http-request="uploadImg"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              ref="upload"
+              :file-list="fileList"
+              list-type="picture">
+              <el-button size="small" type="primary" icon="">点击上传<i class="el-icon-upload el-icon--right"></i></el-button>
+            </el-upload>
+          </el-container  >
+          <el-footer style="margin-top: 5%">
+            <el-row style="align-items: end;justify-content: end;display: flex;">
+              <el-button type="danger" icon="el-icon-delete-solid"  @click="cleanAll">清空</el-button>
+              <el-button type="primary" icon="el-icon-upload2"  @click="submitPost">发帖</el-button>
+            </el-row>
+          </el-footer>
+        </el-container>
+      </el-container>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -298,12 +369,13 @@ export default {
   display: flex;
   align-content: center;
   justify-content: center;
-  margin: 5% auto;
+  margin: 10% auto;
 
 }
 
 .container-left{
   width: 60%;
+
   border-radius: 4px;
   border: 0 solid #ebeef5;
   margin: 10px;
@@ -322,7 +394,6 @@ export default {
 }
 
 .el-tag{
-  //height: 32px;
   text-align: center;
   vertical-align: center;
 }
@@ -351,8 +422,6 @@ export default {
   border-radius: 4px;
   background-color: #202020;
   color: #eeeef1;
-  max-height: 78vh;
-  //border: 1px solid;
   margin: 10px;
   overflow-y: auto;
 }
@@ -360,7 +429,7 @@ export default {
 .quill-editor1{
   line-height: normal !important;
   min-height: 50%;
-  max-height: 100%;
+  max-height: 60%;
   margin: 10px;
   border-radius: 4px;
   border: 0 solid #ebeef5;

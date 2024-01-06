@@ -1,5 +1,5 @@
 <template>
-  <el-card class="content" style="height: auto">
+  <el-card class="content" style="height: auto;">
     <div slot="header" class="clearfix">
       <span style="font-size:1.5rem">我的收藏</span>
     </div>
@@ -114,7 +114,6 @@ export default {
 <style>
 .content {
   width: 100%;
-  //background: white; border-radius: 5px;
 }
 
 .myCollectA {
@@ -140,13 +139,12 @@ export default {
 .myCollectA .myCollectTitle {
   font-size: 1rem;
   height: 100%;
-  margin-left: 25px;
+  margin-left: 1rem;
   font-weight: 600;
   color: rgb(56, 52, 52);
-  flex: 9;
 
   .title {
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
     font-size: 1.2rem;
     color: #ffffff;
   }
@@ -155,13 +153,13 @@ export default {
 .myCollectA .myCollectStar {
   width: 10%;
   height: 100%;
-  margin-left: 40px;
-  text-align: center;
+  text-align: end;
+  margin: 1rem;
   flex: 1;
 }
 
 .myCollectA .myCollectStar img {
-  width: 30px;
+  width: 2rem;
   display: block;
 }
 </style>

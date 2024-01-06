@@ -21,43 +21,19 @@
         <i class="el-icon-plus"></i>
         <template slot="title">发帖</template>
       </el-menu-item>
-<!--            <el-submenu index="2">-->
-<!--              <template slot="title"><i class="el-icon-menu"></i>我的工作台</template>-->
-<!--              <el-menu-item index="2-1">选项1</el-menu-item>-->
-<!--              <el-menu-item index="2-2">选项2</el-menu-item>-->
-<!--              <el-menu-item index="2-3">选项3</el-menu-item>-->
-<!--              <el-submenu index="2-4">-->
-<!--                <template slot="title">选项4</template>-->
-<!--                <el-menu-item index="2-4-1">选项1</el-menu-item>-->
-<!--                <el-menu-item index="2-4-2">选项2</el-menu-item>-->
-<!--                <el-menu-item index="2-4-3">选项3</el-menu-item>-->
-<!--              </el-submenu>-->
-<!--            </el-submenu>-->
             <el-menu-item :index="PATH.MESSAGE_VIEW.path">
               <i class="el-icon-message-solid"></i>消息</el-menu-item>
-<!--            <el-menu-item :index="PATH.USER_VIEW.path" style="right: 0">-->
-<!--              <i class="el-icon-user-solid"></i>-->
-<!--              <template #title>{{ username }}</template>-->
-<!--            </el-menu-item>-->
-          <div style="position:absolute;left: 35%; width: 30%">
-            <el-input
-              style="justify-content: center;align-items: center;margin-top: 10px;border-radius: 50%;"
-              type="text"
-              size="large"
+          <div style="position:absolute;left: 30%; width: 40%">
+            <el-autocomplete
+              style="justify-content: center;align-items: center;margin-top: 10px;border-radius: 50%;width: 100%"
               prefix-icon="el-icon-search"
-              resize="none"
+              v-model="search"
+              :fetch-suggestions="query"
               placeholder="搜索一下"
-              v-model="search">
-              <el-button slot="append" icon="el-icon-search"></el-button>
-            </el-input>
+              :trigger-on-focus="false"
+              @select="handleSelect"><el-button slot="append" icon="el-icon-search" @click="submitSearch"></el-button>
+            </el-autocomplete>
           </div>
-
-<!--          <div style="right: 3%;position: absolute;display: flex;flex-direction: row; justify-content: center;align-items: center">-->
-<!--            <el-avatar :src="this.avatarUrl" style="margin-right: 10px; margin-top:10px;cursor: pointer;z-index: 1001"-->
-<!--                       @click.native="$router.push(PATH.USER_VIEW.path)"></el-avatar>-->
-<!--            <h3 style="color: #fff; cursor: pointer"-->
-<!--            @click="$router.push(PATH.USER_VIEW.path)">{{ username }}</h3>-->
-<!--          </div>-->
       <div style="right: 3%;position: absolute;display: flex;flex-direction: row; justify-content: center;align-items: center">
         <el-avatar :src="this.avatarUrl" style="margin-right: 10px; margin-top:10px;cursor: pointer;z-index: 1001"
                    @click.native="$router.push(PATH.USER_VIEW.path)"></el-avatar>
@@ -71,6 +47,7 @@
       background-color="rgba(32,32,32,1)"
       text-color="#fff"
       :router="true"
+      menu-trigger="click"
       active-text-color="#26bbff"
       default-active="1"
       mode="horizontal"
@@ -89,16 +66,15 @@
       </el-menu-item>
       <el-submenu index="4">
         <template slot="title"><i class="el-icon-search"></i></template>
-          <el-input
-            style="justify-content: center;align-items: center;"
-            type="text"
-            size="large"
-            prefix-icon="el-icon-search"
-            resize="none"
-            placeholder="搜索一下"
-            v-model="search">
-            <el-button slot="append" icon="el-icon-search"></el-button>
-          </el-input>
+        <el-autocomplete
+          style="justify-content: center;align-items: center;margin-top: 10px;border-radius: 50%;width: 100%"
+          prefix-icon="el-icon-search"
+          v-model="search"
+          :fetch-suggestions="query"
+          placeholder="搜索一下"
+          :trigger-on-focus="false"
+          @select="handleSelect"><el-button slot="append" icon="el-icon-search" @click="submitSearch"></el-button>
+        </el-autocomplete>
       </el-submenu>
 
       <div style="right: 3%;position: absolute;display: flex;flex-direction: row; justify-content: center;align-items: center">
@@ -112,6 +88,7 @@
       background-color="rgba(32,32,32,1)"
       text-color="#fff"
       :router="true"
+      menu-trigger="click"
       active-text-color="#26bbff"
       default-active="1"
       mode="horizontal"
@@ -130,16 +107,15 @@
       </el-menu-item>
       <el-submenu index="4">
         <template slot="title"><i class="el-icon-search"></i></template>
-        <el-input
-          style="justify-content: center;align-items: center;"
-          type="text"
-          size="large"
+        <el-autocomplete
+          style="justify-content: center;align-items: center;margin-top: 10px;border-radius: 50%;width: 100%"
           prefix-icon="el-icon-search"
-          resize="none"
+          v-model="search"
+          :fetch-suggestions="query"
           placeholder="搜索一下"
-          v-model="search">
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
+          :trigger-on-focus="false"
+          @select="handleSelect"><el-button slot="append" icon="el-icon-search" @click="submitSearch"></el-button>
+        </el-autocomplete>
       </el-submenu>
       <el-menu-item :index="PATH.USER_VIEW.path">
         <el-avatar :src="this.avatarUrl"></el-avatar>
@@ -181,7 +157,7 @@
 
 <script>
 import {PATH} from '@/commons/const'
-import {getCurrentUser, listMessage, updateMessage} from '@/network/any'
+import {getCurrentUser, listMessage, querySearch, updateMessage} from '@/network/any'
 export default {
   name: 'NavTop',
   async mounted () {
@@ -194,6 +170,7 @@ export default {
         this.$root.store.avatarUrl = res.data.avatar_url
       } else {
         this.$alert('System error')
+        this.$router.push(PATH.SIGN_IN_VIEW.path)
       }
     })
     await listMessage({params: {
@@ -220,9 +197,39 @@ export default {
       avatarUrl: '',
       search: '',
       messages: []
+      // searchWords: []
     }
   },
   methods: {
+    submitSearch () {
+      let word = this.search
+      this.$router.push({name: 'PostSearchView', params: {word}})
+    },
+    query (word, cb) {
+      let searchWords = []
+      querySearch({params: {
+        word: word,
+        page: 1,
+        size: 10
+      }}).then(res => {
+        if (res.code === 200) {
+          searchWords = res.data.list.map((word) => {
+            return {
+              value: word,
+              word: word
+            }
+          })
+          console.log(searchWords)
+          cb(searchWords)
+        } else {
+          console.log('无可用搜索')
+        }
+      })
+    },
+    handleSelect (item) {
+      this.search = item.word
+      console.log(item)
+    },
     handleClose (done) {
       done()
     },

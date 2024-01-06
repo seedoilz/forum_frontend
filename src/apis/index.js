@@ -23,6 +23,8 @@ const LIST_MESSAGE = '/action/message'
 const LIST_ALL_MESSAGE = '/action/all'
 const UPDATE_MESSAGE = '/action/update'
 const UPDATE_ALL_MESSAGE = '/action/updateAll'
+const QUERY_SEARCH = '/search/word/query'
+const POSTS_SEARCH = '/post/posts_search'
 module.exports = {
   REGISTER,
   SIGN_IN,
@@ -43,10 +45,12 @@ module.exports = {
   USER_COMMENT_THUMBS,
   CANCEL_COMMENT_THUMB,
   POSTS_BY_TAG,
+  POSTS_SEARCH,
   ADD_IMAGE,
   ADD_POST,
   LIST_MESSAGE,
   LIST_ALL_MESSAGE,
   UPDATE_MESSAGE,
-  UPDATE_ALL_MESSAGE
+  UPDATE_ALL_MESSAGE,
+  QUERY_SEARCH
 }
