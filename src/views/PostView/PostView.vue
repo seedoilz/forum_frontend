@@ -220,7 +220,7 @@ export default {
       if (confirm('确定要清空页面吗？')) {
         this.postMessage.title = ''
         this.postMessage.content = ''
-        this.postMessage.tags = ['默认标签']
+        this.postMessage.tags = []
         this.$refs.upload.uploadFiles = []
         // console.log(this.$refs.upload)
         this.fileUrls = []
