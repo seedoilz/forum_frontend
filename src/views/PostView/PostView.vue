@@ -302,11 +302,6 @@ export default {
           message: '缺少正文',
           type: 'warning'
         })
-      } else if (this.postMessage.tags === '') {
-        this.$message({
-          message: '缺少标签',
-          type: 'warning'
-        })
       } else {
         messagePost(this.postMessage).then(res => {
           if (res.code === 200) {
